@@ -13,10 +13,14 @@ if (!empty($settings['academy_supporting_goals'])) {
 }
 if (empty($supportingGoals)) {
     $supportingGoals = [
-        'Interactive & communicative student-centered learning methodologies.',
-        'Expert guidance from certified language trainers & corporate specialists.',
-        'Real-world speaking drills, interview prep & public speaking masterclasses.',
-        'Global certification recognized for academic & professional advancement.'
+        'Provide affordable and accessible online English classes.',
+        'Develop learners\' confidence in spoken and written English.',
+        'Serve schoolchildren, university students, employees, professionals and businesspeople.',
+        'Offer beginner, intermediate and advanced learning pathways.',
+        'Provide English for interviews, employment, business, presentations and public speaking.',
+        'Use technology to reach learners throughout Sri Lanka and overseas.',
+        'Maintain high teaching standards and measurable learning outcomes.',
+        'Build Elocentra into a respected international education brand.'
     ];
 }
 ?>
@@ -107,32 +111,32 @@ if (empty($supportingGoals)) {
             </div>
         </div>
 
-        <!-- 3. Academy Contact & Operating Hours -->
+        <!-- 3. Academy Contact Channels (No Physical Address) -->
         <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm space-y-4">
             <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
                 <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                3. Contact Information & Campus Address
+                3. Contact Information &amp; Support Channels
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Official Email Address</label>
-                    <input type="email" name="academy_email" value="<?= htmlspecialchars($settings['academy_email'] ?? 'info@elocentra.academy') ?>" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500">
+                    <input type="email" name="academy_email" value="<?= htmlspecialchars($settings['academy_email'] ?? 'eloengaca@gmail.com') ?>" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Official Hotline / Phone</label>
-                    <input type="text" name="academy_phone" value="<?= htmlspecialchars($settings['academy_phone'] ?? '+94 77 123 4567') ?>" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Primary Phone / WhatsApp</label>
+                    <input type="text" name="academy_phone" value="<?= htmlspecialchars($settings['academy_phone'] ?? '077 7354892') ?>" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">WhatsApp Inquiry Line</label>
-                    <input type="text" name="academy_whatsapp" value="<?= htmlspecialchars($settings['academy_whatsapp'] ?? '+94 77 123 4567') ?>" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500">
-                </div>
-                <div class="md:col-span-2">
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Campus Physical Address</label>
-                    <input type="text" name="academy_address" value="<?= htmlspecialchars($settings['academy_address'] ?? 'No. 123, Education Lane, Colombo, Sri Lanka') ?>" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Alternative Phone Number</label>
+                    <input type="text" name="academy_phone2" value="<?= htmlspecialchars($settings['academy_phone2'] ?? '077 2278069') ?>" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Office Hours</label>
-                    <input type="text" name="academy_office_hours" value="<?= htmlspecialchars($settings['academy_office_hours'] ?? 'Mon - Fri: 9.00 AM - 5.00 PM') ?>" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">WhatsApp Hotline</label>
+                    <input type="text" name="academy_whatsapp" value="<?= htmlspecialchars($settings['academy_whatsapp'] ?? '077 7354892') ?>" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Operating Hours</label>
+                    <input type="text" name="academy_office_hours" value="<?= htmlspecialchars($settings['academy_office_hours'] ?? 'Mon - Sat: 8.30 AM - 6.00 PM') ?>" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500">
                 </div>
             </div>
         </div>

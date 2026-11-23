@@ -11,6 +11,7 @@ class PublicController extends BaseController
      */
     public function home(): void
     {
+        $banners = $this->getActiveBanners();
         $subjectAreas = $this->getActiveSubjectAreas();
         $courses = $this->getFeaturedCourses();
         $resourcePersons = $this->getActiveResourcePersons();
@@ -20,6 +21,7 @@ class PublicController extends BaseController
             'pageTitle'        => 'ELOCENTRA – English Academy (PVT) LTD | Learn English. Speak Confidently. Succeed Globally.',
             'metaDescription'  => 'Premier English and professional academy in Sri Lanka. Learn English, speak confidently, and succeed globally with university-level courses.',
             'activePage'       => 'home',
+            'banners'          => $banners,
             'subjectAreas'     => $subjectAreas,
             'courses'          => $courses,
             'resourcePersons'  => $resourcePersons,
@@ -49,7 +51,7 @@ class PublicController extends BaseController
      */
     public function courses(): void
     {
-        $search = trim((string) ($_GET['q'] ?? ''));
+        $search = trim((string) ($_GET['search'] ?? $_GET['q'] ?? ''));
         $subjectAreaId = !empty($_GET['subject_area']) ? (int) $_GET['subject_area'] : null;
 
         $subjectAreas = $this->getActiveSubjectAreas();
@@ -365,8 +367,10 @@ class PublicController extends BaseController
             $params = [];
 
             if ($search !== '') {
-                $sql .= " AND (c.class_name LIKE :search OR c.description LIKE :search OR c.subject LIKE :search)";
-                $params[':search'] = '%' . $search . '%';
+                $sql .= " AND (c.class_name LIKE :s1 OR c.description LIKE :s2 OR c.subject LIKE :s3)";
+                $params[':s1'] = '%' . $search . '%';
+                $params[':s2'] = '%' . $search . '%';
+                $params[':s3'] = '%' . $search . '%';
             }
 
             if ($subjectAreaId !== null && $subjectAreaId > 0) {
@@ -444,6 +448,21 @@ class PublicController extends BaseController
             return $this->db->query("SELECT * FROM `directpay_config` LIMIT 1")->fetch(\PDO::FETCH_ASSOC) ?: null;
         } catch (\Throwable $e) {
             return null;
+        }
+    }
+
+    private function getActiveBanners(): array
+    {
+        if (!$this->db) return [];
+        try {
+            return $this->db->query("
+                SELECT * FROM `homepage_banners`
+                WHERE `status` = 'active'
+                ORDER BY `display_order` ASC, `id` ASC
+            ")->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Throwable $e) {
+            error_log('Error getting homepage banners: ' . $e->getMessage());
+            return [];
         }
     }
 

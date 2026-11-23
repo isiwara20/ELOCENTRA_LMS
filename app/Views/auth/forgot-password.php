@@ -44,8 +44,8 @@
                 <input type="password" id="pwd_old" name="old_password"
                        placeholder="Enter your current old password"
                        class="w-full px-4 pr-11 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-[#E5A93C] focus:ring-2 focus:ring-[#E5A93C]/20 text-sm">
-                <button type="button" onclick="togglePassVisibility('pwd_old')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400">
-                    👁️
+                <button type="button" onclick="togglePassVisibility('pwd_old')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                 </button>
             </div>
             <!-- Clickable Link directly below Old Password (as in reference image) -->
@@ -58,7 +58,7 @@
 
         <!-- Verified OTP Notification Banner (hidden until verified) -->
         <div id="otpVerifiedBanner" class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs hidden flex items-center gap-2">
-            <span>✓</span>
+            <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
             <span>Identity verified via OTP. You may now enter your new password.</span>
         </div>
 
@@ -71,8 +71,8 @@
                 <input type="password" id="pwd_new" name="new_password" required
                        placeholder="At least 8 characters"
                        class="w-full px-4 pr-11 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-[#E5A93C] focus:ring-2 focus:ring-[#E5A93C]/20 text-sm">
-                <button type="button" onclick="togglePassVisibility('pwd_new')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400">
-                    👁️
+                <button type="button" onclick="togglePassVisibility('pwd_new')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                 </button>
             </div>
         </div>
@@ -86,8 +86,8 @@
                 <input type="password" id="pwd_confirm" name="confirm_password" required
                        placeholder="Re-enter new password"
                        class="w-full px-4 pr-11 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-[#E5A93C] focus:ring-2 focus:ring-[#E5A93C]/20 text-sm">
-                <button type="button" onclick="togglePassVisibility('pwd_confirm')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400">
-                    👁️
+                <button type="button" onclick="togglePassVisibility('pwd_confirm')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                 </button>
             </div>
         </div>

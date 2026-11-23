@@ -3,9 +3,9 @@
 
     # Redirect all requests to the public directory
     RewriteCond %{REQUEST_URI} !^/public/ [NC]
-    RewriteRule ^$ public/ [L]
+    RewriteRule ^$ public/ [QSA,L]
     RewriteCond %{REQUEST_URI} !^/public/ [NC]
-    RewriteRule ^(.*)$ public/$1 [L]
+    RewriteRule ^(.*)$ public/$1 [QSA,L]
 </IfModule>
 
 # Enable Gzip / Deflate Compression

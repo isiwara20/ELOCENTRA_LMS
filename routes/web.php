@@ -273,6 +273,12 @@ $router->group(['middleware' => ['auth']], function (Router $router) {
     $router->get('/admin/academy-settings', ['App\Controllers\ElocentraAdminController', 'academySettings']);
     $router->post('/admin/academy-settings', ['App\Controllers\ElocentraAdminController', 'updateAcademySettings']);
 
+    // ELOCENTRA - Homepage Banner Slider Management
+    $router->get('/admin/banners', ['App\Controllers\ElocentraAdminController', 'banners']);
+    $router->post('/admin/banners', ['App\Controllers\ElocentraAdminController', 'storeBanner']);
+    $router->post('/admin/banners/{id}/update', ['App\Controllers\ElocentraAdminController', 'updateBanner']);
+    $router->post('/admin/banners/{id}/delete', ['App\Controllers\ElocentraAdminController', 'deleteBanner']);
+
     // Classes / Courses Management
     $router->get('/classes', ['App\Controllers\ClassController', 'index']);
     $router->get('/classes/create', ['App\Controllers\ClassController', 'create']);

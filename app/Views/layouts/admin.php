@@ -245,8 +245,8 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
 
     <!-- Navbar -->
     <nav class="navbar navbar--solid navbar-admin">
-        <button type="button" class="sidebar-toggle-mobile" id="sidebarToggle" aria-label="Show or hide the menu" title="Show or hide the menu">
-            &#9776;
+        <button type="button" class="sidebar-toggle-mobile" id="sidebarToggle" aria-label="Show or hide the menu" title="Show or hide the menu" style="display:inline-flex;align-items:center;justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
 
         <div class="navbar__breadcrumbs">
@@ -257,14 +257,18 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
 
         <div class="navbar__right">
             <!-- Theme Toggle -->
-            <button type="button" class="theme-toggle-btn" data-toggle="theme" aria-label="Toggle theme">
-                <span class="theme-icon-light">&#9790;</span>
-                <span class="theme-icon-dark" style="display:none;">&#9728;</span>
+            <button type="button" class="theme-toggle-btn" data-toggle="theme" aria-label="Toggle theme" style="display:inline-flex;align-items:center;justify-content:center;">
+                <span class="theme-icon-light" style="display:inline-flex;align-items:center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </span>
+                <span class="theme-icon-dark" style="display:none;align-items:center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </span>
             </button>
 
             <!-- Messages & Notifications -->
-            <button type="button" class="notification-bell" aria-label="Messages" onclick="window.location.href='<?= BASE_URL ?>/messages'">
-                &#128276;
+            <button type="button" class="notification-bell" aria-label="Messages" onclick="window.location.href='<?= BASE_URL ?>/messages'" style="display:inline-flex;align-items:center;justify-content:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 <?php if ($notificationCount > 0): ?>
                     <span class="notification-bell__count"><?= (int) $notificationCount ?></span>
                 <?php endif; ?>
@@ -308,8 +312,8 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar__header" style="display:flex; align-items:center; justify-content:space-between; padding:1.1rem 1rem;">
-            <a href="<?= BASE_URL ?>/dashboard" class="sidebar__brand-logo" aria-label="<?= htmlspecialchars($__brand, ENT_QUOTES, 'UTF-8') ?>" style="width:36px;height:36px;flex:0 0 36px;border-radius:10px;background:linear-gradient(135deg, #E5A93C, #F59E0B);display:grid;place-items:center;color:#0B132B;cursor:pointer;text-decoration:none;box-shadow:0 2px 6px rgba(229,169,60,0.3);" title="<?= htmlspecialchars($__brand, ENT_QUOTES, 'UTF-8') ?>">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            <a href="<?= BASE_URL ?>/dashboard" class="sidebar__brand-logo" aria-label="<?= htmlspecialchars($__brand, ENT_QUOTES, 'UTF-8') ?>" style="width:38px;height:38px;flex:0 0 38px;border-radius:10px;background:#06102b;display:grid;place-items:center;cursor:pointer;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.2);overflow:hidden;padding:2px;border:1px solid rgba(229,169,60,0.4);" title="<?= htmlspecialchars($__brand, ENT_QUOTES, 'UTF-8') ?>">
+                <img src="<?= BASE_URL ?>/public/assets/img/brand/elocentra-icon.png" alt="ELOCENTRA" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
             </a>
 
             <button type="button" class="sidebar-collapse-btn" id="sidebarCollapse"
@@ -629,6 +633,12 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
             <a href="<?= BASE_URL ?>/admin/academy-settings" class="sidebar__link <?= $activePage === 'academy_settings' ? 'active' : '' ?>">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4"/></svg>
                 <?= te('Academy Settings') ?>
+            </a>
+
+            <!-- Homepage Banner Slider -->
+            <a href="<?= BASE_URL ?>/admin/banners" class="sidebar__link <?= $activePage === 'banners' ? 'active' : '' ?>">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                <?= te('Homepage Banner Slider') ?>
             </a>
 
             <!-- User Accounts -->

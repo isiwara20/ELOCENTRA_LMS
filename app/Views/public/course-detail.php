@@ -75,28 +75,36 @@ $userType = function_exists('session_get') ? session_get('user_type') : null;
                 <!-- Key Information Grid (Matching Reference Image) -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 border-y border-slate-200 dark:border-slate-800">
                     <!-- Metric 1: Duration -->
-                    <div class="text-center p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                        <div class="text-[#E5A93C] text-lg mb-1">⏱️</div>
+                    <div class="text-center p-3 rounded-xl bg-slate-50 dark:bg-[#0E1629] border border-slate-200 dark:border-slate-800">
+                        <div class="w-8 h-8 mx-auto rounded-lg bg-amber-500/10 text-[#E5A93C] flex items-center justify-center mb-1 border border-amber-500/20">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
                         <div class="text-xs font-bold text-slate-900 dark:text-white"><?= htmlspecialchars($course['duration_weeks'] ?? '12 Weeks', ENT_QUOTES, 'UTF-8') ?></div>
-                        <div class="text-[10px] text-slate-400">Duration</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400">Duration</div>
                     </div>
                     <!-- Metric 2: Mode -->
-                    <div class="text-center p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                        <div class="text-[#E5A93C] text-lg mb-1">💻</div>
+                    <div class="text-center p-3 rounded-xl bg-slate-50 dark:bg-[#0E1629] border border-slate-200 dark:border-slate-800">
+                        <div class="w-8 h-8 mx-auto rounded-lg bg-amber-500/10 text-[#E5A93C] flex items-center justify-center mb-1 border border-amber-500/20">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </div>
                         <div class="text-xs font-bold text-slate-900 dark:text-white"><?= ucfirst(htmlspecialchars($course['delivery_mode'] ?? 'Online', ENT_QUOTES, 'UTF-8')) ?></div>
-                        <div class="text-[10px] text-slate-400">Mode</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400">Mode</div>
                     </div>
                     <!-- Metric 3: Level -->
-                    <div class="text-center p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                        <div class="text-[#E5A93C] text-lg mb-1">📊</div>
+                    <div class="text-center p-3 rounded-xl bg-slate-50 dark:bg-[#0E1629] border border-slate-200 dark:border-slate-800">
+                        <div class="w-8 h-8 mx-auto rounded-lg bg-amber-500/10 text-[#E5A93C] flex items-center justify-center mb-1 border border-amber-500/20">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                        </div>
                         <div class="text-xs font-bold text-slate-900 dark:text-white"><?= htmlspecialchars($course['course_level'] ?? 'Intermediate', ENT_QUOTES, 'UTF-8') ?></div>
-                        <div class="text-[10px] text-slate-400">Level</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400">Level</div>
                     </div>
                     <!-- Metric 4: Certificate -->
-                    <div class="text-center p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                        <div class="text-[#E5A93C] text-lg mb-1">📜</div>
+                    <div class="text-center p-3 rounded-xl bg-slate-50 dark:bg-[#0E1629] border border-slate-200 dark:border-slate-800">
+                        <div class="w-8 h-8 mx-auto rounded-lg bg-amber-500/10 text-[#E5A93C] flex items-center justify-center mb-1 border border-amber-500/20">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138z"/></svg>
+                        </div>
                         <div class="text-xs font-bold text-slate-900 dark:text-white">Certificate</div>
-                        <div class="text-[10px] text-slate-400">Upon Completion</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400">Upon Completion</div>
                     </div>
                 </div>
 
@@ -174,11 +182,13 @@ $userType = function_exists('session_get') ? session_get('user_type') : null;
 
                 <!-- Academic Certification Details -->
                 <div class="p-6 rounded-2xl bg-gradient-to-r from-[#0B132B] to-[#111A2E] text-white border border-[#E5A93C]/30 flex items-start gap-4">
-                    <div class="text-3xl">🎓</div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/15 text-[#E5A93C] flex items-center justify-center shrink-0 border border-amber-500/30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5"/></svg>
+                    </div>
                     <div>
                         <h4 class="text-base font-bold text-white">ELOCENTRA Official Academic Certificate</h4>
                         <p class="text-xs text-slate-300 mt-1 leading-relaxed">
-                            Upon satisfactory completion of course coursework, interactive assessments, and the final viva, you will receive an official verifiable digital and hard-copy Certificate of Completion issued by ELOCENTRA – English Academy (PVT) LTD.
+                            Upon satisfactory completion of course coursework, interactive assessments, and the final evaluation, you will receive an official verifiable digital and hard-copy Certificate of Completion issued by ELOCENTRA – English Academy (PVT) LTD.
                         </p>
                     </div>
                 </div>
@@ -189,20 +199,25 @@ $userType = function_exists('session_get') ? session_get('user_type') : null;
                 <div class="elo-card p-6 space-y-4">
                     <h3 class="text-base font-bold text-slate-900 dark:text-white">Enrollment Highlights</h3>
                     <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-3">
-                        <li class="flex items-center gap-2">
-                            <span class="text-[#E5A93C]">✓</span> Full 12-week interactive course curriculum
+                        <li class="flex items-center gap-2.5">
+                            <svg class="w-4 h-4 text-[#E5A93C] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span>Full interactive course curriculum</span>
                         </li>
-                        <li class="flex items-center gap-2">
-                            <span class="text-[#E5A93C]">✓</span> Weekly live classes with Senior Resource Persons
+                        <li class="flex items-center gap-2.5">
+                            <svg class="w-4 h-4 text-[#E5A93C] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span>Weekly live classes with Senior Resource Persons</span>
                         </li>
-                        <li class="flex items-center gap-2">
-                            <span class="text-[#E5A93C]">✓</span> 24/7 access to student portal &amp; learning materials
+                        <li class="flex items-center gap-2.5">
+                            <svg class="w-4 h-4 text-[#E5A93C] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span>24/7 access to student portal &amp; learning materials</span>
                         </li>
-                        <li class="flex items-center gap-2">
-                            <span class="text-[#E5A93C]">✓</span> Personalized speaking assessments &amp; feedback
+                        <li class="flex items-center gap-2.5">
+                            <svg class="w-4 h-4 text-[#E5A93C] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span>Personalized speaking assessments &amp; feedback</span>
                         </li>
-                        <li class="flex items-center gap-2">
-                            <span class="text-[#E5A93C]">✓</span> Choice of Card Payment (DirectPay) or Bank Transfer
+                        <li class="flex items-center gap-2.5">
+                            <svg class="w-4 h-4 text-[#E5A93C] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span>Choice of Card Payment (DirectPay) or Bank Transfer</span>
                         </li>
                     </ul>
                     <div class="pt-2">
@@ -225,9 +240,9 @@ $userType = function_exists('session_get') ? session_get('user_type') : null;
     <div class="bg-white dark:bg-[#111A2E] rounded-3xl max-w-xl w-full border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
         
         <!-- Modal Header -->
-        <div class="p-6 bg-[#0B132B] text-white flex items-center justify-between">
+        <div class="p-6 bg-[#0B132B] text-white flex items-center justify-between border-b border-amber-500/20">
             <div class="flex items-center gap-3">
-                <img src="<?= BASE_URL ?>/assets/img/brand/elocentra-icon.svg" class="w-8 h-8">
+                <img src="<?= BASE_URL ?>/public/assets/img/brand/elocentra-icon.png" class="w-8 h-8 rounded-lg object-contain">
                 <div>
                     <h3 class="text-base font-bold text-white">Course Enrollment &amp; Checkout</h3>
                     <p class="text-[11px] text-[#E5A93C]"><?= htmlspecialchars($course['class_name'], ENT_QUOTES, 'UTF-8') ?></p>
@@ -240,14 +255,14 @@ $userType = function_exists('session_get') ? session_get('user_type') : null;
         <div class="p-6 overflow-y-auto space-y-6 flex-grow">
             
             <!-- Price Summary -->
-            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-[#070D1F] border border-slate-200 dark:border-slate-800 flex items-center justify-between">
                 <div>
                     <div class="text-xs text-slate-500 dark:text-slate-400">Total Payable Amount</div>
                     <div class="text-2xl font-extrabold text-slate-900 dark:text-white">LKR <?= $fee ?></div>
                 </div>
                 <div class="text-right">
                     <div class="text-[10px] text-[#E5A93C] uppercase font-bold">One-Time Fee</div>
-                    <div class="text-xs text-slate-400">Includes all materials</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">Includes all materials</div>
                 </div>
             </div>
 
@@ -255,7 +270,7 @@ $userType = function_exists('session_get') ? session_get('user_type') : null;
             <?php if (!$isLoggedIn): ?>
                 <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-200 text-xs space-y-2">
                     <p class="font-bold">Are you an existing ELOCENTRA student?</p>
-                    <p>Please <a href="<?= BASE_URL ?>/login" class="underline font-bold">Log in</a> to enroll under your student ID, or fill in your details below to automatically register while checking out.</p>
+                    <p>Please <a href="<?= BASE_URL ?>/login" class="underline font-bold text-[#E5A93C]">Log in</a> to enroll under your student ID, or fill in your details below to automatically register while checking out.</p>
                 </div>
             <?php endif; ?>
 
@@ -265,11 +280,13 @@ $userType = function_exists('session_get') ? session_get('user_type') : null;
                 <div class="grid grid-cols-2 gap-3">
                     <button type="button" id="tabDirectPayBtn" onclick="selectPaymentMethod('directpay')"
                             class="p-3.5 rounded-xl border-2 border-[#E5A93C] bg-[#E5A93C]/10 text-slate-900 dark:text-white flex items-center justify-center gap-2 font-bold text-xs transition-all">
-                        💳 Card (DirectPay)
+                        <svg class="w-4 h-4 text-[#E5A93C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                        Card (DirectPay)
                     </button>
                     <button type="button" id="tabBankBtn" onclick="selectPaymentMethod('bank')"
                             class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent text-slate-600 dark:text-slate-400 flex items-center justify-center gap-2 font-bold text-xs transition-all">
-                        🏦 Bank Transfer
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg>
+                        Bank Transfer
                     </button>
                 </div>
             </div>

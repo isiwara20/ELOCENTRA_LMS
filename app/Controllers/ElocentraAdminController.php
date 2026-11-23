@@ -733,4 +733,126 @@ class ElocentraAdminController extends BaseController
         $this->flash('success', 'Academy details and branding updated successfully. All public pages now reflect the updated content.');
         $this->redirect('/admin/academy-settings');
     }
+
+    // ─── 8. HOMEPAGE BANNER SLIDER MANAGEMENT ─────────────────────────
+
+    public function banners(): void
+    {
+        $banners = $this->db->query("SELECT * FROM homepage_banners ORDER BY sort_order ASC, id ASC")->fetchAll(\PDO::FETCH_ASSOC);
+
+        $this->view('admin/elocentra/banners', [
+            'pageTitle'     => 'Homepage Banner Slider Management',
+            'activePage'    => 'banners',
+            'activeSubPage' => 'banners',
+            'banners'       => $banners,
+        ], 'layouts/admin');
+    }
+
+    public function storeBanner(): void
+    {
+        verifyCsrfToken();
+
+        $title = trim((string) ($_POST['title'] ?? ''));
+        $subtitle = trim((string) ($_POST['subtitle'] ?? ''));
+        $badgeText = trim((string) ($_POST['badge_text'] ?? 'ELOCENTRA – English Academy (PVT) LTD'));
+        $ctaText = trim((string) ($_POST['cta_text'] ?? 'Explore Courses'));
+        $ctaUrl = trim((string) ($_POST['cta_url'] ?? '/courses'));
+        $secondaryCtaText = trim((string) ($_POST['secondary_cta_text'] ?? 'Join Now'));
+        $secondaryCtaUrl = trim((string) ($_POST['secondary_cta_url'] ?? '/register'));
+        $sortOrder = (int) ($_POST['sort_order'] ?? 0);
+        $status = in_array($_POST['status'] ?? '', ['active', 'inactive'], true) ? $_POST['status'] : 'active';
+
+        $imagePath = '/assets/img/slider/banner1.jpg';
+        if (isset($_FILES['banner_image']) && $_FILES['banner_image']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = BASE_PATH . '/public/uploads/slider';
+            if (!is_dir($uploadDir)) @mkdir($uploadDir, 0777, true);
+            $ext = strtolower(pathinfo($_FILES['banner_image']['name'], PATHINFO_EXTENSION));
+            $safeName = 'slide_' . date('Ymd_His') . '_' . bin2hex(random_bytes(3)) . '.' . $ext;
+            if (move_uploaded_file($_FILES['banner_image']['tmp_name'], $uploadDir . '/' . $safeName)) {
+                $imagePath = '/uploads/slider/' . $safeName;
+            }
+        }
+
+        $stmt = $this->db->prepare("
+            INSERT INTO homepage_banners (title, subtitle, image_path, badge_text, cta_text, cta_url, secondary_cta_text, secondary_cta_url, sort_order, status, created_at)
+            VALUES (:title, :sub, :img, :badge, :cta_t, :cta_u, :s_cta_t, :s_cta_u, :sort, :status, NOW())
+        ");
+        $stmt->execute([
+            ':title'   => $title,
+            ':sub'     => $subtitle,
+            ':img'     => $imagePath,
+            ':badge'   => $badgeText,
+            ':cta_t'   => $ctaText,
+            ':cta_u'   => $ctaUrl,
+            ':s_cta_t' => $secondaryCtaText,
+            ':s_cta_u' => $secondaryCtaUrl,
+            ':sort'    => $sortOrder,
+            ':status'  => $status,
+        ]);
+
+        $this->flash('success', 'New homepage banner slide added successfully.');
+        $this->redirect('/admin/banners');
+    }
+
+    public function updateBanner(string $id): void
+    {
+        verifyCsrfToken();
+        $bannerId = (int) $id;
+
+        $title = trim((string) ($_POST['title'] ?? ''));
+        $subtitle = trim((string) ($_POST['subtitle'] ?? ''));
+        $badgeText = trim((string) ($_POST['badge_text'] ?? 'ELOCENTRA – English Academy (PVT) LTD'));
+        $ctaText = trim((string) ($_POST['cta_text'] ?? 'Explore Courses'));
+        $ctaUrl = trim((string) ($_POST['cta_url'] ?? '/courses'));
+        $secondaryCtaText = trim((string) ($_POST['secondary_cta_text'] ?? 'Join Now'));
+        $secondaryCtaUrl = trim((string) ($_POST['secondary_cta_url'] ?? '/register'));
+        $sortOrder = (int) ($_POST['sort_order'] ?? 0);
+        $status = in_array($_POST['status'] ?? '', ['active', 'inactive'], true) ? $_POST['status'] : 'active';
+
+        $imgSql = "";
+        $params = [
+            ':title'   => $title,
+            ':sub'     => $subtitle,
+            ':badge'   => $badgeText,
+            ':cta_t'   => $ctaText,
+            ':cta_u'   => $ctaUrl,
+            ':s_cta_t' => $secondaryCtaText,
+            ':s_cta_u' => $secondaryCtaUrl,
+            ':sort'    => $sortOrder,
+            ':status'  => $status,
+            ':id'      => $bannerId,
+        ];
+
+        if (isset($_FILES['banner_image']) && $_FILES['banner_image']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = BASE_PATH . '/public/uploads/slider';
+            if (!is_dir($uploadDir)) @mkdir($uploadDir, 0777, true);
+            $ext = strtolower(pathinfo($_FILES['banner_image']['name'], PATHINFO_EXTENSION));
+            $safeName = 'slide_' . date('Ymd_His') . '_' . bin2hex(random_bytes(3)) . '.' . $ext;
+            if (move_uploaded_file($_FILES['banner_image']['tmp_name'], $uploadDir . '/' . $safeName)) {
+                $imgSql = ", image_path = :img";
+                $params[':img'] = '/uploads/slider/' . $safeName;
+            }
+        }
+
+        $stmt = $this->db->prepare("
+            UPDATE homepage_banners
+            SET title = :title, subtitle = :sub, badge_text = :badge, cta_text = :cta_t, cta_url = :cta_u,
+                secondary_cta_text = :s_cta_t, secondary_cta_url = :s_cta_u, sort_order = :sort, status = :status, updated_at = NOW() {$imgSql}
+            WHERE id = :id
+        ");
+        $stmt->execute($params);
+
+        $this->flash('success', 'Homepage banner slide updated successfully.');
+        $this->redirect('/admin/banners');
+    }
+
+    public function deleteBanner(string $id): void
+    {
+        verifyCsrfToken();
+        $bannerId = (int) $id;
+
+        $this->db->prepare("DELETE FROM homepage_banners WHERE id = :id")->execute([':id' => $bannerId]);
+        $this->flash('success', 'Banner slide removed.');
+        $this->redirect('/admin/banners');
+    }
 }

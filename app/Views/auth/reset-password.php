@@ -40,7 +40,9 @@ $esc = static fn ($v): string => htmlspecialchars((string) $v, ENT_QUOTES, 'UTF-
             <label class="form-label" for="new_password"><?= te('New password') ?></label>
             <div class="pw-wrap">
                 <input type="password" id="new_password" name="new_password" class="form-control" required autocomplete="new-password">
-                <button type="button" class="pw-eye" data-toggle="new_password" aria-label="<?= te('Show password') ?>">👁</button>
+                <button type="button" class="pw-eye" data-toggle="new_password" aria-label="<?= te('Show password') ?>">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
             </div>
             <div class="form-text"><?= te('At least 8 characters, with upper and lower case letters, a number and a symbol.') ?></div>
         </div>
@@ -48,7 +50,9 @@ $esc = static fn ($v): string => htmlspecialchars((string) $v, ENT_QUOTES, 'UTF-
             <label class="form-label" for="new_password_confirmation"><?= te('Confirm new password') ?></label>
             <div class="pw-wrap">
                 <input type="password" id="new_password_confirmation" name="new_password_confirmation" class="form-control" required autocomplete="new-password">
-                <button type="button" class="pw-eye" data-toggle="new_password_confirmation" aria-label="<?= te('Show password') ?>">👁</button>
+                <button type="button" class="pw-eye" data-toggle="new_password_confirmation" aria-label="<?= te('Show password') ?>">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
             </div>
             <div class="form-text pw-match" id="pw_match" aria-live="polite"></div>
         </div>

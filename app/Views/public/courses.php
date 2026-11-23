@@ -67,10 +67,12 @@
         <!-- COURSES GRID (MATCHING REFERENCE IMAGE)                     -->
         <!-- ═══════════════════════════════════════════════════════════ -->
         <?php if (empty($courses)): ?>
-            <div class="text-center py-20 bg-white dark:bg-[#111A2E] rounded-3xl border border-slate-200 dark:border-slate-800 p-8 max-w-md mx-auto">
-                <div class="text-4xl mb-3">🔍</div>
+            <div class="text-center py-20 bg-white dark:bg-[#0E1629] rounded-3xl border border-slate-200 dark:border-slate-800 p-8 max-w-md mx-auto shadow-sm">
+                <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-500/10 text-[#E5A93C] flex items-center justify-center mb-4 border border-amber-500/20">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </div>
                 <h3 class="text-lg font-bold text-slate-900 dark:text-white">No courses found</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Try searching with different keywords or clearing the category filter.</p>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Try searching with different keywords or clearing the category filter.</p>
                 <div class="mt-5">
                     <a href="<?= BASE_URL ?>/courses" class="btn-gold text-xs py-2 px-5">View All Courses</a>
                 </div>
@@ -85,7 +87,7 @@
                     <div class="elo-card overflow-hidden flex flex-col justify-between group">
                         <div>
                             <!-- Course Thumbnail -->
-                            <div class="relative h-44 overflow-hidden bg-slate-800">
+                            <div class="relative h-44 overflow-hidden bg-slate-900">
                                 <img src="<?= BASE_URL . htmlspecialchars($thumb, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($c['class_name'], ENT_QUOTES, 'UTF-8') ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                 <!-- Category Badge -->
                                 <div class="absolute top-3 left-3 bg-[#0B132B]/85 backdrop-blur-sm text-[#E5A93C] border border-[#E5A93C]/30 text-[10px] font-bold uppercase px-2.5 py-1 rounded-full">
@@ -101,12 +103,12 @@
                                     </a>
                                 </h3>
 
-                                <div class="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
-                                    <span class="flex items-center gap-1">
+                                <div class="flex items-center gap-4 text-xs text-slate-600 dark:text-slate-400 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+                                    <span class="flex items-center gap-1.5">
                                         <svg class="w-3.5 h-3.5 text-[#E5A93C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                         <?= htmlspecialchars($c['duration_weeks'] ?? '12 Weeks', ENT_QUOTES, 'UTF-8') ?>
                                     </span>
-                                    <span class="flex items-center gap-1">
+                                    <span class="flex items-center gap-1.5">
                                         <svg class="w-3.5 h-3.5 text-[#E5A93C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                         <?= ucfirst(htmlspecialchars($c['delivery_mode'] ?? 'Online', ENT_QUOTES, 'UTF-8')) ?>
                                     </span>
@@ -117,11 +119,11 @@
                         <!-- Price & Arrow Button -->
                         <div class="p-5 pt-0 flex items-center justify-between">
                             <div>
-                                <span class="text-[10px] text-slate-400 block uppercase font-semibold">Tuition Fee</span>
+                                <span class="text-[10px] text-slate-500 dark:text-slate-400 block uppercase font-semibold">Tuition Fee</span>
                                 <span class="text-base font-extrabold text-slate-900 dark:text-white">LKR <?= $fee ?></span>
                             </div>
-                            <a href="<?= BASE_URL ?>/courses/<?= (int) $c['id'] ?>" class="w-9 h-9 rounded-full bg-[#E5A93C]/15 text-[#E5A93C] hover:bg-[#E5A93C] hover:text-[#0B132B] flex items-center justify-center transition-colors text-sm font-bold" title="View Course Details">
-                                &rarr;
+                            <a href="<?= BASE_URL ?>/courses/<?= (int) $c['id'] ?>" class="w-9 h-9 rounded-full bg-[#E5A93C]/15 text-[#E5A93C] hover:bg-[#E5A93C] hover:text-[#0B132B] flex items-center justify-center transition-colors shadow-sm" title="View Course Details">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                             </a>
                         </div>
                     </div>

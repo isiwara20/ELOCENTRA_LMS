@@ -38,7 +38,10 @@
                                 <td class="py-3 px-4">
                                     <div class="font-bold text-slate-900 dark:text-white"><?= htmlspecialchars($ord['student_name'], ENT_QUOTES, 'UTF-8') ?></div>
                                     <div class="text-[10px] text-slate-400"><?= htmlspecialchars($ord['student_email'], ENT_QUOTES, 'UTF-8') ?></div>
-                                    <div class="text-[10px] text-slate-400">📱 <?= htmlspecialchars($ord['student_whatsapp'] ?? '—', ENT_QUOTES, 'UTF-8') ?></div>
+                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                                        <svg class="w-3 h-3 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                                        <span><?= htmlspecialchars($ord['student_whatsapp'] ?? '—', ENT_QUOTES, 'UTF-8') ?></span>
+                                    </div>
                                 </td>
                                 <td class="py-3 px-4 font-semibold text-slate-800 dark:text-slate-200">
                                     <?= htmlspecialchars($ord['course_name'], ENT_QUOTES, 'UTF-8') ?>
@@ -48,8 +51,9 @@
                                 <td class="py-3 px-4 text-center">
                                     <?php if (!empty($ord['slip_path']) && $ord['slip_path'] !== 'no_slip_uploaded'): ?>
                                         <button type="button" onclick="previewSlip('<?= BASE_URL . htmlspecialchars($ord['slip_path'], ENT_QUOTES, 'UTF-8') ?>')"
-                                                class="px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 font-bold text-[11px] hover:underline">
-                                            🔍 View Slip
+                                                class="px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 font-bold text-[11px] hover:underline inline-flex items-center gap-1">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                            <span>View Slip</span>
                                         </button>
                                     <?php else: ?>
                                         <span class="text-slate-400 italic">No file</span>
