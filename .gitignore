@@ -1,0 +1,48 @@
+# Environment
+.env
+*.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads (keep structure, ignore actual uploaded files)
+public/uploads/profiles/*
+!public/uploads/profiles/.gitkeep
+storage/uploads/profiles/*
+!storage/uploads/profiles/.gitkeep
+
+# Storage
+storage/logs/*
+!storage/logs/.gitkeep
+storage/cache/*
+!storage/cache/.gitkeep
+
+# Dependencies
+vendor/
+node_modules/
+
+# Compiled
+*.map
+"student-lms-project.tar.gz"
+
+# Private uploads: homework, help-desk files, payment slips (never commit client files)
+storage/uploads/attachments/
+storage/uploads/materials/*
+
+# Database dumps: data snapshots, not source -- may contain student/parent PII
+storage/backups/*.sql
+database/backup_before_030.sql
+
+# Local scratch and database exports -- never part of the deployable app.
+_to_delete/
+_commit_msg.txt
+student_lms_export.sql
+_crawl.txt
+_crawl.err
