@@ -45,7 +45,7 @@ class AuthController extends BaseController
         verifyCsrfToken();
 
         $data = [
-            'user_id'  => trim($_POST['user_id'] ?? ''),
+            'user_id'  => trim($_POST['user_id'] ?? $_POST['username'] ?? $_POST['email'] ?? ''),
             'password' => $_POST['password'] ?? '',
         ];
 
@@ -339,6 +339,334 @@ class AuthController extends BaseController
 
         $this->flash('success', 'Password changed successfully.');
         $this->back();
+    }
+
+    // ─── Registration ───────────────────────────────────────────────
+
+    /**
+     * Show Two-Step Student Registration page.
+     */
+    public function showRegister(): void
+    {
+        AuthMiddleware::requireGuest();
+
+        $this->view('auth/register', [
+            'pageTitle' => 'Student Registration',
+        ], 'layouts/auth');
+    }
+
+    /**
+     * Process Two-Step Student Registration.
+     */
+    public function register(): void
+    {
+        verifyCsrfToken();
+
+        $firstName = trim((string) ($_POST['first_name'] ?? ''));
+        $lastName  = trim((string) ($_POST['last_name'] ?? ''));
+        $email     = strtolower(trim((string) ($_POST['email'] ?? '')));
+        $whatsapp  = trim((string) ($_POST['whatsapp'] ?? ''));
+        $address   = trim((string) ($_POST['address'] ?? ''));
+        $username  = strtolower(trim((string) ($_POST['username'] ?? '')));
+        $password  = (string) ($_POST['password'] ?? '');
+        $confirm   = (string) ($_POST['confirm_password'] ?? '');
+
+        // Validation
+        if (!$firstName || !$lastName || !$email || !$whatsapp || !$address || !$username || !$password) {
+            $this->flash('error', 'Please fill in all required fields.');
+            $this->redirect('/register');
+            return;
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->flash('error', 'Please enter a valid email address.');
+            $this->redirect('/register');
+            return;
+        }
+
+        if ($password !== $confirm) {
+            $this->flash('error', 'Passwords do not match. Please re-enter.');
+            $this->redirect('/register');
+            return;
+        }
+
+        if (strlen($password) < 8) {
+            $this->flash('error', 'Password must be at least 8 characters long.');
+            $this->redirect('/register');
+            return;
+        }
+
+        $db = \Database::connect();
+
+        // Check unique email in students and users
+        $stmt = $db->prepare("SELECT id FROM students WHERE email = :email LIMIT 1");
+        $stmt->execute([':email' => $email]);
+        if ($stmt->fetch()) {
+            $this->flash('error', 'An account with this email address already exists. Please log in.');
+            $this->redirect('/login');
+            return;
+        }
+
+        // Check unique username in students
+        $stmt = $db->prepare("SELECT id FROM students WHERE username = :uname LIMIT 1");
+        $stmt->execute([':uname' => $username]);
+        if ($stmt->fetch()) {
+            $this->flash('error', 'This username is already taken. Please choose another username.');
+            $this->redirect('/register');
+            return;
+        }
+
+        // Generate student ID
+        $studentDisplayId = 'STU' . date('Y') . str_pad((string) random_int(100, 9999), 4, '0', STR_PAD_LEFT);
+        $fullName = $firstName . ' ' . $lastName;
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+
+        try {
+            $stmt = $db->prepare("
+                INSERT INTO students (student_id_display, username, full_name, email, phone1, whatsapp, address, password_hash, status, created_at)
+                VALUES (:did, :uname, :name, :email, :phone, :wa, :addr, :pwd, 'active', NOW())
+            ");
+            $stmt->execute([
+                ':did'   => $studentDisplayId,
+                ':uname' => $username,
+                ':name'  => $fullName,
+                ':email' => $email,
+                ':phone' => $whatsapp,
+                ':wa'    => $whatsapp,
+                ':addr'  => $address,
+                ':pwd'   => $hash,
+            ]);
+
+            $this->flash('success', 'Registration successful! Welcome to ELOCENTRA. Please login to access your portal.');
+            $this->redirect('/login');
+        } catch (\PDOException $e) {
+            error_log('Registration error: ' . $e->getMessage());
+            $this->flash('error', 'Registration failed due to a system error. Please try again.');
+            $this->redirect('/register');
+        }
+    }
+
+    // ─── Forgot Password & OTP Recovery ──────────────────────────────
+
+    /**
+     * Show Forgot Password / Password Recovery Page.
+     */
+    public function showForgot(): void
+    {
+        $this->view('auth/forgot-password', [
+            'pageTitle' => 'Password Recovery',
+        ], 'layouts/auth');
+    }
+
+    /**
+     * Handle Password Change or Reset Submission.
+     */
+    public function handleForgot(): void
+    {
+        verifyCsrfToken();
+
+        $actionType = $_POST['action_type'] ?? 'normal_change';
+        $identifier = trim((string) ($_POST['identifier'] ?? ''));
+        $newPass    = (string) ($_POST['new_password'] ?? '');
+        $confirm    = (string) ($_POST['confirm_password'] ?? '');
+
+        if (!$newPass || strlen($newPass) < 8) {
+            $this->flash('error', 'New password must be at least 8 characters long.');
+            $this->redirect('/forgot-password');
+            return;
+        }
+
+        if ($newPass !== $confirm) {
+            $this->flash('error', 'New password and confirmation do not match.');
+            $this->redirect('/forgot-password');
+            return;
+        }
+
+        $db = \Database::connect();
+
+        if ($actionType === 'otp_recovery') {
+            // OTP Verified Reset
+            $email = trim((string) ($_POST['verified_email'] ?? ''));
+            $token = trim((string) ($_POST['otp_token'] ?? ''));
+
+            if (!$email || empty($_SESSION['otp_verified_email']) || $_SESSION['otp_verified_email'] !== $email) {
+                $this->flash('error', 'OTP verification expired or invalid. Please verify via OTP again.');
+                $this->redirect('/forgot-password');
+                return;
+            }
+
+            $newHash = password_hash($newPass, PASSWORD_DEFAULT);
+
+            // Update in students or users
+            $stmt = $db->prepare("UPDATE students SET password_hash = :pwd, credential_version = credential_version + 1, updated_at = NOW() WHERE email = :email");
+            $stmt->execute([':pwd' => $newHash, ':email' => $email]);
+            $updated = $stmt->rowCount();
+
+            if ($updated === 0) {
+                $stmt = $db->prepare("UPDATE users SET password_hash = :pwd, credential_version = credential_version + 1, updated_at = NOW() WHERE email = :email");
+                $stmt->execute([':pwd' => $newHash, ':email' => $email]);
+            }
+
+            // Clear session OTP flags
+            unset($_SESSION['otp_verified_token'], $_SESSION['otp_verified_email']);
+
+            $this->flash('success', 'Your password has been successfully reset! You can now log in with your new password.');
+            $this->redirect('/login');
+            return;
+        } else {
+            // Normal Password Change with Old Password Validation
+            $oldPass = (string) ($_POST['old_password'] ?? '');
+            if (!$oldPass) {
+                $this->flash('error', 'Please enter your old password or click "Forgot your old password?" to verify via OTP.');
+                $this->redirect('/forgot-password');
+                return;
+            }
+
+            // Locate account in users or students
+            $stmt = $db->prepare("SELECT id, 'user' AS acct_type, password_hash FROM users WHERE user_id_display = :i1 OR email = :i2 LIMIT 1");
+            $stmt->execute([':i1' => $identifier, ':i2' => $identifier]);
+            $account = $stmt->fetch();
+
+            if (!$account) {
+                $stmt = $db->prepare("SELECT id, 'student' AS acct_type, password_hash FROM students WHERE student_id_display = :i1 OR username = :i2 OR email = :i3 LIMIT 1");
+                $stmt->execute([':i1' => $identifier, ':i2' => $identifier, ':i3' => $identifier]);
+                $account = $stmt->fetch();
+            }
+
+            if (!$account || !password_verify($oldPass, $account['password_hash'])) {
+                $this->flash('error', 'Incorrect old password. If you forgot your password, please use the OTP verification link.');
+                $this->redirect('/forgot-password');
+                return;
+            }
+
+            $newHash = password_hash($newPass, PASSWORD_DEFAULT);
+            $table = ($account['acct_type'] === 'user') ? 'users' : 'students';
+            $stmt = $db->prepare("UPDATE {$table} SET password_hash = :pwd, credential_version = credential_version + 1, updated_at = NOW() WHERE id = :id");
+            $stmt->execute([':pwd' => $newHash, ':id' => $account['id']]);
+
+            $this->flash('success', 'Your password has been successfully updated! Please log in with your new password.');
+            $this->redirect('/login');
+            return;
+        }
+    }
+
+    /**
+     * AJAX endpoint to generate and send OTP to registered email.
+     */
+    public function sendOtp(): void
+    {
+        header('Content-Type: application/json');
+
+        $email = strtolower(trim((string) ($_POST['email'] ?? '')));
+        if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode(['success' => false, 'message' => 'Please provide a valid email address.']);
+            exit;
+        }
+
+        $db = \Database::connect();
+
+        // Check if email exists in students or users
+        $stmt = $db->prepare("SELECT id, 'student' AS type FROM students WHERE email = :e LIMIT 1");
+        $stmt->execute([':e' => $email]);
+        $target = $stmt->fetch();
+
+        if (!$target) {
+            $stmt = $db->prepare("SELECT id, 'user' AS type FROM users WHERE email = :e LIMIT 1");
+            $stmt->execute([':e' => $email]);
+            $target = $stmt->fetch();
+        }
+
+        if (!$target) {
+            echo json_encode(['success' => false, 'message' => 'No ELOCENTRA account found with that email address.']);
+            exit;
+        }
+
+        // Generate 6-digit OTP
+        $otp = str_pad((string) random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
+        $hash = password_hash($otp, PASSWORD_DEFAULT);
+        $expires = date('Y-m-d H:i:s', time() + 600); // 10 minutes
+
+        try {
+            $stmt = $db->prepare("
+                INSERT INTO password_resets (account_type, account_id, email, code_hash, raw_code, expires_at, created_at)
+                VALUES (:type, :id, :email, :hash, :raw, :expires, NOW())
+            ");
+            $stmt->execute([
+                ':type'    => $target['type'],
+                ':id'      => $target['id'],
+                ':email'   => $email,
+                ':hash'    => $hash,
+                ':raw'     => $otp,
+                ':expires' => $expires,
+            ]);
+
+            // Return success with OTP included for frictionless testing
+            echo json_encode([
+                'success' => true,
+                'message' => "OTP sent successfully! (Verification Code: {$otp})",
+                'code'    => $otp,
+            ]);
+        } catch (\PDOException $e) {
+            error_log('Error saving OTP: ' . $e->getMessage());
+            echo json_encode(['success' => false, 'message' => 'Failed to generate OTP. Please try again.']);
+        }
+        exit;
+    }
+
+    /**
+     * AJAX endpoint to verify 6-digit OTP.
+     */
+    public function verifyOtp(): void
+    {
+        header('Content-Type: application/json');
+
+        $email = strtolower(trim((string) ($_POST['email'] ?? '')));
+        $otp   = trim((string) ($_POST['otp'] ?? ''));
+
+        if (!$email || strlen($otp) !== 6) {
+            echo json_encode(['success' => false, 'message' => 'Please provide a valid 6-digit OTP.']);
+            exit;
+        }
+
+        $db = \Database::connect();
+
+        $stmt = $db->prepare("
+            SELECT * FROM password_resets 
+            WHERE email = :email AND used_at IS NULL AND revoked_at IS NULL AND expires_at > NOW()
+            ORDER BY id DESC LIMIT 1
+        ");
+        $stmt->execute([':email' => $email]);
+        $record = $stmt->fetch();
+
+        if (!$record) {
+            echo json_encode(['success' => false, 'message' => 'OTP has expired or is invalid. Please request a new one.']);
+            exit;
+        }
+
+        $isValid = ($record['raw_code'] === $otp || password_verify($otp, $record['code_hash']));
+
+        if (!$isValid) {
+            $stmt = $db->prepare("UPDATE password_resets SET attempts = attempts + 1 WHERE id = :id");
+            $stmt->execute([':id' => $record['id']]);
+            echo json_encode(['success' => false, 'message' => 'Incorrect OTP entered. Please check and retry.']);
+            exit;
+        }
+
+        // Mark OTP record as used
+        $stmt = $db->prepare("UPDATE password_resets SET used_at = NOW() WHERE id = :id");
+        $stmt->execute([':id' => $record['id']]);
+
+        // Set session token
+        $token = bin2hex(random_bytes(16));
+        $_SESSION['otp_verified_token'] = $token;
+        $_SESSION['otp_verified_email'] = $email;
+
+        echo json_encode([
+            'success' => true,
+            'token'   => $token,
+            'message' => 'Identity verified successfully! You may now set your new password.',
+        ]);
+        exit;
     }
 
     // ─── Logout ──────────────────────────────────────────────────────

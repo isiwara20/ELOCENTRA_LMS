@@ -140,6 +140,16 @@ function csrfField(): string
     return '<input type="hidden" name="_csrf_token" value="' . $token . '">';
 }
 
+function csrf_field(): string
+{
+    return csrfField();
+}
+
+function csrf_token(): string
+{
+    return getCsrfToken();
+}
+
 /**
  * Return a meta tag with the CSRF token (for AJAX requests).
  */

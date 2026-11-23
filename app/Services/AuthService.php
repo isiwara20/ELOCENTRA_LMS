@@ -83,47 +83,14 @@ class AuthService
             ];
         }
 
-        // 3. Try parents table if loginId looks like a phone number
-        if ($this->looksLikePhone($loginId)) {
-            $parentModel = new \Parent_();
-            $parent = $parentModel->authenticate($loginId, $password);
-
-            if ($parent) {
-                $deactivationMsg = $this->checkDeactivated($parent, 'parent');
-                if ($deactivationMsg !== null) {
-                    $this->logAuthEvent('login_failed', null, 'parent', json_encode([
-                        'attempted_id' => $loginId,
-                        'reason'       => 'account_deactivated',
-                    ]));
-                    return [
-                        'success' => false,
-                        'message' => $deactivationMsg,
-                    ];
-                }
-
-                if (($blocked = $this->refuseDefaultPassword($password, (int) $parent['id'], 'parent')) !== null) {
-                    return $blocked;
-                }
-
-                $this->logAuthEvent('login_success', (int) $parent['id'], 'parent', null);
-
-                return [
-                    'success'   => true,
-                    'user'      => $parent,
-                    'user_type' => 'parent',
-                    'message'   => 'Login successful.',
-                ];
-            }
-        }
-
-        // All attempts failed
+        // Parents and Institutes logins are removed for ELOCENTRA.
         $this->logAuthEvent('login_failed', null, 'unknown', json_encode([
             'attempted_id' => $loginId,
         ]));
 
         return [
             'success' => false,
-            'message' => 'Invalid User ID or password. Please try again.',
+            'message' => 'Invalid Username, Email, or Password. Please try again.',
         ];
     }
 

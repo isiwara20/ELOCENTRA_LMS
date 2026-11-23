@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80" fill="none">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="50%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+    <linearGradient id="goldLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+  </defs>
+  <!-- Graduation Cap (Mortarboard) -->
+  <polygon points="50,6 88,22 50,38 12,22" fill="url(#goldGrad)" stroke="#B45309" stroke-width="1.5" stroke-linejoin="round" />
+  <!-- Cap Skull Base -->
+  <path d="M26,29 L26,42 C26,50 74,50 74,42 L74,29 C67,34 58,37 50,37 C42,37 33,34 26,29 Z" fill="url(#goldGrad)" opacity="0.9" />
+  <!-- Tassel Button & Cord -->
+  <ellipse cx="50" cy="22" rx="3.5" ry="2" fill="#FEF3C7" stroke="#92400E" stroke-width="0.8" />
+  <path d="M50,22 Q72,24 80,36 L83,52" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" />
+  <polygon points="80,50 86,50 85,60 81,60" fill="url(#goldGrad)" />
+  <!-- Open Book Beneath Cap -->
+  <path d="M50,50 C42,46 25,45 8,50 L8,67 C25,62 42,63 50,68 C58,63 75,62 92,67 L92,50 C75,45 58,46 50,50 Z" fill="#FFFFFF" stroke="url(#goldGrad)" stroke-width="2.5" stroke-linejoin="round" />
+  <!-- Book spine / center fold -->
+  <path d="M50,50 L50,68" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round" />
+  <!-- Page line details -->
+  <path d="M16,55 C27,52 38,53 45,56 M16,60 C27,57 38,58 45,61" stroke="#E2E8F0" stroke-width="1.2" stroke-linecap="round" />
+  <path d="M84,55 C73,52 62,53 55,56 M84,60 C73,57 62,58 55,61" stroke="#E2E8F0" stroke-width="1.2" stroke-linecap="round" />
+</svg>

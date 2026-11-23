@@ -1,914 +1,441 @@
 <!DOCTYPE html>
-<html lang="<?= function_exists('lang_current') ? lang_current() : 'en' ?>" data-theme="light">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($pageTitle ?? (\App\Services\PublicSite::teacherName() ?? t('Science classes')), ENT_QUOTES, 'UTF-8') ?></title>
-    <meta name="description" content="<?= htmlspecialchars($metaDescription ?? 'Science classes for Grades 6 to 11.', ENT_QUOTES, 'UTF-8') ?>">
+    <title><?= htmlspecialchars($pageTitle ?? 'ELOCENTRA – English Academy (PVT) LTD', ENT_QUOTES, 'UTF-8') ?></title>
+    <meta name="description" content="<?= htmlspecialchars($metaDescription ?? 'ELOCENTRA – English Academy (PVT) LTD. Learn English. Speak Confidently. Succeed Globally.', ENT_QUOTES, 'UTF-8') ?>">
+    <link rel="icon" type="image/svg+xml" href="<?= BASE_URL ?>/favicon.svg">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/favicon.ico">
     <?= csrfMeta() ?>
 
-    <?php
-    // Look and feel, straight from Website Content -> "Look and feel".
-    // Every value is validated there (a colour must be #rrggbb, a timing
-    // is clamped to its field's bounds), so nothing user-typed reaches
-    // the stylesheet raw.
-    $__p   = \App\Services\PublicSite::class;
-    $__pri = $__p::color('theme_primary');
-    $__sec = $__p::color('theme_secondary');
-    $__pbg = $__p::color('theme_page_bg');
-    $__nbg = $__p::color('theme_nav_bg');
-    $__ntx = $__p::color('theme_nav_text');
-    $__acc = $__p::color('theme_accent');
-    $__rad = (int) $__p::num('theme_radius');
-    $__tint = (int) $__p::num('hero_tint_percent');
-    // The same colours as "r, g, b" triplets.
-    //
-    // The overlays and tints below need the theme colour at part
-    // opacity. color-mix() does that in one line, but it needs a 2023
-    // browser, and a phone older than that drops the whole declaration:
-    // the hero overlay disappears and white heading text lands on a
-    // bright photo, unreadable. rgba(var(--x-rgb), .5) works in every
-    // browser that understands CSS variables at all, which is every
-    // browser this site already required.
-    $__rgb = static function (string $hex): string {
-        $hex = ltrim(trim($hex), '#');
-        if (strlen($hex) !== 6 || preg_match('/^[0-9A-Fa-f]{6}$/', $hex) !== 1) {
-            return '29, 78, 216';   // the shipped primary, so a bad value still paints something
-        }
-        return hexdec(substr($hex, 0, 2)) . ', ' . hexdec(substr($hex, 2, 2)) . ', ' . hexdec(substr($hex, 4, 2));
-    };
-    $__priRgb = $__rgb($__pri);
-    $__secRgb = $__rgb($__sec);
-    $__nbgRgb = $__rgb($__nbg);
-    $__accRgb = $__rgb($__acc);
+    <!-- Inline Theme Initializer to prevent flash of wrong theme -->
+    <script>
+    (function () {
+        try {
+            var theme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {}
+    })();
+    </script>
 
-    $__fontKey = \App\Services\SiteContentService::FONTS[$__p::content('theme_font')] ?? null;
-    $__fontBody = $__fontKey[1] ?? "'Inter', system-ui, sans-serif";
-    $__fontHead = $__fontKey[2] ?? "'Playfair Display', Georgia, serif";
-    ?>
-    <style id="tsCollapse">
-        /* A line hidden from the CMS renders as nothing, which leaves the
-           tag that held it behind: an empty <h2> still takes its margin,
-           so the page shows a gap where the sentence used to be. These
-           collapse any text element the CMS has emptied.
-
-           :empty only matches an element with nothing at all inside it,
-           including whitespace -- which is why the templates print these
-           with no space around the tag. An element that still holds
-           anything is untouched, so this can never blank something that
-           is actually there. */
-        h1:empty, h2:empty, h3:empty, h4:empty, h5:empty, h6:empty,
-        p:empty, li:empty, blockquote:empty,
-        .ts-rich:empty, .ts-lead:empty, .ts-kicker:empty,
-        .ts-section__title:empty, .ts-section__text:empty,
-        .ts-card__title:empty, .ts-card__text:empty {
-            display: none !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-    </style>
-
-    <?php
-    $__ogTitle = $pageTitle ?? (\App\Services\PublicSite::teacherName() ?? t('Science classes'));
-    $__ogDesc = $metaDescription ?? 'Science classes for Grades 6 to 11.';
-    $__origin = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost');
-    $__ogImagePath = \App\Services\PublicSite::content('teacher_photo_image');
-    $__ogImage = $__origin . BASE_URL . ($__ogImagePath !== '' ? $__ogImagePath : '/assets/img/teacher-smartboard.jpg');
-    $__ogUrl = $__origin . strtok($_SERVER['REQUEST_URI'] ?? (BASE_URL . '/'), '?');
-    ?>
-    <?php include __DIR__ . '/../components/favicon.php'; ?>
-
-    <!-- Social share preview -->
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="<?= htmlspecialchars(\App\Services\PublicSite::teacherName() ?? t('Science classes'), ENT_QUOTES, 'UTF-8') ?>">
-    <meta property="og:title" content="<?= htmlspecialchars($__ogTitle, ENT_QUOTES, 'UTF-8') ?>">
-    <meta property="og:description" content="<?= htmlspecialchars($__ogDesc, ENT_QUOTES, 'UTF-8') ?>">
-    <meta property="og:url" content="<?= htmlspecialchars($__ogUrl, ENT_QUOTES, 'UTF-8') ?>">
-    <meta property="og:image" content="<?= htmlspecialchars($__ogImage, ENT_QUOTES, 'UTF-8') ?>">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="<?= htmlspecialchars($__ogTitle, ENT_QUOTES, 'UTF-8') ?>">
-    <meta name="twitter:description" content="<?= htmlspecialchars($__ogDesc, ENT_QUOTES, 'UTF-8') ?>">
-    <meta name="twitter:image" content="<?= htmlspecialchars($__ogImage, ENT_QUOTES, 'UTF-8') ?>">
-
-    <!-- Google Fonts & Resource Hints -->
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS (via local or CDN for rapid utility classes) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
     tailwind.config = {
-        darkMode: ['selector', '[data-theme="dark"]'],
+        darkMode: ['class', '[data-theme="dark"]'],
         theme: {
             extend: {
                 colors: {
-                    brand: {
-                        bg: 'var(--bg)',
-                        surface: 'var(--surface)',
-                        'surface-raised': 'var(--surface-raised)',
-                        'surface-sunken': 'var(--surface-sunken)',
-                        primary: 'var(--primary)',
-                        'primary-hover': 'var(--primary-hover)',
-                        'primary-light': 'var(--primary-light)',
-                        secondary: 'var(--secondary)',
-                        'secondary-light': 'var(--secondary-light)',
-                        border: 'var(--border)',
-                        text: 'var(--text)',
-                        'text-secondary': 'var(--text-secondary)',
-                        'text-muted': 'var(--text-muted)',
-                        'text-inverse': 'var(--text-inverse)',
-                        success: 'var(--success)',
-                        warning: 'var(--warning)',
-                        danger: 'var(--danger)',
-                    },
-                    emerald: {
-                        DEFAULT: '#1D4ED8',
-                        50: '#E8EEFC',
-                        100: '#D8E2F2',
-                        600: '#1D4ED8',
-                        700: '#1A3FAF',
-                    },
-                    teal: {
-                        DEFAULT: '#2563EB',
-                        600: '#2563EB',
+                    elocentra: {
+                        navy: '#0B132B',
+                        dark: '#070D1F',
+                        gold: '#E5A93C',
+                        amber: '#F59E0B',
+                        goldhover: '#D49028',
+                        slate: '#1E293B',
+                        lightbg: '#F8FAFC'
                     }
                 },
                 fontFamily: {
-                    'display': ['"Playfair Display"', 'Georgia', 'serif'],
-                    'body': ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-                },
-                animation: {
-                    'fade-up': 'fadeUp 0.7s ease forwards',
-                    'fade-up-delay': 'fadeUp 0.7s ease 0.15s forwards',
-                    'fade-up-delay-2': 'fadeUp 0.7s ease 0.3s forwards',
-                    'shimmer': 'shimmer 8s linear infinite',
-                    'pulse-soft': 'pulseSoft 3s ease-in-out infinite',
-                    'counter': 'counter 2s ease-out forwards',
-                },
-                keyframes: {
-                    fadeUp: {
-                        '0%': { opacity: '0', transform: 'translateY(30px)' },
-                        '100%': { opacity: '1', transform: 'translateY(0)' },
-                    },
-                    shimmer: {
-                        '0%': { backgroundPosition: '-200% center' },
-                        '100%': { backgroundPosition: '200% center' },
-                    },
-                    pulseSoft: {
-                        '0%, 100%': { transform: 'scale(1)' },
-                        '50%': { transform: 'scale(1.02)' },
-                    },
-                },
+                    sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                    display: ['Plus Jakarta Sans', 'sans-serif']
+                }
             }
         }
     }
     </script>
 
-    <!-- Base Design System -->
+    <!-- Design System CSS -->
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css?v=<?= @filemtime(BASE_PATH . '/public/assets/css/style.css') ?: 1 ?>">
 
-    <?php /* After style.css on purpose. Both this and the stylesheet
-             set --primary, --secondary and --bg on :root, at the same
-             specificity, so whichever comes last wins. With this block
-             first, the stylesheet quietly overrode the chosen colours:
-             --ts-nav-bg and the rest took effect, because nothing else
-             defines those, so the menu bar changed and the buttons and
-             page did not -- a style that looked half applied. */ ?>
-    <style id="tsTheme">
-        :root {
-            --primary: <?= $__pri ?>;
-            --primary-hover: <?= $__pri ?>;
-            --secondary: <?= $__sec ?>;
-            --bg: <?= $__pbg ?>;
-            --ts-nav-bg: <?= $__nbg ?>;
-            --ts-nav-text: <?= $__ntx ?>;
-            --ts-float-speed: <?= (int) $__p::num('hero_float_speed') ?>s;
-            --ts-accent: <?= $__acc ?>;
-            --ts-radius: <?= $__rad ?>px;
-            --ts-font-body: <?= $__fontBody ?>;
-            --ts-font-head: <?= $__fontHead ?>;
-            --primary-rgb: <?= $__priRgb ?>;
-            --secondary-rgb: <?= $__secRgb ?>;
-            --ts-nav-rgb: <?= $__nbgRgb ?>;
-            --ts-accent-rgb: <?= $__accRgb ?>;
-        }
-        body { background: var(--bg); font-family: var(--ts-font-body); }
-        .nav-fb { display: inline-flex; align-items: center; gap: .4rem; }
-        .nav-fb svg { flex: none; }
-
-        <?php if (\App\Services\PublicSite::content('nav_style') === 'solid'): ?>
-        /* Solid bar: the chosen colour from the first scroll pixel, so
-           the menu never sits see-through over a busy photo. The glass
-           rules below it are overridden rather than removed, because
-           they also carry the layout and the scrolled transition. */
-        .navbar--liquid-glass,
-        .navbar--liquid-glass.scrolled {
-            background: var(--ts-nav-bg) !important;
-            -webkit-backdrop-filter: none !important;
-            backdrop-filter: none !important;
-            border-bottom: 1px solid rgba(0, 0, 0, .14) !important;
-        }
-        .navbar--liquid-glass .navbar__links a,
-        .navbar--liquid-glass.scrolled .navbar__links a,
-        .navbar--liquid-glass .navbar__brand,
-        .navbar--liquid-glass.scrolled .navbar__brand {
-            color: var(--ts-nav-text) !important;
-        }
-        .navbar--liquid-glass .navbar__links a.active,
-        .navbar--liquid-glass.scrolled .navbar__links a.active {
-            color: var(--ts-accent) !important;
-        }
-        .navbar--liquid-glass .navbar__toggle { color: var(--ts-nav-text) !important; }
-        <?php else: ?>
-        /* See-through bar: the chosen colour is what it frosts to once
-           the page is scrolled; at the very top it stays transparent so
-           the background photo reads through it. */
-        .navbar--liquid-glass.scrolled {
-            background: rgba(var(--ts-nav-rgb), .86);
-        }
-        .navbar--liquid-glass.scrolled .navbar__links a,
-        .navbar--liquid-glass.scrolled .navbar__brand {
-            color: var(--ts-nav-text);
-        }
-        <?php endif; ?>
-        h1, h2, h3, .ts-name { font-family: var(--ts-font-head); }
-
-        /* Corner roundness, from "Corner roundness" in the CMS. */
-        .ts-btn, .btn, .card, .ts-card, .sc-card { border-radius: var(--ts-radius); }
-
-        /* The yellow highlight the theme picks. */
-        .ts-btn--yellow { background: var(--ts-accent); }
-
-        /* How strongly the colour sits over the background photo.
-           0% leaves the photo bare; the shipped look is 100%. */
-        .ts-hero-bg::after { opacity: <?= max(0, min(100, $__tint)) / 100 ?>; }
-    </style>
-
-    <!-- Premium Public Overrides -->
     <style>
-        /* Public pages use Inter as base font */
-        .public-layout { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    :root, [data-theme="light"] {
+        --brand-navy: #0B132B;
+        --brand-gold: #E5A93C;
+        --brand-gold-hover: #D49028;
+        --brand-gold-light: rgba(229, 169, 60, 0.15);
+        --hero-bg: #0B132B;
+        --page-bg: #F8FAFC;
+        --card-bg: #FFFFFF;
+        --card-border: #E2E8F0;
+        --text-main: #0F172A;
+        --text-sub: #475569;
+        --nav-text: #FFFFFF;
+    }
 
-        /* Liquid-glass navigation */
-        .navbar--liquid-glass {
-            background: transparent;
-            backdrop-filter: blur(0px);
-            -webkit-backdrop-filter: blur(0px);
-            border-bottom: 1px solid transparent;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .navbar--liquid-glass.scrolled {
-            background: var(--glass-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-bottom: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-md);
-        }
-        .navbar--liquid-glass .navbar__links a {
-            letter-spacing: 0.02em;
-            font-weight: 500;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-        }
-        .navbar--liquid-glass .navbar__links a:hover {
-            transform: translateY(-1px);
-        }
-        .navbar--liquid-glass .navbar__links a.active {
-            color: var(--primary);
-            position: relative;
-        }
-        .navbar--liquid-glass .navbar__links a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--primary);
-        }
+    [data-theme="dark"] {
+        --brand-navy: #0B132B;
+        --brand-gold: #F59E0B;
+        --brand-gold-hover: #E5A93C;
+        --brand-gold-light: rgba(245, 158, 11, 0.2);
+        --hero-bg: #070D1F;
+        --page-bg: #0A0F1D;
+        --card-bg: #111A2E;
+        --card-border: #1E293B;
+        --text-main: #F8FAFC;
+        --text-sub: #94A3B8;
+        --nav-text: #FFFFFF;
+    }
 
-        /* Shimmer border for nav */
-        .nav-shimmer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
-            background-size: 200% 100%;
-            animation: shimmer 8s linear infinite;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-        .navbar--liquid-glass.scrolled .nav-shimmer { opacity: 0.5; }
+    body {
+        background-color: var(--page-bg);
+        color: var(--text-main);
+        font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        margin: 0;
+        padding: 0;
+    }
 
-        /* Scroll reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-        .reveal-left { transform: translateX(-40px); }
-        .reveal-left.visible { transform: translateX(0); }
-        .reveal-right { transform: translateX(40px); }
-        .reveal-right.visible { transform: translateX(0); }
-        .reveal-scale { transform: scale(0.95); }
-        .reveal-scale.visible { transform: scale(1); }
+    /* ELOCENTRA Global Academic Navbar */
+    .elo-navbar {
+        background-color: #0B132B;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        transition: all 0.3s ease;
+    }
 
-        /* Stagger children */
-        .reveal-stagger > .reveal:nth-child(1) { transition-delay: 0s; }
-        .reveal-stagger > .reveal:nth-child(2) { transition-delay: 0.08s; }
-        .reveal-stagger > .reveal:nth-child(3) { transition-delay: 0.16s; }
-        .reveal-stagger > .reveal:nth-child(4) { transition-delay: 0.24s; }
-        .reveal-stagger > .reveal:nth-child(5) { transition-delay: 0.32s; }
-        .reveal-stagger > .reveal:nth-child(6) { transition-delay: 0.40s; }
+    [data-theme="dark"] .elo-navbar {
+        background-color: #070D1F;
+        border-bottom-color: rgba(229, 169, 60, 0.15);
+    }
 
-        /* Premium button glow */
-        .btn-glow {
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-glow::after {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: inherit;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            opacity: 0;
-            z-index: -1;
-            filter: blur(12px);
-            transition: opacity 0.3s ease;
-        }
-        .btn-glow:hover::after { opacity: 0.4; }
+    .elo-navbar.scrolled {
+        background-color: rgba(11, 19, 43, 0.95);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
 
-        /* Cinematic hero */
-        .hero--cinematic {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .hero__media {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-        }
-        .hero__media video,
-        .hero__media img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .hero__gradient-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-        }
+    .nav-link-elo {
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 500;
+        font-size: 0.9375rem;
+        padding: 0.5rem 0.875rem;
+        border-radius: 9999px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+    }
 
-        /* Premium card hover */
-        .card-premium {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .card-premium:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 40px rgba(14, 111, 88, 0.12);
-        }
-        .card-premium:hover .card-icon-wrap {
-            transform: rotate(5deg) scale(1.05);
-        }
-        .card-icon-wrap {
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    .nav-link-elo:hover {
+        color: #E5A93C;
+        background-color: rgba(255, 255, 255, 0.06);
+    }
 
-        /* Wave divider */
-        .wave-divider {
-            position: relative;
-            height: 60px;
-            overflow: hidden;
-        }
-        .wave-divider svg {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 60px;
-        }
+    .nav-link-elo.active {
+        color: #E5A93C;
+        font-weight: 600;
+    }
 
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            .reveal { opacity: 1; transform: none; transition: none; }
-            .reveal-left, .reveal-right, .reveal-scale { transform: none; }
-            .nav-shimmer { animation: none; }
-            .btn-glow::after { display: none; }
-            .card-premium:hover { transform: none; }
-            * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
-        }
+    /* Gold Buttons */
+    .btn-gold {
+        background: linear-gradient(135deg, #E5A93C 0%, #D49028 100%);
+        color: #0B132B !important;
+        font-weight: 700;
+        border-radius: 9999px;
+        padding: 0.55rem 1.35rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.25s ease;
+        box-shadow: 0 4px 14px rgba(229, 169, 60, 0.35);
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+    }
 
-        /*
-         * Mobile nav (screens <= 1040px):
-         * - Deep navy glass dropdown (no jarring white background)
-         * - Crisp white links with gold active highlights
-         * - High contrast header text when scrolled (never white on white)
-         */
-        @media (max-width: 1040px) {
-            .navbar--liquid-glass .navbar__toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .navbar--liquid-glass .navbar__links {
-                display: none;
-                position: absolute;
-                top: 64px;
-                left: 0;
-                right: 0;
-                flex-direction: column;
-                align-items: stretch;
-                padding: 1.25rem 1.5rem;
-                gap: .85rem;
-                background: #0B1B3F !important;
-                background: rgba(11, 27, 63, 0.98) !important;
-                backdrop-filter: blur(24px);
-                -webkit-backdrop-filter: blur(24px);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-                box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
-            }
-            .navbar--liquid-glass .navbar__links.open {
-                display: flex;
-            }
-            .navbar--liquid-glass .navbar__links > li > a:not(.nav-login) {
-                color: rgba(255, 255, 255, 0.92) !important;
-                font-size: 0.95rem;
-                padding: 0.4rem 0;
-                font-weight: 500;
-            }
-            .navbar--liquid-glass .navbar__links > li > a:not(.nav-login):hover,
-            .navbar--liquid-glass .navbar__links > li > a.active {
-                color: #FACC15 !important;
-            }
-            .navbar--liquid-glass .navbar__links .nav-lang {
-                color: #FFFFFF !important;
-                border-color: rgba(255, 255, 255, 0.35) !important;
-                display: inline-block;
-                width: fit-content;
-            }
-            .navbar--liquid-glass .navbar__links #themeToggle {
-                color: #FFFFFF !important;
-            }
+    .btn-gold:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(229, 169, 60, 0.45);
+        background: linear-gradient(135deg, #F59E0B 0%, #E5A93C 100%);
+        color: #070D1F !important;
+    }
 
-            /* Over the dark hero (not scrolled): white header text */
-            .navbar--on-dark:not(.scrolled) .navbar__toggle,
-            .navbar--on-dark:not(.scrolled) .navbar__brand,
-            .navbar--on-dark:not(.scrolled) .navbar__brand small {
-                color: #fff !important;
-            }
+    .btn-outline-gold {
+        border: 1.5px solid #E5A93C;
+        color: #FFFFFF !important;
+        font-weight: 600;
+        border-radius: 9999px;
+        padding: 0.55rem 1.35rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: transparent;
+        transition: all 0.25s ease;
+        text-decoration: none;
+    }
 
-            /* When scrolled on mobile: dark text on light glass (or light text in dark theme), font is clearly visible */
-            .navbar--liquid-glass.scrolled .navbar__brand {
-                color: var(--text) !important;
-            }
-            .navbar--liquid-glass.scrolled .navbar__brand small {
-                color: var(--text-secondary) !important;
-            }
-            .navbar--liquid-glass.scrolled .navbar__toggle {
-                color: var(--text) !important;
-            }
+    .btn-outline-gold:hover {
+        background: rgba(229, 169, 60, 0.15);
+        color: #E5A93C !important;
+        transform: translateY(-2px);
+    }
 
-            /* When mobile menu is open: keep top navbar seamlessly unified with the dark menu */
-            .navbar--liquid-glass.menu-open,
-            .navbar--liquid-glass:has(.navbar__links.open) {
-                background: #0B1B3F !important;
-                background: rgba(11, 27, 63, 0.98) !important;
-            }
-            .navbar--liquid-glass.menu-open .navbar__brand,
-            .navbar--liquid-glass.menu-open .navbar__brand small,
-            .navbar--liquid-glass.menu-open .navbar__toggle,
-            .navbar--liquid-glass:has(.navbar__links.open) .navbar__brand,
-            .navbar--liquid-glass:has(.navbar__links.open) .navbar__brand small,
-            .navbar--liquid-glass:has(.navbar__links.open) .navbar__toggle {
-                color: #fff !important;
-            }
-        }
-        @media (min-width: 1041px) and (max-width: 1180px) {
-            .navbar__brand small { display: none; }
-        }
-        .navbar__brand { min-width: 0; }
-        .navbar__brand .brand-text { min-width: 0; }
-        .navbar__brand .font-semibold { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; max-width: 46vw; }
-        body.public-layout { overflow-x: hidden; }
+    /* Theme Toggle */
+    .theme-toggle-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #E5A93C;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
 
-        /* Navigation over the dark blue hero (desktop): white until scrolled */
-        @media (min-width: 1041px) {
-            .navbar--on-dark:not(.scrolled) .navbar__brand,
-            .navbar--on-dark:not(.scrolled) .navbar__brand small,
-            .navbar--on-dark:not(.scrolled) .navbar__links > li > a:not(.nav-login),
-            .navbar--on-dark:not(.scrolled) #themeToggle { color: #fff !important; }
-            .navbar--on-dark:not(.scrolled) .navbar__links > li > a.active::after { background: #FACC15; }
-            .navbar--on-dark:not(.scrolled) .navbar__links > li > a.active { color: #FACC15 !important; }
-        }
-        .navbar--on-dark:not(.scrolled) .navbar__toggle,
-        .navbar--on-dark:not(.scrolled) .navbar__brand,
-        .navbar--on-dark:not(.scrolled) .navbar__brand small { color: #fff !important; }
-        .navbar--liquid-glass.scrolled .navbar__brand { color: var(--text) !important; }
-        .navbar--liquid-glass.scrolled .navbar__brand small { color: var(--text-secondary) !important; }
-        .navbar--liquid-glass.scrolled .navbar__toggle { color: var(--text) !important; }
-        .navbar__brand small { display: block; font-size: .72rem; font-weight: 500; opacity: .8; letter-spacing: .01em; line-height: 1.1; }
-        .navbar__brand .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
-        .nav-lang { border: 1px solid currentColor; border-radius: 999px; padding: .25rem .7rem !important; text-transform: none !important; font-size: .8rem !important; }
+    .theme-toggle-btn:hover {
+        background: rgba(229, 169, 60, 0.2);
+        transform: rotate(15deg);
+    }
 
-        /* Noscript fallback */
-        noscript .reveal { opacity: 1; transform: none; }
+    /* Academic Cards */
+    .elo-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-        /* ---- Opening titles ------------------------------------------
-           The sheet is `hidden` in the markup and only revealed by the
-           script, so with scripting off nothing ever covers the page. */
-        .ts-intro { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center;
-            background: radial-gradient(120% 120% at 50% 0%, #15368F 0%, #0B1B3F 60%, #070F29 100%);
-            transition: opacity .55s ease, transform .55s ease; }
-        .ts-intro[hidden] { display: none; }
-        .ts-intro.is-out { opacity: 0; transform: translateY(-3%); pointer-events: none; }
-        /* Hold the scrollbar still while the sheet is up. */
-        html.ts-intro-on, html.ts-intro-on body { overflow: hidden; }
+    .elo-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        border-color: #E5A93C;
+    }
 
-        .ts-intro__inner { display: grid; justify-items: center; gap: 1.3rem; padding: 2rem; text-align: center; }
-        .ts-intro__atom { width: clamp(96px, 22vw, 140px); height: clamp(96px, 22vw, 140px);
-            fill: none; overflow: visible; }
-        .ts-intro__nucleus { fill: #FACC15; opacity: 0; animation: tsiCore .5s ease .55s forwards; }
-        .ts-intro__shell { stroke: rgba(147, 197, 253, .9); stroke-width: 1.6; stroke-linecap: round;
-            /* 2*pi*sqrt((50^2+19^2)/2) is near enough for a dash sweep. */
-            stroke-dasharray: 240; stroke-dashoffset: 240;
-            animation: tsiDraw .85s ease forwards; transform-origin: 60px 60px; }
-        .ts-intro__shell--b { animation-delay: .16s; transform: rotate(60deg); }
-        .ts-intro__shell--c { animation-delay: .32s; transform: rotate(120deg); }
-
-        .ts-intro__text { display: grid; gap: .35rem; opacity: 0; animation: tsiRise .7s ease .75s forwards; }
-        .ts-intro__name { font-family: 'Playfair Display', 'Noto Sans Sinhala', Georgia, serif;
-            font-size: clamp(1.5rem, 5vw, 2.3rem); font-weight: 700; color: #FDE9B0; letter-spacing: .01em; }
-        .ts-intro__miss { display: inline-block; vertical-align: middle; font-family: 'Inter', sans-serif;
-            font-size: .42em; font-weight: 700; letter-spacing: .04em; color: #0B1B3F;
-            background: #FACC15; border-radius: 6px; padding: .3em .6em; margin-left: .3em; }
-        .ts-intro__sub { font-size: clamp(.78rem, 2.4vw, .92rem); font-weight: 500;
-            letter-spacing: .06em; text-transform: uppercase; color: rgba(219, 234, 254, .8); }
-
-        @keyframes tsiDraw { to { stroke-dashoffset: 0; } }
-        @keyframes tsiCore { to { opacity: 1; } }
-        @keyframes tsiRise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
-        @media (prefers-reduced-motion: reduce) { .ts-intro { display: none !important; } }
+    [data-theme="dark"] .elo-card:hover {
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+        border-color: #F59E0B;
+    }
     </style>
 </head>
-<body class="public-layout">
-<?php if (\App\Services\PublicSite::isPreviewing()): ?>
-    <!-- Only ever rendered for the super admin who started the preview. -->
-    <div class="ts-preview-bar" role="status">
-        <span><strong><?= te('Preview') ?></strong> &mdash; <?= te('this is how the site would look. Nothing has been saved yet, and visitors still see the live version.') ?></span>
-        <a href="<?= BASE_URL ?>/settings/site-content/preview/stop"><?= te('Finish and go back to the editor') ?></a>
-    </div>
-    <style>
-        .ts-preview-bar {
-            position: sticky; top: 0; z-index: 9999;
-            display: flex; flex-wrap: wrap; gap: .75rem;
-            align-items: center; justify-content: center;
-            padding: .6rem 1rem; text-align: center;
-            background: #FACC15; color: #1C2538;
-            font-size: .88rem; font-weight: 600;
-            box-shadow: 0 2px 10px rgba(0,0,0,.18);
-        }
-        .ts-preview-bar a { color: #15307E; text-decoration: underline; white-space: nowrap; }
-    </style>
-<?php endif; ?>
+<body class="min-h-screen flex flex-col">
 
+    <!-- Header / Navbar -->
+    <header class="elo-navbar" id="elocentraNav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand / Logo -->
+                <a href="<?= BASE_URL ?>/" class="flex items-center gap-3 group">
+                    <img src="<?= BASE_URL ?>/assets/img/brand/elocentra-logo-white.svg" alt="ELOCENTRA – English Academy (PVT) LTD" class="h-12 w-auto transition-transform group-hover:scale-[1.02]">
+                </a>
 
-    <?php
-    // The opening titles: an atom draws itself, the teacher's name
-    // arrives under it, and the whole sheet lifts off the page.
-    //
-    // Three rules keep a decorative thing from ever costing someone the
-    // site: it is shown once per browser session, it is skipped for
-    // anyone who asks for reduced motion, and it is torn down by a
-    // timer as well as by the load event, so a stalled image or a
-    // scripting error cannot leave the page behind a blue sheet. With
-    // scripting off it is never shown at all.
-    $introName = \App\Services\PublicSite::teacherName();
-    ?>
-    <div id="tsIntro" class="ts-intro" aria-hidden="true" hidden>
-        <div class="ts-intro__inner">
-            <svg class="ts-intro__atom" viewBox="0 0 120 120" aria-hidden="true">
-                <circle class="ts-intro__nucleus" cx="60" cy="60" r="7"/>
-                <ellipse class="ts-intro__shell" cx="60" cy="60" rx="50" ry="19"/>
-                <ellipse class="ts-intro__shell ts-intro__shell--b" cx="60" cy="60" rx="50" ry="19"/>
-                <ellipse class="ts-intro__shell ts-intro__shell--c" cx="60" cy="60" rx="50" ry="19"/>
-            </svg>
-            <div class="ts-intro__text">
-                <?php if ($introName !== null): ?>
-                    <span class="ts-intro__name"><?= htmlspecialchars((string) strtok((string) $introName, ' '), ENT_QUOTES, 'UTF-8') ?> <span class="ts-intro__miss"><?= te('Miss') ?></span></span>
-                <?php endif; ?>
-                <span class="ts-intro__sub"><?= te('Science classes') ?> &middot; <?= te('Grades {r}', ['r' => \App\Services\PublicSite::gradeRange()]) ?></span>
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <a href="<?= BASE_URL ?>/" class="nav-link-elo <?= ($activePage ?? '') === 'home' ? 'active' : '' ?>">Home</a>
+                    <a href="<?= BASE_URL ?>/about" class="nav-link-elo <?= ($activePage ?? '') === 'about' ? 'active' : '' ?>">About Us</a>
+                    <a href="<?= BASE_URL ?>/courses" class="nav-link-elo <?= ($activePage ?? '') === 'courses' ? 'active' : '' ?>">Courses</a>
+                    <a href="<?= BASE_URL ?>/contact" class="nav-link-elo <?= ($activePage ?? '') === 'contact' ? 'active' : '' ?>">Contact Us</a>
+                </nav>
+
+                <!-- Desktop Action Buttons -->
+                <div class="hidden md:flex items-center space-x-3">
+                    <?php if (function_exists('session_get') && session_get('user_id')): ?>
+                        <?php 
+                            $userType = session_get('user_type');
+                            $dashUrl = ($userType === 'student') ? BASE_URL . '/my/home' : BASE_URL . '/dashboard';
+                        ?>
+                        <a href="<?= $dashUrl ?>" class="btn-outline-gold text-xs">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                            Dashboard
+                        </a>
+                        <a href="<?= BASE_URL ?>/logout" class="nav-link-elo text-xs">Logout</a>
+                    <?php else: ?>
+                        <a href="<?= BASE_URL ?>/login" class="nav-link-elo text-sm font-semibold">Login</a>
+                        <a href="<?= BASE_URL ?>/register" class="btn-gold text-sm font-bold">Register</a>
+                    <?php endif; ?>
+
+                    <!-- Theme Toggle Switch -->
+                    <button type="button" class="theme-toggle-btn" id="themeSwitchBtn" aria-label="Toggle Theme" title="Switch Theme">
+                        <svg class="w-5 h-5 theme-moon" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg class="w-5 h-5 theme-sun hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Toggle Button -->
+                <div class="flex items-center md:hidden gap-2">
+                    <button type="button" class="theme-toggle-btn" id="mobileThemeSwitchBtn" aria-label="Toggle Theme">
+                        <svg class="w-5 h-5 theme-moon" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg class="w-5 h-5 theme-sun hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path></svg>
+                    </button>
+                    <button type="button" class="text-white p-2 rounded-lg hover:bg-white/10" id="mobileMenuBtn" aria-label="Toggle mobile menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Drawer -->
+            <div class="md:hidden hidden pb-6 pt-2 border-t border-white/10" id="mobileNavMenu">
+                <div class="flex flex-col space-y-2">
+                    <a href="<?= BASE_URL ?>/" class="nav-link-elo <?= ($activePage ?? '') === 'home' ? 'active' : '' ?>">Home</a>
+                    <a href="<?= BASE_URL ?>/about" class="nav-link-elo <?= ($activePage ?? '') === 'about' ? 'active' : '' ?>">About Us</a>
+                    <a href="<?= BASE_URL ?>/courses" class="nav-link-elo <?= ($activePage ?? '') === 'courses' ? 'active' : '' ?>">Courses</a>
+                    <a href="<?= BASE_URL ?>/contact" class="nav-link-elo <?= ($activePage ?? '') === 'contact' ? 'active' : '' ?>">Contact Us</a>
+                    <div class="pt-4 flex flex-col gap-2">
+                        <?php if (function_exists('session_get') && session_get('user_id')): ?>
+                            <a href="<?= $dashUrl ?? BASE_URL . '/dashboard' ?>" class="btn-gold w-full text-center">Dashboard</a>
+                            <a href="<?= BASE_URL ?>/logout" class="btn-outline-gold w-full text-center">Logout</a>
+                        <?php else: ?>
+                            <a href="<?= BASE_URL ?>/login" class="btn-outline-gold w-full text-center">Login</a>
+                            <a href="<?= BASE_URL ?>/register" class="btn-gold w-full text-center">Register</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <script>
-    (function () {
-        var sheet = document.getElementById('tsIntro');
-        if (!sheet) { return; }
+    </header>
 
-        var seen = false;
-        // Turned off in Website Content -> "Look and feel": never show it.
-        if (!<?= \App\Services\PublicSite::isOn('intro_enabled') ? 'true' : 'false' ?>) {
-            if (sheet && sheet.parentNode) { sheet.parentNode.removeChild(sheet); }
-            return;
-        }
-
-        try { seen = window.sessionStorage.getItem('tsIntroSeen') === '1'; } catch (e) { seen = false; }
-        var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        if (seen || still) { sheet.parentNode.removeChild(sheet); return; }
-
-        try { window.sessionStorage.setItem('tsIntroSeen', '1'); } catch (e) {}
-
-        sheet.hidden = false;
-        document.documentElement.classList.add('ts-intro-on');
-
-        var gone = false;
-        function finish() {
-            if (gone) { return; }
-            gone = true;
-            document.documentElement.classList.remove('ts-intro-on');
-            sheet.classList.add('is-out');
-            // Take it out of the page once the lift-off has played.
-            setTimeout(function () { if (sheet.parentNode) { sheet.parentNode.removeChild(sheet); } }, 900);
-        }
-
-        // Whichever comes first: the page finishing, or 2.2 seconds.
-        // Both timings come from Website Content -> "Look and feel", so the
-        // opening can be slowed down for people to read it, or sped up,
-        // without touching this file. The first is the pause after the
-        // page is ready; the second is the hard stop, so a slow page can
-        // never leave the sheet up indefinitely.
-        var holdMs = <?= (int) \App\Services\PublicSite::num('intro_hold_ms') ?>;
-        window.addEventListener('load', function () { setTimeout(finish, Math.round(holdMs * 0.2)); });
-        setTimeout(finish, holdMs);
-        // A click should never be trapped behind it.
-        sheet.addEventListener('click', finish);
-    })();
-    </script>
-
-    <!-- Liquid-Glass Navbar -->
-    <nav class="navbar navbar--liquid-glass<?= in_array($activePage ?? '', ['home', 'about', 'contact', 'branch', 'classes', 'downloads', 'events', 'enroll'], true) ? ' navbar--on-dark' : '' ?>" id="mainNav">
-        <div class="nav-shimmer"></div>
-        <a href="<?= BASE_URL ?>/" class="navbar__brand font-body">
-            <span style="width:36px;height:36px;border-radius:11px;background:#FACC15;display:grid;place-items:center;color:#0B1B3F;flex:0 0 36px;">
-                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7.5 15h9"/></svg>
-            </span>
-            <span class="brand-text"><span class="font-semibold tracking-tight"><?= htmlspecialchars(\App\Services\PublicSite::teacherName() ?? t('Science classes'), ENT_QUOTES, 'UTF-8') ?></span><small><?= te('Science classes') ?> &middot; <?= te('Grades {r}', ['r' => \App\Services\PublicSite::gradeRange()]) ?></small></span>
-        </a>
-
-        <button class="navbar__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-        </button>
-
-        <ul class="navbar__links" id="navLinks">
-            <li><a href="<?= BASE_URL ?>/" class="<?= ($activePage ?? '') === 'home' ? 'active' : '' ?>"><?= te('Home') ?></a></li>
-            <li><a href="<?= BASE_URL ?>/about" class="<?= ($activePage ?? '') === 'about' ? 'active' : '' ?>"><?= te('About') ?></a></li>
-            <li><a href="<?= BASE_URL ?>/our-classes" class="<?= ($activePage ?? '') === 'classes' ? 'active' : '' ?>"><?= te('Classes') ?></a></li>
-            <?php if (\App\Services\PublicSite::isOn('show_nav_events')): ?>
-            <li><a href="<?= BASE_URL ?>/events" class="<?= ($activePage ?? '') === 'events' ? 'active' : '' ?>"><?= te('Events') ?></a></li>
-            <?php endif; ?>
-            <?php if (\App\Services\PublicSite::isOn('show_nav_downloads')): ?>
-            <li><a href="<?= BASE_URL ?>/downloads" class="<?= ($activePage ?? '') === 'downloads' ? 'active' : '' ?>"><?= te('Downloads') ?></a></li>
-            <?php endif; ?>
-            <li><a href="<?= BASE_URL ?>/contact" class="<?= ($activePage ?? '') === 'contact' ? 'active' : '' ?>"><?= te('Contact') ?></a></li>
-            <?php
-            // Only shown when the switch is on AND a Facebook address has
-            // actually been entered on the Contact tab -- a button that
-            // goes nowhere is worse than no button.
-            $__fb = \App\Services\PublicSite::externalUrl(\App\Services\PublicSite::content('contact_facebook_url'));
-            ?>
-            <?php if (($__fb ?? '') !== '' && \App\Services\PublicSite::isOn('show_nav_facebook')): ?>
-            <li>
-                <a href="<?= htmlspecialchars((string) $__fb, ENT_QUOTES, 'UTF-8') ?>" class="nav-fb"
-                   target="_blank" rel="noopener noreferrer" aria-label="<?= te('Our Facebook page') ?>">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.89h-2.33v6.99A10 10 0 0 0 22 12z"/></svg>
-                    <span><?= te('Facebook') ?></span>
-                </a>
-            </li>
-            <?php endif; ?>
-            <li><a href="<?= BASE_URL ?>/lang/<?= (function_exists('lang_current') && lang_current() === 'si') ? 'en' : 'si' ?>" class="nav-lang" hreflang="<?= (function_exists('lang_current') && lang_current() === 'si') ? 'en' : 'si' ?>"><?= (function_exists('lang_current') && lang_current() === 'si') ? 'English' : 'සිංහල' ?></a></li>
-            <?php if (\App\Services\PublicSite::isOn('show_nav_enrol')): ?>
-            <li>
-                <a href="<?= BASE_URL ?>/enroll" class="inline-flex items-center px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300"
-                   style="text-transform:none; background:#1D4ED8; color:#fff;">
-                    <?= te('Enrol now') ?>
-                </a>
-            </li>
-            <?php endif; ?>
-            <?php if (\App\Services\PublicSite::isOn('show_nav_login')): ?>
-            <li>
-                <a href="<?= BASE_URL ?>/login" class="nav-login inline-flex items-center px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300"
-                   style="text-transform:none; background:#FACC15; color:#0B1B3F;">
-                    <?= te('Login') ?>
-                </a>
-            </li>
-            <?php endif; ?>
-            <li>
-                <button type="button" class="btn btn--ghost btn--sm rounded-full" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">
-                    <span class="theme-icon-light">&#9790;</span>
-                    <span class="theme-icon-dark" style="display:none;">&#9728;</span>
-                </button>
-            </li>
-        </ul>
-    </nav>
-
-    <!-- Flash Messages -->
-    <main>
-        <div class="container">
-            <?php include __DIR__ . '/../components/flash-messages.php'; ?>
-        </div>
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <!-- Flash Notifications -->
+        <?php if (!empty($_SESSION['flash'])): ?>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+                <?php include __DIR__ . '/../components/flash-messages.php'; ?>
+            </div>
+        <?php endif; ?>
 
         <?= $content ?>
     </main>
 
-    <!-- Footer: only real details (branches and phones from the database) -->
-    <?php $__fb = \App\Services\PublicSite::branches(); $__ft = \App\Services\PublicSite::teacherName(); ?>
-    <footer class="relative overflow-hidden" style="background: #0B1220;">
-        <div class="absolute top-0 left-0 right-0 h-px" style="background: linear-gradient(90deg, transparent, #FACC15, #1D4ED8, transparent);"></div>
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-14 pb-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
-                <div class="md:col-span-1">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span style="width:34px;height:34px;border-radius:10px;background:#FACC15;display:grid;place-items:center;color:#0B1B3F;">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7.5 15h9"/></svg>
-                        </span>
-                        <span class="text-white font-semibold text-lg tracking-tight"><?= htmlspecialchars($__ft ?? t('Science classes'), ENT_QUOTES, 'UTF-8') ?></span>
-                    </div>
-                    <p class="text-sm leading-relaxed" style="color:#94A3B8;"><?= te('Science classes') ?> &middot; <?= te('Grades {r}', ['r' => \App\Services\PublicSite::gradeRange()]) ?></p>
+    <!-- Academic Footer -->
+    <footer class="bg-[#070D1F] text-slate-300 border-t border-slate-800 relative overflow-hidden">
+        <!-- Subtle Top Gold Accent Line -->
+        <div class="h-1 w-full bg-gradient-to-r from-transparent via-[#E5A93C] to-transparent"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Column 1: Academy Info -->
+                <div class="space-y-4">
+                    <img src="<?= BASE_URL ?>/assets/img/brand/elocentra-logo-white.svg" alt="ELOCENTRA" class="h-10 w-auto">
+                    <p class="text-xs uppercase tracking-widest text-[#E5A93C] font-semibold">
+                        Learn English. Speak Confidently. Succeed Globally.
+                    </p>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        ELOCENTRA – English Academy (PVT) LTD is a premier academic institution committed to equipping students and professionals with world-class language proficiency, communication confidence, and career competence.
+                    </p>
                 </div>
+
+                <!-- Column 2: Quick Links -->
                 <div>
-                    <h4 class="text-xs font-semibold uppercase tracking-widest text-white mb-4"><?= te('Pages') ?></h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="<?= BASE_URL ?>/" class="hover:text-white" style="color:#94A3B8;"><?= te('Home') ?></a></li>
-                        <li><a href="<?= BASE_URL ?>/about" class="hover:text-white" style="color:#94A3B8;"><?= te('About') ?></a></li>
-                        <li><a href="<?= BASE_URL ?>/our-classes" class="hover:text-white" style="color:#94A3B8;"><?= te('Classes') ?></a></li>
-                        <?php if (\App\Services\PublicSite::isOn('show_nav_events')): ?>
-                        <li><a href="<?= BASE_URL ?>/events" class="hover:text-white" style="color:#94A3B8;"><?= te('Events') ?></a></li>
-                        <?php endif; ?>
-                        <?php if (\App\Services\PublicSite::isOn('show_nav_downloads')): ?>
-                        <li><a href="<?= BASE_URL ?>/downloads" class="hover:text-white" style="color:#94A3B8;"><?= te('Downloads') ?></a></li>
-                        <?php endif; ?>
-                        <li><a href="<?= BASE_URL ?>/enroll" class="hover:text-white" style="color:#94A3B8;"><?= te('Enrol now') ?></a></li>
-                        <li><a href="<?= BASE_URL ?>/contact" class="hover:text-white" style="color:#94A3B8;"><?= te('Contact') ?></a></li>
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-white mb-5 border-l-2 border-[#E5A93C] pl-3">Navigation</h4>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a href="<?= BASE_URL ?>/" class="text-slate-400 hover:text-[#E5A93C] transition-colors">Home</a></li>
+                        <li><a href="<?= BASE_URL ?>/about" class="text-slate-400 hover:text-[#E5A93C] transition-colors">About Us</a></li>
+                        <li><a href="<?= BASE_URL ?>/courses" class="text-slate-400 hover:text-[#E5A93C] transition-colors">Available Courses</a></li>
+                        <li><a href="<?= BASE_URL ?>/contact" class="text-slate-400 hover:text-[#E5A93C] transition-colors">Contact Academy</a></li>
+                        <li><a href="<?= BASE_URL ?>/register" class="text-slate-400 hover:text-[#E5A93C] transition-colors">Student Registration</a></li>
+                        <li><a href="<?= BASE_URL ?>/login" class="text-slate-400 hover:text-[#E5A93C] transition-colors">Portal Login</a></li>
                     </ul>
                 </div>
+
+                <!-- Column 3: Subject Areas -->
                 <div>
-                    <h4 class="text-xs font-semibold uppercase tracking-widest text-white mb-4"><?= te('Branches') ?></h4>
-                    <ul class="space-y-3 text-sm" style="color:#94A3B8;">
-                        <?php foreach ($__fb as $__b): ?>
-                            <li><a href="<?= BASE_URL ?>/branches/<?= (int) $__b['id'] ?>" class="text-white hover:underline"><?= htmlspecialchars((string) $__b['name'], ENT_QUOTES, 'UTF-8') ?></a>
-                                <?php if (!empty($__b['phone1'])): ?><br><a href="<?= htmlspecialchars(\App\Services\PublicSite::telHref($__b['phone1']), ENT_QUOTES, 'UTF-8') ?>" class="hover:text-white" style="color:#94A3B8;">&#128222; <?= htmlspecialchars((string) $__b['phone1'], ENT_QUOTES, 'UTF-8') ?></a><?php endif; ?></li>
-                        <?php endforeach; ?>
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-white mb-5 border-l-2 border-[#E5A93C] pl-3">Subject Areas</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="<?= BASE_URL ?>/courses?subject_area=1" class="hover:text-[#E5A93C] transition-colors">English & Communication</a></li>
+                        <li><a href="<?= BASE_URL ?>/courses?subject_area=2" class="hover:text-[#E5A93C] transition-colors">Psychology & Behavior</a></li>
+                        <li><a href="<?= BASE_URL ?>/courses?subject_area=3" class="hover:text-[#E5A93C] transition-colors">Business Accounting</a></li>
+                        <li><a href="<?= BASE_URL ?>/courses?subject_area=4" class="hover:text-[#E5A93C] transition-colors">Professional Development</a></li>
                     </ul>
                 </div>
+
+                <!-- Column 4: Contact & Campus -->
                 <div>
-                    <h4 class="text-xs font-semibold uppercase tracking-widest text-white mb-4"><?= te('Students and parents') ?></h4>
-                    <p class="text-sm mb-4" style="color:#94A3B8;"><?= te('Log in to see classes, marks, homework and fees.') ?></p>
-                    <a href="<?= BASE_URL ?>/login" class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold" style="background:#FACC15;color:#0B1B3F;"><?= te('Login') ?> &rarr;</a>
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-white mb-5 border-l-2 border-[#E5A93C] pl-3">Academy Campus</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li class="flex items-start gap-2.5">
+                            <svg class="w-5 h-5 text-[#E5A93C] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <span>No. 123, Education Lane, Colombo, Sri Lanka</span>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <svg class="w-5 h-5 text-[#E5A93C] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            <span>+94 77 123 4567</span>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <svg class="w-5 h-5 text-[#E5A93C] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <span>info@elocentra.academy</span>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <svg class="w-5 h-5 text-[#E5A93C] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span>Mon - Fri: 9.00 AM - 5.00 PM</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="border-t pt-6 text-center" style="border-color:#1E293B;">
-                <p class="text-xs" style="color:#64748B;">&copy; <?= date('Y') ?> <?= htmlspecialchars($__ft ?? t('Science classes'), ENT_QUOTES, 'UTF-8') ?> &middot; <?= te('Science classes') ?> &middot; Developed by <a href="https://www.facebook.com/chandilagroups/" target="_blank" rel="noopener noreferrer" class="hover:underline" style="color:#94A3B8;">Chandila</a></p>
+
+            <!-- Bottom Copyright Bar -->
+            <div class="border-t border-slate-800/80 pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+                <p>&copy; <?= date('Y') ?> ELOCENTRA – English Academy (PVT) LTD. All Rights Reserved.</p>
+                <p class="text-slate-400 font-medium">"Learn English. Speak Confidently. Succeed Globally."</p>
             </div>
         </div>
     </footer>
 
-    <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
-
-    <script src="<?= BASE_URL ?>/assets/js/app.js?v=<?= @filemtime(BASE_PATH . '/public/assets/js/app.js') ?: 1 ?>"></script>
+    <!-- Universal Scripts & Theme Switcher Logic -->
     <script>
-    (function () {
-        // ── Mobile nav toggle ──
-        var nav = document.getElementById('mainNav');
-        var toggle = document.getElementById('navToggle');
-        var links = document.getElementById('navLinks');
-        if (toggle && links) {
-            toggle.addEventListener('click', function () {
-                var isOpen = links.classList.toggle('open');
-                if (nav) nav.classList.toggle('menu-open', isOpen);
-                toggle.setAttribute('aria-expanded', String(isOpen));
-            });
-            links.querySelectorAll('a').forEach(function (a) {
-                a.addEventListener('click', function () {
-                    links.classList.remove('open');
-                    if (nav) nav.classList.remove('menu-open');
-                    toggle.setAttribute('aria-expanded', 'false');
-                });
+    (function() {
+        // Theme Toggle Functionality
+        function updateThemeIcons(theme) {
+            var moons = document.querySelectorAll('.theme-moon');
+            var suns = document.querySelectorAll('.theme-sun');
+            if (theme === 'dark') {
+                moons.forEach(function(m) { m.classList.add('hidden'); });
+                suns.forEach(function(s) { s.classList.remove('hidden'); });
+            } else {
+                moons.forEach(function(m) { m.classList.remove('hidden'); });
+                suns.forEach(function(s) { s.classList.add('hidden'); });
+            }
+        }
+
+        function toggleTheme() {
+            var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            var nextTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', nextTheme);
+            try {
+                localStorage.setItem('theme', nextTheme);
+            } catch (e) {}
+            updateThemeIcons(nextTheme);
+        }
+
+        var btnDesktop = document.getElementById('themeSwitchBtn');
+        var btnMobile = document.getElementById('mobileThemeSwitchBtn');
+        if (btnDesktop) btnDesktop.addEventListener('click', toggleTheme);
+        if (btnMobile) btnMobile.addEventListener('click', toggleTheme);
+
+        var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        updateThemeIcons(currentTheme);
+
+        // Mobile Nav Toggle
+        var menuBtn = document.getElementById('mobileMenuBtn');
+        var navMenu = document.getElementById('mobileNavMenu');
+        if (menuBtn && navMenu) {
+            menuBtn.addEventListener('click', function() {
+                navMenu.classList.toggle('hidden');
             });
         }
 
-        // â”€â”€ Theme toggle â”€â”€
-        var themeBtn = document.getElementById('themeToggle');
-        var html = document.documentElement;
-        try {
-            var stored = localStorage.getItem('theme');
-            if (stored === 'dark') html.setAttribute('data-theme', 'dark');
-        } catch (e) {}
-        updateThemeIcons();
-
-        if (themeBtn) {
-            themeBtn.addEventListener('click', function () {
-                var current = html.getAttribute('data-theme');
-                var next = current === 'dark' ? 'light' : 'dark';
-                html.setAttribute('data-theme', next);
-                try { localStorage.setItem('theme', next); } catch (e) {}
-                updateThemeIcons();
-            });
-        }
-
-        function updateThemeIcons() {
-            var isDark = html.getAttribute('data-theme') === 'dark';
-            document.querySelectorAll('.theme-icon-light').forEach(function (el) { el.style.display = isDark ? 'none' : 'inline'; });
-            document.querySelectorAll('.theme-icon-dark').forEach(function (el) { el.style.display = isDark ? 'inline' : 'none'; });
-        }
-
-        // â”€â”€ Navbar scroll effect â”€â”€
-        var nav = document.getElementById('mainNav');
-        if (nav) {
-            var ticking = false;
-            window.addEventListener('scroll', function () {
-                if (!ticking) {
-                    window.requestAnimationFrame(function () {
-                        if (window.scrollY > 50) {
-                            nav.classList.add('scrolled');
-                        } else {
-                            nav.classList.remove('scrolled');
-                        }
-                        ticking = false;
-                    });
-                    ticking = true;
+        // Navbar Scroll Blur Effect
+        window.addEventListener('scroll', function() {
+            var nav = document.getElementById('elocentraNav');
+            if (nav) {
+                if (window.scrollY > 20) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
                 }
-            });
-        }
-
-        // â”€â”€ Scroll reveal (IntersectionObserver) â”€â”€
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible'); });
-        } else {
-            var revealObserver = new IntersectionObserver(function (entries) {
-                entries.forEach(function (entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        revealObserver.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-            document.querySelectorAll('.reveal').forEach(function (el) {
-                revealObserver.observe(el);
-            });
-        }
-
-        // â”€â”€ Counter animation â”€â”€
-        var counterObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    var el = entry.target;
-                    var target = el.getAttribute('data-count');
-                    if (!target) return;
-                    var match = target.match(/^([\d.]+)(.*)$/);
-                    if (!match) return;
-                    var num = parseFloat(match[1]);
-                    var suffix = match[2] || '';
-                    var duration = 2000;
-                    var start = performance.now();
-                    var isDecimal = target.indexOf('.') !== -1;
-
-                    function update(now) {
-                        var elapsed = now - start;
-                        var progress = Math.min(elapsed / duration, 1);
-                        progress = 1 - (1 - progress) * (1 - progress);
-                        var current = num * progress;
-                        el.textContent = (isDecimal ? current.toFixed(1) : Math.floor(current)) + suffix;
-                        if (progress < 1) requestAnimationFrame(update);
-                    }
-                    requestAnimationFrame(update);
-                    counterObserver.unobserve(el);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        document.querySelectorAll('[data-count]').forEach(function (el) {
-            counterObserver.observe(el);
+            }
         });
     })();
     </script>
-    <?php require BASE_PATH . '/app/Views/partials/chatbot.php'; ?>
-    <?php require BASE_PATH . '/app/Views/partials/site-popup.php'; ?>
 </body>
 </html>

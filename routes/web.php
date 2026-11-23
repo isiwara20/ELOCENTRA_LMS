@@ -161,47 +161,36 @@ $router = new Router();
 
 // Public routes
 $router->get('/', ['App\Controllers\HomeController', 'index']);
-$router->get('/about', ['App\Controllers\HomeController', 'about']);
-$router->get('/features', ['App\Controllers\HomeController', 'features']);
-$router->get('/contact', ['App\Controllers\HomeController', 'contact']);
-$router->post('/contact', ['App\Controllers\HomeController', 'contactSubmit']);
-// Public tuition pages: timetable, branch pages and the enrolment inquiry.
-// /our-classes is the branch-picker landing page (photo + description +
-// "My Classes" per branch) -- NOT /classes, which is already the
-// logged-in Class Management route below. /timetable is the full,
-// filterable class grid that "My Classes" links into.
-$router->get('/our-classes', ['App\Controllers\HomeController', 'classesLanding']);
-$router->get('/timetable', ['App\Controllers\HomeController', 'classes']);
-$router->get('/branches/{id}', ['App\Controllers\HomeController', 'branch']);
-$router->post('/inquiry', ['App\Controllers\HomeController', 'inquiry']);
-$router->get('/downloads', ['App\Controllers\DownloadController', 'index']);
-$router->get('/events', ['App\Controllers\PublicController', 'events']);
-$router->get('/enroll', ['App\Controllers\EnrollmentController', 'form']);
-$router->post('/enroll', ['App\Controllers\EnrollmentController', 'store']);
-$router->get('/enroll/classes/{id}', ['App\Controllers\EnrollmentController', 'classesByInstitute']);
+$router->get('/about', ['App\Controllers\PublicController', 'about']);
+$router->get('/contact', ['App\Controllers\PublicController', 'contact']);
+$router->post('/contact', ['App\Controllers\PublicController', 'contactSubmit']);
 
-$router->get('/seminar/{id}', ['App\Controllers\PublicController', 'seminar']);
+// Courses Catalog & Enrollment routes
+$router->get('/courses', ['App\Controllers\PublicController', 'courses']);
+$router->get('/courses/{id}', ['App\Controllers\PublicController', 'courseDetail']);
+$router->post('/courses/{id}/enroll', ['App\Controllers\PublicController', 'courseEnroll']);
 
-// The free FAQ bot widget. Guest-facing, answers only from public data.
-$router->post('/chatbot/ask', ['App\Controllers\ChatBotController', 'ask']);
+// Backward compatibility redirects
+$router->get('/our-classes', function () { header('Location: ' . BASE_URL . '/courses'); exit; });
+$router->get('/timetable', function () { header('Location: ' . BASE_URL . '/courses'); exit; });
 
-// Authentication routes
+// Authentication & Student Registration routes
 $router->get('/login', ['App\Controllers\AuthController', 'showLogin']);
 $router->post('/login', ['App\Controllers\AuthController', 'login']);
 $router->get('/logout', ['App\Controllers\AuthController', 'logout']);
 $router->post('/logout', ['App\Controllers\AuthController', 'logout']);
 
-// English / Sinhala. Outside the auth group on purpose: the login page
-// is where a student first needs it.
-$router->get('/lang/{code}', ['App\Controllers\LanguageController', 'switch']);
+$router->get('/register', ['App\Controllers\AuthController', 'showRegister']);
+$router->post('/register', ['App\Controllers\AuthController', 'register']);
+
+// Password Recovery with OTP
+$router->get('/forgot-password', ['App\Controllers\AuthController', 'showForgot']);
+$router->post('/forgot-password', ['App\Controllers\AuthController', 'handleForgot']);
+$router->post('/auth/send-otp', ['App\Controllers\AuthController', 'sendOtp']);
+$router->post('/auth/verify-otp', ['App\Controllers\AuthController', 'verifyOtp']);
+
 $router->get('/first-login-password', ['App\Controllers\AuthController', 'showFirstLoginPassword']);
 $router->post('/first-login-password', ['App\Controllers\AuthController', 'updateFirstLoginPassword']);
-
-// Forgotten password: redeem a one-time code issued by the branch office.
-$router->get('/forgot-password', ['App\Controllers\AccountController', 'showForgot']);
-$router->post('/forgot-password', ['App\Controllers\AccountController', 'requestCode']);
-$router->get('/reset-password', ['App\Controllers\AccountController', 'showReset']);
-$router->post('/reset-password', ['App\Controllers\AccountController', 'reset']);
 
 // Password management routes (requires auth)
 $router->get('/change-password', ['App\Controllers\AuthController', 'showChangePassword']);
@@ -247,7 +236,44 @@ $router->group(['middleware' => ['auth']], function (Router $router) {
     $router->post('/institutes/{id}/toggle-status', ['App\Controllers\InstituteController', 'toggleStatus']);
     $router->post('/institutes/{id}/delete', ['App\Controllers\InstituteController', 'delete']);
 
-    // Classes Management
+    // ELOCENTRA - Subject Areas Management
+    $router->get('/admin/subject-areas', ['App\Controllers\ElocentraAdminController', 'index']);
+    $router->post('/admin/subject-areas', ['App\Controllers\ElocentraAdminController', 'storeSubjectArea']);
+    $router->post('/admin/subject-areas/{id}/update', ['App\Controllers\ElocentraAdminController', 'updateSubjectArea']);
+    $router->post('/admin/subject-areas/{id}/delete', ['App\Controllers\ElocentraAdminController', 'deleteSubjectArea']);
+
+    // ELOCENTRA - Resource Persons / Teachers Management
+    $router->get('/admin/resource-persons', ['App\Controllers\ElocentraAdminController', 'resourcePersons']);
+    $router->post('/admin/resource-persons', ['App\Controllers\ElocentraAdminController', 'storeResourcePerson']);
+    $router->post('/admin/resource-persons/{id}/update', ['App\Controllers\ElocentraAdminController', 'updateResourcePerson']);
+    $router->post('/admin/resource-persons/{id}/delete', ['App\Controllers\ElocentraAdminController', 'deleteResourcePerson']);
+
+    // ELOCENTRA - Courses Management
+    $router->get('/admin/courses', ['App\Controllers\ElocentraAdminController', 'courses']);
+    $router->post('/admin/courses', ['App\Controllers\ElocentraAdminController', 'storeCourse']);
+    $router->post('/admin/courses/{id}/update', ['App\Controllers\ElocentraAdminController', 'updateCourse']);
+    $router->post('/admin/courses/{id}/delete', ['App\Controllers\ElocentraAdminController', 'deleteCourse']);
+
+    // ELOCENTRA - Bank Transfer Verification
+    $router->get('/admin/bank-transfers', ['App\Controllers\ElocentraAdminController', 'bankTransfers']);
+    $router->post('/admin/bank-transfers/{id}/approve', ['App\Controllers\ElocentraAdminController', 'approveBankTransfer']);
+    $router->post('/admin/bank-transfers/{id}/reject', ['App\Controllers\ElocentraAdminController', 'rejectBankTransfer']);
+
+    // ELOCENTRA - DirectPay Payment Gateway Configuration
+    $router->get('/admin/directpay', ['App\Controllers\ElocentraAdminController', 'directPay']);
+    $router->post('/admin/directpay', ['App\Controllers\ElocentraAdminController', 'updateDirectPay']);
+
+    // ELOCENTRA - Bank Accounts Management
+    $router->get('/admin/bank-accounts', ['App\Controllers\ElocentraAdminController', 'bankAccounts']);
+    $router->post('/admin/bank-accounts', ['App\Controllers\ElocentraAdminController', 'storeBankAccount']);
+    $router->post('/admin/bank-accounts/{id}/update', ['App\Controllers\ElocentraAdminController', 'updateBankAccount']);
+    $router->post('/admin/bank-accounts/{id}/delete', ['App\Controllers\ElocentraAdminController', 'deleteBankAccount']);
+
+    // ELOCENTRA - Academy Information Settings
+    $router->get('/admin/academy-settings', ['App\Controllers\ElocentraAdminController', 'academySettings']);
+    $router->post('/admin/academy-settings', ['App\Controllers\ElocentraAdminController', 'updateAcademySettings']);
+
+    // Classes / Courses Management
     $router->get('/classes', ['App\Controllers\ClassController', 'index']);
     $router->get('/classes/create', ['App\Controllers\ClassController', 'create']);
     $router->get('/classes/rooms', ['App\Controllers\ClassController', 'rooms']);

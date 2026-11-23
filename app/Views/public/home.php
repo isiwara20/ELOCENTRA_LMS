@@ -1,279 +1,435 @@
 <?php
 /**
- * Home Page — Cinematic Premium Design
- * Layout: layouts/public
+ * ELOCENTRA – English Academy (PVT) LTD
+ * Modern University-Style Homepage
+ * Matching uploaded reference design
  */
+$slogan = $settings['academy_slogan'] ?? 'Learn English. Speak Confidently. Succeed Globally.';
+$vision = $settings['academy_vision'] ?? 'To be the premier English academy empowering students with fluent communication, critical thinking, and global competence.';
+$mission = $settings['academy_mission'] ?? 'To provide transformative, accessible, and high-standard English language and multidisciplinary education that enables learners to excel academically, professionally, and internationally.';
+$mainGoal = $settings['academy_main_goal'] ?? 'Equip every learner with fluent English communication, confidence, and real-world skills to thrive in global academic and career environments.';
+$supportingGoals = json_decode($settings['academy_supporting_goals'] ?? '[]', true) ?: [
+    'Provide comprehensive, practical language curriculum from foundational to advanced levels.',
+    'Foster interactive learning environments guided by experienced educators.',
+    'Integrate multidisciplinary knowledge including psychology and business communication.',
+    'Deliver accessible, modern online and blended learning opportunities.'
+];
 ?>
 
-<!-- ═══════ CINEMATIC HERO ═══════ -->
-<section class="hero--cinematic">
-    <!-- Background media (gradient fallback — replace with real video/image for production) -->
-    <div class="hero__media">
-        <!--
-            To add a real hero video, uncomment the <video> tag below
-            and provide the video source file.
-            <video autoplay muted loop playsinline poster="/assets/img/hero-poster.jpg">
-                <source src="<?= BASE_URL ?>/assets/video/hero.mp4" type="video/mp4">
-            </video>
-        -->
-        <!-- Animated gradient fallback -->
-        <div class="absolute inset-0" style="background: linear-gradient(135deg, #15307E 0%, #1D4ED8 35%, #2563EB 65%, #15307E 100%); background-size: 400% 400%; animation: gradientShift 12s ease infinite;"></div>
-        <!-- Subtle pattern overlay -->
-        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.15) 1px, transparent 1px); background-size: 40px 40px;"></div>
-    </div>
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- 1. HERO SECTION                                                     -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="relative bg-[#0B132B] text-white pt-12 pb-24 md:py-20 overflow-hidden">
+    <!-- Atmospheric background glows -->
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-[#E5A93C]/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 -right-40 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
 
-    <!-- Gradient overlay -->
-    <div class="hero__gradient-overlay" style="background: linear-gradient(180deg, rgba(10,15,12,0.3) 0%, rgba(10,15,12,0.5) 50%, rgba(10,15,12,0.85) 100%);"></div>
-
-    <!-- Hero content -->
-    <div class="relative z-10 max-w-3xl mx-auto text-center px-4 sm:px-6 py-32 sm:py-40">
-        <div class="reveal">
-            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-medium tracking-wider uppercase mb-6
-                bg-white/10 text-white/90 backdrop-blur-sm border border-white/10">
-                Trusted by 50+ Institutes
-            </span>
-        </div>
-
-        <h1 class="reveal font-display text-white font-bold leading-tight mb-6"
-            style="font-size: clamp(2.25rem, 5vw, 3.75rem); letter-spacing: -0.02em;">
-            Transform Your<br>
-            <span class="relative inline-block">
-                <span style="background: linear-gradient(135deg, #7AA8FF, #93B8FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Educational</span>
-            </span>
-            Management
-        </h1>
-
-        <p class="reveal text-base sm:text-lg leading-relaxed mb-10 max-w-xl mx-auto" style="color: rgba(255,255,255,0.7); font-weight: 300;">
-            Streamline institute operations with our all-in-one platform. From student enrollment
-            and payment tracking to automated workflows and real-time analytics.
-        </p>
-
-        <div class="reveal flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="<?= BASE_URL ?>/login" class="inline-flex items-center px-8 py-3.5 rounded-full text-sm font-semibold
-                bg-[#1D4ED8] text-white hover:bg-[#1A3FAF] transition-all duration-300
-                shadow-lg shadow-emerald-600/25 hover:shadow-emerald-600/40 btn-glow">
-                Get Started
-                <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
-            </a>
-            <a href="<?= BASE_URL ?>/features" class="inline-flex items-center px-8 py-3.5 rounded-full text-sm font-semibold
-                text-white border border-white/20 hover:bg-white/10 backdrop-blur-sm transition-all duration-300">
-                Learn More
-            </a>
-        </div>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 reveal">
-        <div class="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center pt-2">
-            <div class="w-1 h-2.5 rounded-full bg-white/50" style="animation: scrollBounce 2s ease-in-out infinite;"></div>
-        </div>
-    </div>
-
-    <style>
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            25% { background-position: 100% 0%; }
-            50% { background-position: 100% 100%; }
-            75% { background-position: 0% 100%; }
-        }
-        @keyframes scrollBounce {
-            0%, 100% { transform: translateY(0); opacity: 1; }
-            50% { transform: translateY(6px); opacity: 0.4; }
-        }
-    </style>
-</section>
-
-<!-- ═══════ WAVE DIVIDER ═══════ -->
-<div class="wave-divider" style="background: var(--bg);">
-    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" fill="none">
-        <path d="M0,0 C360,60 1080,0 1440,40 L1440,60 L0,60 Z" fill="var(--bg)"/>
-    </svg>
-</div>
-
-<!-- ═══════ STATS STRIP ═══════ -->
-<section class="py-16 relative" style="background: var(--bg);">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 reveal-stagger">
-            <div class="reveal text-center p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg"
-                 style="background: var(--surface); border-color: var(--border);">
-                <div class="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center text-xl"
-                     style="background: var(--primary-light); color: var(--primary);">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"/></svg>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            
+            <!-- Hero Left Content -->
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <!-- Academy Badge -->
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#E5A93C] text-xs font-semibold tracking-wider uppercase">
+                    <span class="w-2 h-2 rounded-full bg-[#E5A93C] animate-pulse"></span>
+                    ELOCENTRA – English Academy (PVT) LTD
                 </div>
-                <span class="block font-display text-3xl font-bold mb-1" style="color: var(--primary);" data-count="500+">0</span>
-                <span class="block text-xs font-medium uppercase tracking-wider" style="color: var(--text-muted);">Students Managed</span>
+
+                <!-- Main Slogan Heading -->
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15]">
+                    Learn English.<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">Speak Confidently.</span><br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#F59E0B] via-[#E5A93C] to-[#FCD34D]">Succeed Globally.</span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="text-slate-300 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
+                    A modern learning platform to build your language, communication, and professional skills for a global future.
+                </p>
+
+                <!-- CTA Buttons -->
+                <div class="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                    <a href="<?= BASE_URL ?>/courses" class="btn-gold text-base py-3.5 px-8">
+                        Explore Courses
+                        <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+                    <a href="<?= BASE_URL ?>/register" class="btn-outline-gold text-base py-3.5 px-8">
+                        Join Now
+                    </a>
+                </div>
             </div>
 
-            <div class="reveal text-center p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg"
-                 style="background: var(--surface); border-color: var(--border);">
-                <div class="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center"
-                     style="background: var(--secondary-light); color: var(--secondary);">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z"/></svg>
+            <!-- Hero Right Visual with Reference Elements -->
+            <div class="lg:col-span-5 relative flex items-center justify-center">
+                <!-- Circular Gold Decorative Ring -->
+                <div class="absolute w-72 sm:w-96 h-72 sm:h-96 rounded-full border border-[#E5A93C]/30 animate-[spin_40s_linear_infinite] pointer-events-none"></div>
+                <div class="absolute w-80 sm:w-[420px] h-80 sm:h-[420px] rounded-full border border-dashed border-[#E5A93C]/20 pointer-events-none"></div>
+
+                <!-- Main Student Photo Container -->
+                <div class="relative w-full max-w-sm sm:max-w-md rounded-3xl overflow-hidden shadow-2xl border-2 border-white/10 z-10 bg-slate-900 group">
+                    <img src="<?= BASE_URL ?>/assets/img/brand/hero-student.jpg" alt="ELOCENTRA Student" class="w-full h-80 sm:h-96 object-cover object-top transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0B132B] via-transparent to-transparent opacity-60"></div>
                 </div>
-                <span class="block font-display text-3xl font-bold mb-1" style="color: var(--primary);" data-count="50+">0</span>
-                <span class="block text-xs font-medium uppercase tracking-wider" style="color: var(--text-muted);">Active Classes</span>
+
+                <!-- Floating Pill 1: Flexible Learning -->
+                <div class="absolute -top-4 -left-4 sm:left-2 bg-[#0B132B]/90 backdrop-blur-md border border-[#E5A93C]/40 py-2 px-4 rounded-xl shadow-xl flex items-center gap-2.5 z-20">
+                    <span class="w-8 h-8 rounded-lg bg-[#E5A93C]/20 text-[#E5A93C] flex items-center justify-center text-sm">🎓</span>
+                    <div>
+                        <div class="text-xs font-bold text-white">Flexible Learning</div>
+                        <div class="text-[10px] text-slate-400">Self-paced & Online</div>
+                    </div>
+                </div>
+
+                <!-- Floating Pill 2: Expert Resource Persons -->
+                <div class="absolute top-1/2 -right-4 sm:-right-6 -translate-y-1/2 bg-[#0B132B]/90 backdrop-blur-md border border-[#E5A93C]/40 py-2 px-4 rounded-xl shadow-xl flex items-center gap-2.5 z-20">
+                    <span class="w-8 h-8 rounded-lg bg-[#E5A93C]/20 text-[#E5A93C] flex items-center justify-center text-sm">👥</span>
+                    <div>
+                        <div class="text-xs font-bold text-white">Expert Resource Persons</div>
+                        <div class="text-[10px] text-slate-400">University Academics</div>
+                    </div>
+                </div>
+
+                <!-- Floating Pill 3: Industry-Relevant Courses -->
+                <div class="absolute -bottom-5 left-8 bg-[#0B132B]/90 backdrop-blur-md border border-[#E5A93C]/40 py-2 px-4 rounded-xl shadow-xl flex items-center gap-2.5 z-20">
+                    <span class="w-8 h-8 rounded-lg bg-[#E5A93C]/20 text-[#E5A93C] flex items-center justify-center text-sm">💼</span>
+                    <div>
+                        <div class="text-xs font-bold text-white">Industry-Relevant Courses</div>
+                        <div class="text-[10px] text-slate-400">Global Competence</div>
+                    </div>
+                </div>
             </div>
 
-            <div class="reveal text-center p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg"
-                 style="background: var(--surface); border-color: var(--border);">
-                <div class="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center"
-                     style="background: var(--primary-light); color: var(--primary);">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/></svg>
-                </div>
-                <span class="block font-display text-3xl font-bold mb-1" style="color: var(--primary);" data-count="20+">0</span>
-                <span class="block text-xs font-medium uppercase tracking-wider" style="color: var(--text-muted);">Dedicated Teachers</span>
-            </div>
-
-            <div class="reveal text-center p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg"
-                 style="background: var(--surface); border-color: var(--border);">
-                <div class="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center"
-                     style="background: var(--secondary-light); color: var(--secondary);">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
-                </div>
-                <span class="block font-display text-3xl font-bold mb-1" style="color: var(--primary);" data-count="99.9%">0</span>
-                <span class="block text-xs font-medium uppercase tracking-wider" style="color: var(--text-muted);">System Uptime</span>
-            </div>
         </div>
     </div>
 </section>
 
-<!-- ═══════ FEATURES SECTION ═══════ -->
-<section class="py-20" style="background: var(--surface-sunken);">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-14 reveal">
-            <h2 class="font-display font-bold mb-3" style="font-size: clamp(1.5rem, 3vw, 2.25rem); color: var(--text); letter-spacing: -0.01em;">
-                Everything You Need to<br class="hidden sm:block">
-                <span style="color: var(--primary);">Run Your Institute</span>
-            </h2>
-            <p class="text-base max-w-lg mx-auto" style="color: var(--text-secondary);">
-                Powerful modules designed to handle every aspect of educational institution management.
-            </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 reveal-stagger">
-            <!-- Student Management -->
-            <div class="card-premium reveal rounded-2xl p-6 border cursor-pointer group"
-                 style="background: var(--surface); border-color: var(--border);">
-                <div class="card-icon-wrap w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                     style="background: var(--primary-light); color: var(--primary);">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                        <circle cx="9" cy="7" r="4"/>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- 2. FOUR PILLARS FEATURE BAND                                        -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="relative z-20 -mt-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white dark:bg-[#111A2E] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 md:p-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            <!-- Pillar 1 -->
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-[#E5A93C]/15 text-[#E5A93C] flex items-center justify-center text-2xl shrink-0">
+                    📚
                 </div>
-                <h3 class="font-semibold text-base mb-2" style="color: var(--text);">Student Management</h3>
-                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">
-                    Complete student registration, enrollment tracking, and multi-class management
-                    with automated ID generation and lifecycle workflows.
-                </p>
+                <div>
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white">Diverse Subject Areas</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Language, Psychology, Business & more</p>
+                </div>
             </div>
 
-            <!-- Payment Tracking -->
-            <div class="card-premium reveal rounded-2xl p-6 border cursor-pointer group"
-                 style="background: var(--surface); border-color: var(--border);">
-                <div class="card-icon-wrap w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                     style="background: var(--secondary-light); color: var(--secondary);">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                        <line x1="1" y1="10" x2="23" y2="10"/>
-                    </svg>
+            <!-- Pillar 2 -->
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-[#E5A93C]/15 text-[#E5A93C] flex items-center justify-center text-2xl shrink-0">
+                    👨‍🏫
                 </div>
-                <h3 class="font-semibold text-base mb-2" style="color: var(--text);">Payment Tracking</h3>
-                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">
-                    Monthly fee management with scholarship support, overdue alerts, and
-                    comprehensive payment history for every student.
-                </p>
+                <div>
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white">Expert Resource Persons</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Qualified & experienced educators</p>
+                </div>
             </div>
 
-            <!-- Attendance System -->
-            <div class="card-premium reveal rounded-2xl p-6 border cursor-pointer group" onclick="window.location.href='<?= BASE_URL ?>/features'"
-                 style="background: var(--surface); border-color: var(--border);">
-                <div class="card-icon-wrap w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                     style="background: var(--primary-light); color: var(--primary);">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
-                        <line x1="3" y1="10" x2="21" y2="10"/>
-                        <path d="M9 16l2 2 4-4"/>
-                    </svg>
+            <!-- Pillar 3 -->
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-[#E5A93C]/15 text-[#E5A93C] flex items-center justify-center text-2xl shrink-0">
+                    🚀
                 </div>
-                <h3 class="font-semibold text-base mb-2" style="color: var(--text);">QR Attendance Terminal</h3>
-                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">
-                    High-speed QR camera scanning with automated 5-second acoustic security alerts for deactivated or non-compliant accounts.
-                </p>
+                <div>
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white">Practical Learning</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Real-world communication skills</p>
+                </div>
             </div>
 
-            <!-- Role-Based Access -->
-            <div class="card-premium reveal rounded-2xl p-6 border cursor-pointer group" onclick="window.location.href='<?= BASE_URL ?>/features'"
-                 style="background: var(--surface); border-color: var(--border);">
-                <div class="card-icon-wrap w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                     style="background: var(--secondary-light); color: var(--secondary);">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                        <circle cx="12" cy="16" r="1"/>
-                    </svg>
+            <!-- Pillar 4 -->
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-[#E5A93C]/15 text-[#E5A93C] flex items-center justify-center text-2xl shrink-0">
+                    🌍
                 </div>
-                <h3 class="font-semibold text-base mb-2" style="color: var(--text);">Role-Based Security</h3>
-                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">
-                    Dedicated access controls for Super Admins, Coordinators, Staff, and Teachers with branded ID generation and audit logs.
-                </p>
-            </div>
-
-            <!-- Automated Workflows -->
-            <div class="card-premium reveal rounded-2xl p-6 border cursor-pointer group" onclick="window.location.href='<?= BASE_URL ?>/features'"
-                 style="background: var(--surface); border-color: var(--border);">
-                <div class="card-icon-wrap w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                     style="background: var(--primary-light); color: var(--primary);">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"/>
-                        <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                    </svg>
+                <div>
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white">Global Opportunities</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Build a future without borders</p>
                 </div>
-                <h3 class="font-semibold text-base mb-2" style="color: var(--text);">Automated Workflows</h3>
-                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">
-                    Smart deactivation, scheduled deletion, and multi-level approval workflows to keep your data clean and compliant.
-                </p>
-            </div>
-
-            <!-- Analytics & Reports -->
-            <div class="card-premium reveal rounded-2xl p-6 border cursor-pointer group" onclick="window.location.href='<?= BASE_URL ?>/features'"
-                 style="background: var(--surface); border-color: var(--border);">
-                <div class="card-icon-wrap w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                     style="background: var(--secondary-light); color: var(--secondary);">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/>
-                    </svg>
-                </div>
-                <h3 class="font-semibold text-base mb-2" style="color: var(--text);">16 KPI Widgets &amp; 5 Reports</h3>
-                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">
-                    Super Admin dashboard with 16 configurable widgets, CSV data exports, and comprehensive revenue split reporting.
-                </p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ═══════ BOTTOM CTA ═══════ -->
-<section class="py-20 relative overflow-hidden" style="background: var(--bg);">
-    <!-- Decorative blobs -->
-    <div class="absolute top-0 left-1/4 w-64 h-64 rounded-full opacity-20 blur-3xl" style="background: var(--primary);"></div>
-    <div class="absolute bottom-0 right-1/4 w-48 h-48 rounded-full opacity-15 blur-3xl" style="background: var(--secondary);"></div>
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- 3. WHO WE ARE & VISION / MISSION / GOALS (FROM REFERENCE IMAGE)     -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="py-20 lg:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header / Intro -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mb-16">
+            <div class="lg:col-span-5 relative">
+                <div class="rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xl">
+                    <img src="<?= BASE_URL ?>/assets/img/brand/about-campus.jpg" alt="ELOCENTRA Academy" class="w-full h-80 object-cover">
+                </div>
+                <div class="absolute -bottom-6 -right-6 bg-[#0B132B] text-white p-5 rounded-2xl shadow-xl hidden sm:block border border-[#E5A93C]/30 max-w-xs">
+                    <div class="text-[#E5A93C] text-sm font-bold uppercase tracking-wider">ELOCENTRA</div>
+                    <div class="text-xs text-slate-300 mt-1">Dedicated to international academic excellence and career proficiency.</div>
+                </div>
+            </div>
 
-    <div class="relative max-w-2xl mx-auto text-center px-4 sm:px-6 reveal">
-        <h2 class="font-display font-bold mb-4" style="font-size: clamp(1.5rem, 3vw, 2.25rem); color: var(--text); letter-spacing: -0.01em;">
-            Ready to Transform<br>
-            <span style="color: var(--primary);">Your Institute?</span>
+            <div class="lg:col-span-7 space-y-4">
+                <div class="text-[#E5A93C] text-xs font-bold uppercase tracking-widest">WHO WE ARE</div>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                    ELOCENTRA – English Academy (PVT) LTD
+                </h2>
+                <p class="text-slate-600 dark:text-slate-300 text-base leading-relaxed">
+                    ELOCENTRA is a modern English Academy dedicated to developing language proficiency, communication confidence, and academic &amp; professional competence for learners who aspire to succeed globally.
+                </p>
+                <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                    Through innovative curriculum design, highly qualified resource persons, interactive digital infrastructure, and multidisciplinary subject pathways, we ensure that every student gains the confidence to articulate ideas fluently in global professional environments.
+                </p>
+                <div class="pt-2">
+                    <a href="<?= BASE_URL ?>/about" class="inline-flex items-center text-sm font-bold text-[#E5A93C] hover:underline">
+                        Discover Our Full Story &amp; Approach &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4 Iconic Cards: Vision, Mission, Main Goal, Supporting Goals -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Card 1: Our Vision -->
+            <div class="elo-card p-6 flex flex-col justify-between relative group">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-[#E5A93C]/10 text-[#E5A93C] flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                        👁️
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Our Vision</h3>
+                        <div class="text-xs font-semibold text-[#E5A93C] mb-2">The future we seek to create</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            <?= htmlspecialchars($vision, ENT_QUOTES, 'UTF-8') ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Our Mission -->
+            <div class="elo-card p-6 flex flex-col justify-between relative group">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-[#E5A93C]/10 text-[#E5A93C] flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                        🎯
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Our Mission</h3>
+                        <div class="text-xs font-semibold text-[#E5A93C] mb-2">The purpose that drives us</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            <?= htmlspecialchars($mission, ENT_QUOTES, 'UTF-8') ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Main Goal -->
+            <div class="elo-card p-6 flex flex-col justify-between relative group">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-[#E5A93C]/10 text-[#E5A93C] flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                        🏆
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Main Goal</h3>
+                        <div class="text-xs font-semibold text-[#E5A93C] mb-2">Our primary focus</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            <?= htmlspecialchars($mainGoal, ENT_QUOTES, 'UTF-8') ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Supporting Goals -->
+            <div class="elo-card p-6 flex flex-col justify-between relative group">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-[#E5A93C]/10 text-[#E5A93C] flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                        ⚡
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Supporting Goals</h3>
+                        <div class="text-xs font-semibold text-[#E5A93C] mb-2">The steps that strengthen our goal</div>
+                        <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
+                            <?php foreach (array_slice($supportingGoals, 0, 3) as $goal): ?>
+                                <li><?= htmlspecialchars($goal, ENT_QUOTES, 'UTF-8') ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- 4. SUBJECT AREAS SECTION                                            -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="py-16 bg-slate-100/70 dark:bg-[#070D1F]/50 border-y border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <div class="text-[#E5A93C] text-xs font-bold uppercase tracking-widest">ACADEMIC DISCIPLINES</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Explore Subject Areas</h2>
+            <p class="text-slate-600 dark:text-slate-400 text-sm mt-2">Comprehensive pathways from communication fluency to professional business mastery.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <?php foreach ($subjectAreas as $sa): ?>
+                <a href="<?= BASE_URL ?>/courses?subject_area=<?= (int) $sa['id'] ?>" class="elo-card p-6 block group text-left">
+                    <div class="w-12 h-12 rounded-xl bg-[#0B132B] text-[#E5A93C] flex items-center justify-center text-xl mb-4 group-hover:bg-[#E5A93C] group-hover:text-[#0B132B] transition-colors">
+                        📖
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-[#E5A93C] transition-colors">
+                        <?= htmlspecialchars($sa['name'], ENT_QUOTES, 'UTF-8') ?>
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2">
+                        <?= htmlspecialchars($sa['description'] ?? 'Curated university-level curriculum.', ENT_QUOTES, 'UTF-8') ?>
+                    </p>
+                    <div class="mt-4 flex items-center justify-between text-xs font-semibold text-[#E5A93C]">
+                        <span><?= (int) ($sa['course_count'] ?? 0) ?> Courses</span>
+                        <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- 5. FEATURED COURSES SECTION                                         -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="py-20 lg:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+            <div>
+                <div class="text-[#E5A93C] text-xs font-bold uppercase tracking-widest">CURATED CURRICULUM</div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Available Courses</h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mt-1">Professionally designed courses to build language proficiency, confidence, and career skills.</p>
+            </div>
+            <div>
+                <a href="<?= BASE_URL ?>/courses" class="btn-outline-gold text-xs py-2.5 px-6">
+                    View All Courses &rarr;
+                </a>
+            </div>
+        </div>
+
+        <!-- Courses Grid matching reference images -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <?php foreach ($courses as $c): ?>
+                <?php
+                    $thumb = $c['course_thumbnail'] ?: '/assets/img/courses/english-global.jpg';
+                    $fee = number_format((float) ($c['price'] ?? $c['monthly_fee'] ?? 0), 2);
+                ?>
+                <div class="elo-card overflow-hidden flex flex-col justify-between group">
+                    <div>
+                        <!-- Thumbnail -->
+                        <div class="relative h-44 overflow-hidden bg-slate-800">
+                            <img src="<?= BASE_URL . htmlspecialchars($thumb, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($c['class_name'], ENT_QUOTES, 'UTF-8') ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <!-- Category Badge -->
+                            <div class="absolute top-3 left-3 bg-[#0B132B]/85 backdrop-blur-sm text-[#E5A93C] border border-[#E5A93C]/30 text-[10px] font-bold uppercase px-2.5 py-1 rounded-full">
+                                <?= htmlspecialchars($c['subject_area_name'] ?? $c['subject'] ?? 'English', ENT_QUOTES, 'UTF-8') ?>
+                            </div>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="p-5">
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-[#E5A93C] transition-colors leading-snug">
+                                <a href="<?= BASE_URL ?>/courses/<?= (int) $c['id'] ?>">
+                                    <?= htmlspecialchars($c['class_name'], ENT_QUOTES, 'UTF-8') ?>
+                                </a>
+                            </h3>
+                            
+                            <!-- Meta: Duration & Mode -->
+                            <div class="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5 text-[#E5A93C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <?= htmlspecialchars($c['duration_weeks'] ?? '12 Weeks', ENT_QUOTES, 'UTF-8') ?>
+                                </span>
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5 text-[#E5A93C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                    <?= ucfirst(htmlspecialchars($c['delivery_mode'] ?? 'Online', ENT_QUOTES, 'UTF-8')) ?>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Footer: Price & Arrow Button -->
+                    <div class="p-5 pt-0 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-slate-400 block uppercase font-semibold">Course Fee</span>
+                            <span class="text-base font-extrabold text-slate-900 dark:text-white">LKR <?= $fee ?></span>
+                        </div>
+                        <a href="<?= BASE_URL ?>/courses/<?= (int) $c['id'] ?>" class="w-9 h-9 rounded-full bg-[#E5A93C]/15 text-[#E5A93C] hover:bg-[#E5A93C] hover:text-[#0B132B] flex items-center justify-center transition-colors text-sm font-bold" title="View Course Details">
+                            &rarr;
+                        </a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- 6. RESOURCE PERSONS / TEACHERS SECTION                              -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="py-20 bg-slate-100/70 dark:bg-[#070D1F]/60 border-t border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <div class="text-[#E5A93C] text-xs font-bold uppercase tracking-widest">ACADEMIC EXCELLENCE</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Resource Persons &amp; Faculty</h2>
+            <p class="text-slate-600 dark:text-slate-400 text-sm mt-2">Learn from seasoned university professors, industry specialists, and international master trainers.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <?php foreach ($resourcePersons as $rp): ?>
+                <?php $photo = $rp['photo'] ?: '/assets/img/teachers/senaka.jpg'; ?>
+                <div class="elo-card p-6 text-center group">
+                    <!-- Photo -->
+                    <div class="w-28 h-28 mx-auto rounded-full overflow-hidden border-2 border-[#E5A93C]/40 mb-4 shadow-lg bg-slate-800">
+                        <img src="<?= BASE_URL . htmlspecialchars($photo, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($rp['name'], ENT_QUOTES, 'UTF-8') ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <!-- Details -->
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white"><?= htmlspecialchars($rp['name'], ENT_QUOTES, 'UTF-8') ?></h3>
+                    <div class="text-xs text-[#E5A93C] font-semibold mt-1"><?= htmlspecialchars($rp['title'], ENT_QUOTES, 'UTF-8') ?></div>
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-2 italic"><?= htmlspecialchars($rp['qualifications'], ENT_QUOTES, 'UTF-8') ?></div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 mt-3 line-clamp-3 leading-relaxed">
+                        <?= htmlspecialchars($rp['bio'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+                    </p>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- 7. CALL TO ACTION BANNER                                            -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<section class="py-16 bg-gradient-to-r from-[#0B132B] via-[#0D1B3E] to-[#0B132B] text-white text-center relative overflow-hidden">
+    <div class="max-w-4xl mx-auto px-4 relative z-10 space-y-6">
+        <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">
+            Ready to Speak Confidently and Succeed Globally?
         </h2>
-        <p class="text-base mb-8" style="color: var(--text-secondary); max-width: 440px; margin-left: auto; margin-right: auto;">
-            Join hundreds of educational institutions already using EduManager to streamline their operations.
+        <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto">
+            Take the first step towards academic and professional advancement today. Join ELOCENTRA's world-class learning community.
         </p>
-        <a href="<?= BASE_URL ?>/login" class="inline-flex items-center px-8 py-3.5 rounded-full text-sm font-semibold
-            bg-[var(--primary)] text-[var(--text-inverse)] hover:bg-[var(--primary-hover)] transition-all duration-300
-            shadow-lg btn-glow">
-            Login to Get Started
-            <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
-        </a>
+        <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <a href="<?= BASE_URL ?>/register" class="btn-gold text-base py-3 px-8">
+                Register as a Student
+            </a>
+            <a href="<?= BASE_URL ?>/contact" class="btn-outline-gold text-base py-3 px-8">
+                Inquire With Us
+            </a>
+        </div>
     </div>
 </section>

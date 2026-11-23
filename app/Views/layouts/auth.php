@@ -1,32 +1,49 @@
 <!DOCTYPE html>
-<html lang="<?= lang_current() ?>" data-theme="light">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title><?= htmlspecialchars(($pageTitle ?? t('Login')) . ' | ' . (\App\Services\PublicSite::teacherName() ?? t('Science classes')), ENT_QUOTES, 'UTF-8') ?></title>
+    <title><?= htmlspecialchars(($pageTitle ?? 'Portal') . ' | ELOCENTRA – English Academy (PVT) LTD', ENT_QUOTES, 'UTF-8') ?></title>
+    <link rel="icon" type="image/svg+xml" href="<?= BASE_URL ?>/favicon.svg">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/favicon.ico">
     <?= csrfMeta() ?>
-    <?php include __DIR__ . '/../components/favicon.php'; ?>
 
-    <!-- Google Fonts & Resource Hints -->
+    <!-- Inline Theme Initializer -->
+    <script>
+    (function () {
+        try {
+            var theme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {}
+    })();
+    </script>
+
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
     tailwind.config = {
-        darkMode: ['selector', '[data-theme="dark"]'],
+        darkMode: ['class', '[data-theme="dark"]'],
         theme: {
             extend: {
-                fontFamily: {
-                    'display': ['"Playfair Display"', 'Georgia', 'serif'],
-                    'body': ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                colors: {
+                    elocentra: {
+                        navy: '#0B132B',
+                        dark: '#070D1F',
+                        gold: '#E5A93C',
+                        amber: '#F59E0B',
+                        goldhover: '#D49028',
+                        slate: '#1E293B',
+                    }
                 },
+                fontFamily: {
+                    sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                }
             }
         }
     }
@@ -36,190 +53,255 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css?v=<?= @filemtime(BASE_PATH . '/public/assets/css/style.css') ?: 1 ?>">
 
     <style>
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    :root, [data-theme="light"] {
+        --auth-bg: #F8FAFC;
+        --auth-card: #FFFFFF;
+        --auth-border: #E2E8F0;
+        --auth-text: #0F172A;
+        --auth-sub: #64748B;
+        --auth-input-bg: #FFFFFF;
+    }
 
-        .login-cinematic {
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1fr;
+    [data-theme="dark"] {
+        --auth-bg: #070D1F;
+        --auth-card: #111A2E;
+        --auth-border: #1E293B;
+        --auth-text: #F8FAFC;
+        --auth-sub: #94A3B8;
+        --auth-input-bg: #0B132B;
+    }
+
+    body {
+        background-color: var(--auth-bg);
+        color: var(--auth-text);
+        font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        min-height: 100vh;
+        margin: 0;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .auth-split-layout {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 1024px) {
+        .auth-split-layout {
+            grid-template-columns: 45% 55%;
         }
+    }
 
-        @media (min-width: 1024px) {
-            .login-cinematic { grid-template-columns: 1fr 1fr; }
+    @media (min-width: 1280px) {
+        .auth-split-layout {
+            grid-template-columns: 42% 58%;
         }
+    }
 
-        /* Left side: decorative panel */
-        .login-showcase {
-            display: none;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, #15307E 0%, #1D4ED8 50%, #2563EB 100%);
-        }
+    /* Left Banner matching reference image */
+    .auth-banner-left {
+        background: linear-gradient(160deg, #070D1F 0%, #0B132B 50%, #0F1A3A 100%);
+        position: relative;
+        overflow: hidden;
+        display: none;
+    }
 
-        @media (min-width: 1024px) {
-            .login-showcase { display: flex; align-items: center; justify-content: center; }
-        }
-
-        .login-showcase::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            opacity: 0.08;
-            background-image: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.2) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-
-        /* Right side: form area */
-        .login-form-side {
+    @media (min-width: 1024px) {
+        .auth-banner-left {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1.5rem;
-            position: relative;
-            background: var(--bg);
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3.5rem 3rem;
         }
+    }
 
-        /* Decorative gradient blobs on mobile */
-        .login-form-side::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                radial-gradient(circle at 20% 50%, var(--primary-light) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, var(--secondary-light) 0%, transparent 50%);
-            opacity: 0.5;
-            pointer-events: none;
-        }
+    /* Gold Buttons */
+    .btn-gold {
+        background: linear-gradient(135deg, #E5A93C 0%, #D49028 100%);
+        color: #0B132B !important;
+        font-weight: 700;
+        border-radius: 9999px;
+        padding: 0.65rem 1.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.25s ease;
+        box-shadow: 0 4px 14px rgba(229, 169, 60, 0.35);
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+    }
 
-        /* Glass card */
-        .login-glass-card {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 400px;
-            padding: 2.5rem 2rem;
-            border-radius: 20px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-xl);
-            animation: cardEntrance 0.6s ease forwards;
-        }
+    .btn-gold:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(229, 169, 60, 0.45);
+        background: linear-gradient(135deg, #F59E0B 0%, #E5A93C 100%);
+        color: #070D1F !important;
+    }
 
-        @keyframes cardEntrance {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .btn-outline-gold {
+        border: 1.5px solid #E5A93C;
+        color: #E5A93C !important;
+        font-weight: 600;
+        border-radius: 9999px;
+        padding: 0.65rem 1.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: transparent;
+        transition: all 0.25s ease;
+        text-decoration: none;
+    }
 
-        /* Premium input focus */
-        .login-glass-card .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--ring), 0 2px 8px rgba(14,111,88,0.1);
-        }
+    .btn-outline-gold:hover {
+        background: rgba(229, 169, 60, 0.15);
+        color: #F59E0B !important;
+    }
 
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            .login-glass-card { animation: none; opacity: 1; }
-            * { animation-duration: 0.01ms !important; }
-        }
+    .theme-toggle-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #E5A93C;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .theme-toggle-btn:hover {
+        background: rgba(229, 169, 60, 0.2);
+        transform: rotate(15deg);
+    }
     </style>
 </head>
 <body>
-    <!-- Theme Toggle -->
-    <div class="fixed top-4 right-4 z-50">
-        <button type="button" class="p-2 rounded-full transition-all duration-300 hover:bg-black/5"
-                id="themeToggle" aria-label="<?= te('Toggle dark mode') ?>" title="<?= te('Toggle dark mode') ?>"
-                style="color: var(--text-muted);">
-            <span class="theme-icon-light">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg>
-            </span>
-            <span class="theme-icon-dark" style="display:none;">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>
-            </span>
-        </button>
-    </div>
 
-    <div class="login-cinematic">
-        <!-- Left: Showcase Panel -->
-        <?php $__teacher = \App\Services\PublicSite::teacherName(); ?>
-        <div class="login-showcase" style="background: linear-gradient(180deg, rgba(10,42,107,.35) 0%, rgba(10,42,107,.78) 55%, rgba(10,42,107,.96) 100%), url('<?= BASE_URL ?>/assets/img/teacher-smartboard.jpg') center 20% / cover no-repeat;">
-            <div class="relative z-10 text-center px-12 max-w-md" style="margin-top:auto; padding-bottom:3rem;">
-                <div class="mb-5">
-                    <span style="width:56px;height:56px;border-radius:16px;background:#FACC15;display:inline-grid;place-items:center;color:#0B1B3F;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7.5 15h9"/></svg></span>
+    <div class="auth-split-layout">
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- LEFT COLUMN: DECORATIVE BANNER MATCHING REFERENCE IMAGE       -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="auth-banner-left text-white">
+            <!-- Background Glow & Grid -->
+            <div class="absolute -top-32 -left-32 w-80 h-80 bg-[#E5A93C]/15 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
+
+            <!-- Top Header & Brand -->
+            <div class="relative z-10">
+                <a href="<?= BASE_URL ?>/" class="inline-block">
+                    <img src="<?= BASE_URL ?>/assets/img/brand/elocentra-logo-white.svg" alt="ELOCENTRA" class="h-12 w-auto">
+                </a>
+            </div>
+
+            <!-- Middle Slogan & Core Messaging (Matching Reference Image) -->
+            <div class="relative z-10 my-auto py-12 space-y-5">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#E5A93C] text-xs font-semibold tracking-wider uppercase">
+                    ELOCENTRA ACADEMY
                 </div>
-                <h2 class="text-white text-3xl font-bold mb-2 leading-tight"><?= htmlspecialchars($__teacher ?? t('Science classes'), ENT_QUOTES, 'UTF-8') ?></h2>
-                <p class="text-sm font-semibold mb-3" style="color:#FDE68A;"><?= te('Science classes') ?> &middot; <?= te('Grades {r}', ['r' => \App\Services\PublicSite::gradeRange()]) ?></p>
-                <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,.85);">
-                    <?= te('Your classes, notes, recordings, quizzes and marks, in one place.') ?>
+                <h2 class="text-3xl xl:text-4xl font-extrabold tracking-tight leading-tight">
+                    Learn English.<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#F59E0B] via-[#E5A93C] to-[#FCD34D]">Speak Confidently.</span><br>
+                    Succeed Globally.
+                </h2>
+                <p class="text-slate-300 text-sm leading-relaxed max-w-sm">
+                    Access your student portal, active course modules, live lectures, assignments, and verified certificates.
                 </p>
-                <!-- Decorative circles -->
-                <div class="absolute -bottom-20 -left-20 w-60 h-60 rounded-full border border-white/5"></div>
-                <div class="absolute -top-10 -right-10 w-40 h-40 rounded-full border border-white/5"></div>
+            </div>
+
+            <!-- Bottom Glowing Graphic & Copyright (Matching Globe & Open Book) -->
+            <div class="relative z-10 pt-6 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
+                <div>
+                    <span class="text-[#E5A93C] font-semibold">ELOCENTRA</span> &middot; English Academy (PVT) LTD
+                </div>
+                <div>
+                    &copy; <?= date('Y') ?> All Rights Reserved
+                </div>
             </div>
         </div>
 
-        <!-- Right: Login Form -->
-        <div class="login-form-side">
-            <div class="login-glass-card">
-                <!-- Back to home, and the English / Sinhala switch where it is
-                     easy to find -- it used to float in the corner under the
-                     dark-mode button and was half hidden. -->
-                <div class="flex items-center justify-between gap-3 mb-6">
-                    <a href="<?= BASE_URL ?>/" class="inline-flex items-center gap-1 text-xs font-medium transition-colors"
-                       style="color: var(--text-muted);">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>
-                        <?= te('Back to Home') ?>
-                    </a>
-                    <div class="lang-switch" role="group" aria-label="Language / භාෂාව">
-                        <a href="<?= lang_switch_url('en') ?>" class="<?= lang_current() === 'en' ? 'is-on' : '' ?>" lang="en" hreflang="en">EN</a>
-                        <a href="<?= lang_switch_url('si') ?>" class="<?= lang_current() === 'si' ? 'is-on' : '' ?>" lang="si" hreflang="si">සිංහල</a>
-                    </div>
-                </div>
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- RIGHT COLUMN: FORM WORKFLOW & THEME SWITCH                     -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="flex flex-col justify-between p-6 sm:p-12 relative overflow-y-auto">
+            
+            <!-- Top Controls: Back link + Theme Toggle (Matching Reference) -->
+            <div class="flex items-center justify-between w-full max-w-md mx-auto mb-6">
+                <a href="<?= BASE_URL ?>/" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#E5A93C] transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                    Back to Academy
+                </a>
 
-                <!-- Logo (mobile) -->
-                <div class="flex items-center gap-2 mb-6 lg:hidden">
-                    <span style="width:34px;height:34px;border-radius:10px;background:#FACC15;display:grid;place-items:center;color:#0B1B3F;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7.5 15h9"/></svg></span>
-                    <span class="font-semibold text-lg" style="color: var(--text);"><?= htmlspecialchars($__teacher ?? t('Science classes'), ENT_QUOTES, 'UTF-8') ?></span>
-                </div>
+                <!-- Theme Toggle Button -->
+                <button type="button" class="theme-toggle-btn" id="themeToggleAuth" aria-label="Toggle Theme" title="Toggle Light/Dark Theme">
+                    <svg class="w-5 h-5 theme-moon" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg class="w-5 h-5 theme-sun hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
 
-                <h1 class="font-display text-2xl font-bold mb-1" style="color: var(--text);"><?= te('Welcome Back') ?></h1>
-                <p class="text-sm mb-6" style="color: var(--text-secondary);"><?= te('Sign in to the class portal') ?></p>
+            <!-- Main Form Card Container -->
+            <div class="w-full max-w-md mx-auto my-auto py-4">
+                
+                <!-- Mobile Logo (shown only on mobile screens) -->
+                <div class="text-center mb-8 lg:hidden">
+                    <img src="<?= BASE_URL ?>/assets/img/brand/elocentra-logo.svg" alt="ELOCENTRA" class="h-10 w-auto mx-auto mb-2 dark:hidden">
+                    <img src="<?= BASE_URL ?>/assets/img/brand/elocentra-logo-white.svg" alt="ELOCENTRA" class="h-10 w-auto mx-auto mb-2 hidden dark:block">
+                    <p class="text-[11px] text-[#E5A93C] font-bold uppercase tracking-wider">Learn English. Speak Confidently. Succeed Globally.</p>
+                </div>
 
                 <!-- Flash Messages -->
                 <?php include __DIR__ . '/../components/flash-messages.php'; ?>
 
-                <!-- Content (login form) -->
+                <!-- Form Content injected here -->
                 <?= $content ?>
+
             </div>
+
+            <!-- Footer Note -->
+            <div class="w-full max-w-md mx-auto text-center mt-6 text-xs text-slate-400">
+                ELOCENTRA – English Academy (PVT) LTD &middot; Secure Academic Portal
+            </div>
+
         </div>
+
     </div>
 
+    <!-- Theme Switch Script -->
     <script>
-    (function () {
-        var themeBtn = document.getElementById('themeToggle');
-        var html = document.documentElement;
-        try {
-            var stored = localStorage.getItem('theme');
-            if (stored === 'dark') html.setAttribute('data-theme', 'dark');
-        } catch (e) {}
-        updateThemeIcons();
-
-        if (themeBtn) {
-            themeBtn.addEventListener('click', function () {
-                var current = html.getAttribute('data-theme');
-                var next = current === 'dark' ? 'light' : 'dark';
-                html.setAttribute('data-theme', next);
-                try { localStorage.setItem('theme', next); } catch (e) {}
-                updateThemeIcons();
-            });
+    (function() {
+        function updateThemeIcons(theme) {
+            var moons = document.querySelectorAll('.theme-moon');
+            var suns = document.querySelectorAll('.theme-sun');
+            if (theme === 'dark') {
+                moons.forEach(function(m) { m.classList.add('hidden'); });
+                suns.forEach(function(s) { s.classList.remove('hidden'); });
+            } else {
+                moons.forEach(function(m) { m.classList.remove('hidden'); });
+                suns.forEach(function(s) { s.classList.add('hidden'); });
+            }
         }
 
-        function updateThemeIcons() {
-            var isDark = html.getAttribute('data-theme') === 'dark';
-            document.querySelectorAll('.theme-icon-light').forEach(function (el) { el.style.display = isDark ? 'none' : 'inline'; });
-            document.querySelectorAll('.theme-icon-dark').forEach(function (el) { el.style.display = isDark ? 'inline' : 'none'; });
+        function toggleTheme() {
+            var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            var nextTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', nextTheme);
+            try {
+                localStorage.setItem('theme', nextTheme);
+            } catch (e) {}
+            updateThemeIcons(nextTheme);
         }
+
+        var btn = document.getElementById('themeToggleAuth');
+        if (btn) btn.addEventListener('click', toggleTheme);
+
+        var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        updateThemeIcons(currentTheme);
     })();
     </script>
 </body>

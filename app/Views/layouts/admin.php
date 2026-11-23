@@ -256,14 +256,6 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
         </div>
 
         <div class="navbar__right">
-            <!-- English / Sinhala -- every signed-in role gets the toggle, not just
-                 the student/parent portals: staff, teachers and admins read the UI
-                 in Sinhala by default too, and need the same way out to English. -->
-            <div class="lang-switch" role="group" aria-label="Language / භාෂාව">
-                <a href="<?= lang_switch_url('en') ?>" class="<?= lang_current() === 'en' ? 'is-on' : '' ?>" lang="en" hreflang="en" aria-current="<?= lang_current() === 'en' ? 'true' : 'false' ?>">EN</a>
-                <a href="<?= lang_switch_url('si') ?>" class="<?= lang_current() === 'si' ? 'is-on' : '' ?>" lang="si" hreflang="si" aria-current="<?= lang_current() === 'si' ? 'true' : 'false' ?>">සිං</a>
-            </div>
-
             <!-- Theme Toggle -->
             <button type="button" class="theme-toggle-btn" data-toggle="theme" aria-label="Toggle theme">
                 <span class="theme-icon-light">&#9790;</span>
@@ -293,9 +285,6 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
                 <div class="dropdown__menu">
                     <?php if (session_get('user_type') === 'student'): ?>
                         <a href="<?= BASE_URL ?>/my/profile" class="dropdown__item"><?= te('My Profile') ?></a>
-                    <?php elseif (session_get('user_type') === 'parent'): ?>
-                        <a href="<?= BASE_URL ?>/family/account" class="dropdown__item"><?= te('My account') ?></a>
-                        <a href="<?= BASE_URL ?>/family" class="dropdown__item"><?= te('My Child') ?></a>
                     <?php else: ?>
                         <a href="<?= BASE_URL ?>/profile" class="dropdown__item"><?= te('My Profile') ?></a>
                         <?php if (session_get('user_role') === 'super_admin'): ?>
@@ -319,8 +308,8 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar__header" style="display:flex; align-items:center; justify-content:space-between; padding:1.1rem 1rem;">
-            <a href="<?= BASE_URL ?>/dashboard" class="sidebar__brand-logo" aria-label="<?= htmlspecialchars($__brand, ENT_QUOTES, 'UTF-8') ?>" style="width:34px;height:34px;flex:0 0 34px;border-radius:10px;background:#FACC15;display:grid;place-items:center;color:#0B1B3F;cursor:pointer;text-decoration:none;" title="<?= htmlspecialchars($__brand, ENT_QUOTES, 'UTF-8') ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7.5 15h9"/></svg>
+            <a href="<?= BASE_URL ?>/dashboard" class="sidebar__brand-logo" aria-label="<?= htmlspecialchars($__brand, ENT_QUOTES, 'UTF-8') ?>" style="width:36px;height:36px;flex:0 0 36px;border-radius:10px;background:linear-gradient(135deg, #E5A93C, #F59E0B);display:grid;place-items:center;color:#0B132B;cursor:pointer;text-decoration:none;box-shadow:0 2px 6px rgba(229,169,60,0.3);" title="<?= htmlspecialchars($__brand, ENT_QUOTES, 'UTF-8') ?>">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
             </a>
 
             <button type="button" class="sidebar-collapse-btn" id="sidebarCollapse"
@@ -345,27 +334,23 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
             </a>
             <?php endif; ?>
 
-            <?php if (in_array($userRole, ['super_admin', 'admin'])): ?>
-            <!-- All Users (Admins, Coordinators, Staff, Teachers) -->
-            <a href="<?= BASE_URL ?>/users" class="sidebar__link <?= $activePage === 'users' ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-                <?= te('All Users') ?>
-            </a>
-            <?php endif; ?>
-
-            <?php if (in_array($userRole, ['super_admin', 'admin', 'coordinator'])): ?>
-            <!-- Institutes -->
-            <a href="<?= BASE_URL ?>/institutes" class="sidebar__link <?= $activePage === 'institutes' ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
-                <?= te('Institutes') ?>
-            </a>
-            <?php endif; ?>
-
             <?php if (in_array($userRole, ['super_admin', 'admin', 'coordinator', 'staff', 'teacher'])): ?>
-            <!-- Classes -->
-            <a href="<?= BASE_URL ?>/classes" class="sidebar__link <?= $activePage === 'classes' ? 'active' : '' ?>">
+            <!-- ELOCENTRA Courses -->
+            <a href="<?= BASE_URL ?>/admin/courses" class="sidebar__link <?= in_array($activePage, ['courses', 'classes'], true) ? 'active' : '' ?>">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                <?= te('Classes') ?>
+                <?= te('Courses') ?>
+            </a>
+
+            <!-- Subject Areas -->
+            <a href="<?= BASE_URL ?>/admin/subject-areas" class="sidebar__link <?= $activePage === 'subject_areas' ? 'active' : '' ?>">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                <?= te('Subject Areas') ?>
+            </a>
+
+            <!-- Resource Persons / Faculty -->
+            <a href="<?= BASE_URL ?>/admin/resource-persons" class="sidebar__link <?= $activePage === 'resource_persons' ? 'active' : '' ?>">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                <?= te('Resource Persons') ?>
             </a>
             <?php endif; ?>
 
@@ -396,7 +381,11 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
             </a>
             <a href="<?= BASE_URL ?>/my/classes" class="sidebar__link <?= ($isHere('/my/classes') || $isHere('/my/quizzes') || $isHere('/my/materials')) ? 'active' : '' ?>">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                <?= te('My Classes') ?>
+                <?= te('My Courses') ?>
+            </a>
+            <a href="<?= BASE_URL ?>/courses" class="sidebar__link <?= $isHere('/courses') ? 'active' : '' ?>">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <?= te('Browse Courses') ?>
             </a>
             <a href="<?= BASE_URL ?>/my/marks" class="sidebar__link <?= $isHere('/my/marks') ? 'active' : '' ?>">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
@@ -444,79 +433,12 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
                 <?= te('Notices') ?>
             </a>
             <?php endif; ?>
-<?php if ($featureOn('seminars')): ?>
-            <a href="<?= BASE_URL ?>/my/seminars" class="sidebar__link <?= $isHere('/my/seminars') ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><circle cx="12" cy="15" r="2"/></svg>
-                <?= te('Seminars & Events') ?>
-            </a>
-            <?php endif; ?>
 <?php if ($featureOn('help')): ?>
             <a href="<?= BASE_URL ?>/my/help" class="sidebar__link <?= $isHere('/my/help') ? 'active' : '' ?>">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 <?= te('Help & questions') ?>
             </a>
             <?php endif; ?>
-            <?php endif; ?>
-
-            <?php if ($userType === 'parent'): ?>
-            <a href="<?= BASE_URL ?>/family" class="sidebar__link <?= $isHere('/family', true) ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <?= te('My Child') ?>
-            </a>
-            <a href="<?= BASE_URL ?>/family/marks" class="sidebar__link <?= $isHere('/family/marks') ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-                <?= te('Marks') ?>
-            </a>
-            <a href="<?= BASE_URL ?>/family/fees" class="sidebar__link <?= $isHere('/family/fees') ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-                <?= te('Fees') ?>
-            </a>
-<?php if ($featureOn('calendar')): ?>
-            <a href="<?= BASE_URL ?>/family/calendar" class="sidebar__link <?= $isHere('/family/calendar') ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                <?= te('Calendar') ?>
-            </a>
-            <?php endif; ?>
-<?php if ($featureOn('homework')): ?>
-            <a href="<?= BASE_URL ?>/family/assignments" class="sidebar__link <?= $isHere('/family/assignments') ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-                <?= te('Assignments') ?>
-            </a>
-            <?php endif; ?>
-<?php if ($featureOn('recordings')): ?>
-            <a href="<?= BASE_URL ?>/family/recordings" class="sidebar__link <?= $isHere('/family/recordings') ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-                <?= te('Class Recordings') ?>
-            </a>
-            <?php endif; ?>
-<?php if ($featureOn('payments')): ?>
-            <a href="<?= BASE_URL ?>/family/payments" class="sidebar__link <?= $isHere('/family/payments') ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                <?= te('Pay a fee') ?>
-            </a>
-            <?php endif; ?>
-<?php if ($featureOn('notices')): ?>
-            <a href="<?= BASE_URL ?>/family/notices" class="sidebar__link <?= $isHere('/family/notices') ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                <?= te('Notices') ?>
-            </a>
-            <?php endif; ?>
-<?php if ($featureOn('seminars')): ?>
-            <a href="<?= BASE_URL ?>/family/seminars" class="sidebar__link <?= $isHere('/family/seminars') ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><circle cx="12" cy="15" r="2"/></svg>
-                <?= te('Seminars & Events') ?>
-            </a>
-            <?php endif; ?>
-<?php if ($featureOn('help')): ?>
-            <a href="<?= BASE_URL ?>/family/help" class="sidebar__link <?= $isHere('/family/help') ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                <?= te('Help & questions') ?>
-            </a>
-            <?php endif; ?>
-            <a href="<?= BASE_URL ?>/family/account" class="sidebar__link <?= $isHere('/family/account') ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/><path d="M17 3l2 2-2 2"/></svg>
-                <?= te('My account') ?>
-            </a>
             <?php endif; ?>
 
             <?php if (in_array($userRole, ['super_admin', 'admin', 'coordinator', 'staff', 'teacher'])): ?>
@@ -550,12 +472,7 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
                 <?= te('Notice board') ?>
             </a>
             <?php endif; ?>
-<?php if ($featureOn('seminars')): ?>
-            <a href="<?= BASE_URL ?>/seminars" class="sidebar__link <?= $activePage === 'seminars' ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><circle cx="12" cy="15" r="2"/></svg>
-                <?= te('Seminars & Events') ?>
-            </a>
-            <?php endif; ?>
+
 <?php if ($featureOn('help')): ?>
             <a href="<?= BASE_URL ?>/help" class="sidebar__link <?= $activePage === 'help' ? 'active' : '' ?>">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
@@ -614,20 +531,20 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
             <?php endif; ?>
 
             <?php if (in_array($userRole, ['super_admin', 'admin', 'coordinator', 'staff'])): ?>
-            <!-- Payments (desk roles; teachers do not handle fees) -->
+            <!-- ELOCENTRA Finance & Payments -->
             <div class="sidebar__nav-group">
-                <a href="#" class="sidebar__link sidebar__link--has-sub <?= $activePage === 'payments' ? 'active open' : '' ?>" data-toggle-sub="payments-sub">
+                <a href="#" class="sidebar__link sidebar__link--has-sub <?= in_array($activePage, ['payments', 'bank_transfers', 'directpay', 'bank_accounts'], true) ? 'active open' : '' ?>" data-toggle-sub="payments-sub">
                     <span style="display:flex;align-items:center;gap:0.75rem;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-                        <?= te('Payments') ?>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                        <?= te('Payments & Gateways') ?>
                     </span>
                     <span class="chevron">&#9654;</span>
                 </a>
-                <div class="sidebar__sub-links <?= $activePage === 'payments' ? 'open' : '' ?>" id="payments-sub">
-                    <a href="<?= BASE_URL ?>/payments" class="sidebar__sub-link <?= $activeSubPage === 'overview' ? 'active' : '' ?>"><?= te('Overview') ?></a>
-                    <?php if (in_array($userRole, ['super_admin', 'admin', 'staff'])): ?>
-                    <a href="<?= BASE_URL ?>/payments/slips" class="sidebar__sub-link"><?= te('Payment slips') ?></a>
-                    <?php endif; ?>
+                <div class="sidebar__sub-links <?= in_array($activePage, ['payments', 'bank_transfers', 'directpay', 'bank_accounts'], true) ? 'open' : '' ?>" id="payments-sub">
+                    <a href="<?= BASE_URL ?>/admin/bank-transfers" class="sidebar__sub-link <?= $activePage === 'bank_transfers' ? 'active' : '' ?>"><?= te('Bank Transfer Slips') ?></a>
+                    <a href="<?= BASE_URL ?>/admin/directpay" class="sidebar__sub-link <?= $activePage === 'directpay' ? 'active' : '' ?>"><?= te('DirectPay Gateway') ?></a>
+                    <a href="<?= BASE_URL ?>/admin/bank-accounts" class="sidebar__sub-link <?= $activePage === 'bank_accounts' ? 'active' : '' ?>"><?= te('Academy Bank Accounts') ?></a>
+                    <a href="<?= BASE_URL ?>/payments" class="sidebar__sub-link <?= ($activePage === 'payments' && $activeSubPage === 'overview') ? 'active' : '' ?>"><?= te('Payment Records') ?></a>
                     <?php if (in_array($userRole, ['super_admin', 'admin'])): ?>
                     <a href="<?= BASE_URL ?>/payments/generate" class="sidebar__sub-link <?= $activeSubPage === 'generate' ? 'active' : '' ?>"><?= te('Generate Monthly') ?></a>
                     <?php endif; ?>
@@ -705,16 +622,20 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
             </div>
             <?php endif; ?>
 
-            <?php if (in_array($userRole, ['super_admin', 'teacher'], true)): ?>
-            <!-- Downloads (public site): super admin or a teacher -->
-            <a href="<?= BASE_URL ?>/downloads/manage" class="sidebar__link <?= $activePage === 'downloads' ? 'active' : '' ?>">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="m9 14 3 3 3-3"/></svg>
-                <?= te('Downloads') ?>
-            </a>
-            <?php endif; ?>
-
             <?php if ($userRole === 'super_admin'): ?>
-            <div class="sidebar__section"><?= te('Administration') ?></div>
+            <div class="sidebar__section"><?= te('Academy Administration') ?></div>
+
+            <!-- Academy Profile & Slogan Settings -->
+            <a href="<?= BASE_URL ?>/admin/academy-settings" class="sidebar__link <?= $activePage === 'academy_settings' ? 'active' : '' ?>">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4"/></svg>
+                <?= te('Academy Settings') ?>
+            </a>
+
+            <!-- User Accounts -->
+            <a href="<?= BASE_URL ?>/users" class="sidebar__link <?= $activePage === 'users' ? 'active' : '' ?>">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <?= te('Staff & Users') ?>
+            </a>
 
             <!-- Audit Log -->
             <a href="<?= BASE_URL ?>/audit" class="sidebar__link <?= $activePage === 'audit' ? 'active' : '' ?>">
@@ -741,7 +662,6 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
                     <a href="<?= BASE_URL ?>/settings/site-content" class="sidebar__sub-link <?= $activeSubPage === 'site-content' ? 'active' : '' ?>"><?= te('Design & content') ?></a>
                     <a href="<?= BASE_URL ?>/settings/hero-media" class="sidebar__sub-link <?= $activeSubPage === 'hero-media' ? 'active' : '' ?>"><?= te('Background photos') ?></a>
                     <a href="<?= BASE_URL ?>/settings/ads" class="sidebar__sub-link <?= $activeSubPage === 'ads' ? 'active' : '' ?>"><?= te('Announcements') ?></a>
-                    <a href="<?= BASE_URL ?>/downloads/manage" class="sidebar__sub-link <?= $activeSubPage === 'downloads-manage' ? 'active' : '' ?>"><?= te('Downloads') ?></a>
                     <a href="<?= BASE_URL ?>/settings/translations" class="sidebar__sub-link <?= $activeSubPage === 'translations' ? 'active' : '' ?>"><?= te('Wording & languages') ?></a>
                     <a href="<?= BASE_URL ?>/" target="_blank" rel="noopener" class="sidebar__sub-link"><?= te('View the site') ?> &#8599;</a>
                 </div>

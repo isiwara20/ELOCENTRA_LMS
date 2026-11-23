@@ -134,11 +134,15 @@ class Student extends BaseModel
     // ─── Authentication ──────────────────────────────────────────────
 
     /**
-     * Authenticate a student by display ID + password.
+     * Authenticate a student by display ID, username, or email + password.
      */
-    public function authenticate(string $studentIdDisplay, string $password): ?array
+    public function authenticate(string $identifier, string $password): ?array
     {
-        $student = $this->findBy('student_id_display', $studentIdDisplay);
+        $stmt = $this->query(
+            "SELECT * FROM {$this->table} WHERE (student_id_display = :id1 OR username = :id2 OR email = :id3) LIMIT 1",
+            [':id1' => $identifier, ':id2' => $identifier, ':id3' => $identifier]
+        );
+        $student = $stmt->fetch();
         if (!$student) {
             return null;
         }

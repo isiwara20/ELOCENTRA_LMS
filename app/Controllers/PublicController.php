@@ -7,361 +7,454 @@ namespace App\Controllers;
 class PublicController extends BaseController
 {
     /**
-     * Home page.
+     * Homepage specifically designed for ELOCENTRA – English Academy (PVT) LTD
      */
     public function home(): void
     {
-        // The tuition home page is built from real records: the branches
-        // the super admin has made public, and their active classes. No
-        // invented student counts, success rates or testimonials.
-        $branches = $this->publicBranches();
-        $this->view('public/tuition-home', [
-            'pageTitle'       => (\App\Services\PublicSite::teacherName() ? \App\Services\PublicSite::teacherName() . ' | ' : '') . t('Science classes') . ' ' . t('Grades {r}', ['r' => \App\Services\PublicSite::gradeRange()]),
-            'metaDescription' => 'Science tuition for Grades 6 to 11 at branches in Pannipitiya, Galle and Kandy - physical and online classes, lesson recordings, quizzes and a parent portal.',
-            'activePage'      => 'home',
-            'branches'        => $branches,
-            'classes'         => $this->publicClasses(),
-            'teacher'         => \App\Services\PublicSite::teacherName(),
-            'seminars'        => $this->publicSeminars(),
-        ], 'layouts/public');
-    }
+        $subjectAreas = $this->getActiveSubjectAreas();
+        $courses = $this->getFeaturedCourses();
+        $resourcePersons = $this->getActiveResourcePersons();
+        $settings = $this->getSystemSettings();
 
-    /** All public classes, filterable by grade and branch. */
-    public function classes(): void
-    {
-        $grade = preg_match('/^(6|7|8|9|10|11)$/', (string) ($_GET['grade'] ?? '')) ? (string) $_GET['grade'] : null;
-        $branch = ctype_digit((string) ($_GET['branch'] ?? '')) ? (int) $_GET['branch'] : null;
-
-        $this->view('public/classes', [
-            'pageTitle'       => t('Class timetable') . ' | ' . t('Science classes') . ' ' . t('Grades {r}', ['r' => \App\Services\PublicSite::gradeRange()]),
-            'metaDescription' => 'Science class timetable for Grades 6 to 11 at each branch, with physical and online options.',
-            'activePage'      => 'classes',
-            'branches'        => $this->publicBranches(),
-            'classes'         => $this->publicClasses($grade, $branch),
-            'grade'           => $grade,
-            'branch'          => $branch,
+        $this->view('public/home', [
+            'pageTitle'        => 'ELOCENTRA – English Academy (PVT) LTD | Learn English. Speak Confidently. Succeed Globally.',
+            'metaDescription'  => 'Premier English and professional academy in Sri Lanka. Learn English, speak confidently, and succeed globally with university-level courses.',
+            'activePage'       => 'home',
+            'subjectAreas'     => $subjectAreas,
+            'courses'          => $courses,
+            'resourcePersons'  => $resourcePersons,
+            'settings'         => $settings,
         ], 'layouts/public');
     }
 
     /**
-     * Classes landing page: one card per public branch (photo,
-     * description, class count) with a "My Classes" button into that
-     * branch's own timetable at /branches/{id}.
-     */
-    public function classesLanding(): void
-    {
-        $this->view('public/classes-landing', [
-            'pageTitle'       => t('Classes') . ' | ' . t('Science classes') . ' ' . t('Grades {r}', ['r' => \App\Services\PublicSite::gradeRange()]),
-            'metaDescription' => 'Science classes for Grades 6 to 11 at each branch -- pick a branch to see its classes.',
-            'activePage'      => 'classes',
-            'branches'        => $this->publicBranches(),
-        ], 'layouts/public');
-    }
-
-    /**
-     * Events page: every seminar/event the staff chose to advertise on
-     * the website (see PublicSite::upcomingSeminars()), newest-first by
-     * date. A separate nav tab from "About", placed right after it.
-     */
-    public function events(): void
-    {
-        $this->view('public/events', [
-            'pageTitle'       => t('Events') . ' | ' . t('Science classes') . ' ' . t('Grades {r}', ['r' => \App\Services\PublicSite::gradeRange()]),
-            'metaDescription' => 'Upcoming seminars and events for Science class students, Grades 6 to 11.',
-            'activePage'      => 'events',
-            'events'          => \App\Services\PublicSite::upcomingSeminars(60),
-        ], 'layouts/public');
-    }
-
-    /** One branch: where it is, how to reach it, and its classes. */
-    public function branch(string $id): void
-    {
-        $branch = null;
-        foreach ($this->publicBranches() as $b) {
-            if ((int) $b['id'] === (int) $id) {
-                $branch = $b;
-            }
-        }
-        if ($branch === null) {
-            $this->redirect('/timetable');
-        }
-
-        $this->view('public/branch', [
-            'pageTitle'       => $branch['name'] . ' | ' . t('Science classes'),
-            'metaDescription' => 'Science classes for Grades 6 to 11 at ' . $branch['name'] . '.',
-            'activePage'      => 'branch',
-            'branch'          => $branch,
-            'classes'         => $this->publicClasses(null, (int) $branch['id']),
-        ], 'layouts/public');
-    }
-
-    /**
-     * Enrolment inquiry from the public site. Stored for the chosen
-     * branch's office; spam is held back by a hidden honeypot field, a
-     * minimum fill time and a per-session limit.
-     */
-    public function inquiry(): void
-    {
-        verifyCsrfToken();
-        $back = '/#inquiry';
-
-        $started = (int) ($_POST['started_at'] ?? 0);
-        $recent = (array) ($_SESSION['inquiry_times'] ?? []);
-        $recent = array_values(array_filter($recent, static fn ($t): bool => (int) $t > time() - 3600));
-        if (trim((string) ($_POST['website'] ?? '')) !== '' || ($started > 0 && time() - $started < 3) || count($recent) >= 3) {
-            // Looks automated, or too many in an hour: accept silently.
-            $this->flash('success', t('Thank you! The branch office will contact you soon.'));
-            $this->redirect($back);
-        }
-
-        $data = [
-            'parent_name'  => trim((string) ($_POST['parent_name'] ?? '')),
-            'phone'        => trim((string) ($_POST['phone'] ?? '')),
-            'email'        => trim((string) ($_POST['email'] ?? '')),
-            'student_name' => trim((string) ($_POST['student_name'] ?? '')),
-            'grade'        => (string) ($_POST['grade'] ?? ''),
-            'message'      => trim((string) ($_POST['message'] ?? '')),
-        ];
-        $branchId = (int) ($_POST['branch_id'] ?? 0);
-        $branchIds = array_map(static fn (array $b): int => (int) $b['id'], $this->publicBranches());
-
-        $phoneOk = preg_match('/^(\+94|0)?7\d{8}$|^(\+94|0)\d{9}$/', preg_replace('/[\s-]/', '', $data['phone']) ?? '') === 1;
-        if ($data['parent_name'] === '' || !$phoneOk || !in_array($data['grade'], ['6', '7', '8', '9', '10', '11'], true)
-            || !in_array($branchId, $branchIds, true)
-            || ($data['email'] !== '' && !filter_var($data['email'], FILTER_VALIDATE_EMAIL))
-            || mb_strlen($data['message']) > 2000 || mb_strlen($data['parent_name']) > 255 || mb_strlen($data['student_name']) > 255) {
-            $this->flash('error', t('Please give your name, a Sri Lankan phone number, the grade and the branch.'));
-            $this->redirect($back);
-        }
-
-        $this->db->prepare(
-            "INSERT INTO contact_messages (kind, institute_id, grade, student_name, full_name, email, phone, subject, message, status, created_at)
-             VALUES ('enrollment', :i, :g, :sn, :n, :e, :p, :s, :m, 'new', NOW())"
-        )->execute([
-            ':i' => $branchId, ':g' => $data['grade'], ':sn' => $data['student_name'] ?: null,
-            ':n' => $data['parent_name'], ':e' => $data['email'], ':p' => $data['phone'],
-            ':s' => 'Enrolment inquiry - Grade ' . $data['grade'],
-            ':m' => $data['message'] !== '' ? $data['message'] : '-',
-        ]);
-        $_SESSION['inquiry_times'] = array_merge($recent, [time()]);
-
-        $this->flash('success', t('Thank you! The branch office will contact you soon.'));
-        $this->redirect($back);
-    }
-
-    /** @return array<int, array<string, mixed>> */
-    private function publicBranches(): array
-    {
-        if (!$this->db) {
-            return [];
-        }
-        try {
-            return $this->db->query(
-                "SELECT i.id, i.name, i.location, i.phone1, i.phone2, i.public_show_fees, i.banner_size,
-                        (SELECT COUNT(*) FROM classes c WHERE c.institute_id = i.id AND c.status = 'active') AS class_count
-                   FROM institutes i
-                  WHERE i.status = 'active' AND i.is_public = 1
-                  ORDER BY i.sort_order ASC, i.id ASC"
-            )->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (\Throwable $e) {
-            error_log('Public branches unavailable: ' . $e->getMessage());
-            return [];
-        }
-    }
-
-    /**
-     * Public class facts only: no rosters, no meeting links, and the fee
-     * only where the branch allows it.
-     *
-     * @return array<int, array<string, mixed>>
-     */
-    private function publicClasses(?string $grade = null, ?int $branchId = null): array
-    {
-        if (!$this->db) {
-            return [];
-        }
-        $sql = "SELECT c.id, c.class_name, c.subject, c.grade, c.medium, c.room, c.delivery_mode,
-                       c.schedule_days, c.start_time, c.end_time, c.institute_id,
-                       CASE WHEN i.public_show_fees = 1 THEN c.monthly_fee ELSE NULL END AS public_fee,
-                       i.name AS branch_name, u.full_name AS teacher_name
-                  FROM classes c
-                  JOIN institutes i ON i.id = c.institute_id AND i.status = 'active' AND i.is_public = 1
-                  LEFT JOIN users u ON u.id = c.teacher_id
-                 WHERE c.status = 'active'";
-        $params = [];
-        if ($grade !== null) {
-            $sql .= " AND c.grade LIKE :g";
-            $params[':g'] = 'Grade ' . $grade . '%';
-        }
-        if ($branchId !== null) {
-            $sql .= " AND c.institute_id = :b";
-            $params[':b'] = $branchId;
-        }
-        try {
-            $stmt = $this->db->prepare($sql . " ORDER BY CAST(SUBSTRING(c.grade, 7) AS UNSIGNED), i.id, c.start_time");
-            $stmt->execute($params);
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (\Throwable $e) {
-            error_log('Public classes unavailable: ' . $e->getMessage());
-            return [];
-        }
-    }
-
-    private function leadTeacher(): ?string
-    {
-        if (!$this->db) {
-            return null;
-        }
-        try {
-            $name = $this->db->query(
-                "SELECT u.full_name FROM classes c
-                   JOIN institutes i ON i.id = c.institute_id AND i.is_public = 1
-                   JOIN users u ON u.id = c.teacher_id
-                  WHERE c.status = 'active'
-                  GROUP BY u.id ORDER BY COUNT(*) DESC LIMIT 1"
-            )->fetchColumn();
-            return $name !== false ? (string) $name : null;
-        } catch (\Throwable $e) {
-            return null;
-        }
-    }
-
-    /**
-     * About page.
+     * Dedicated About Us page
      */
     public function about(): void
     {
+        $settings = $this->getSystemSettings();
+        $resourcePersons = $this->getActiveResourcePersons();
+
         $this->view('public/about', [
-            'pageTitle'       => t('About the classes'),
-            'metaDescription' => 'Science classes for Grades 6 to 11: the teacher, how the classes run, and the branches.',
-            'activePage'      => 'about',
+            'pageTitle'        => 'About Us | ELOCENTRA – English Academy (PVT) LTD',
+            'metaDescription'  => 'Learn about ELOCENTRA, our vision, mission, goals, and academic methodology.',
+            'activePage'       => 'about',
+            'settings'         => $settings,
+            'resourcePersons'  => $resourcePersons,
         ], 'layouts/public');
     }
 
     /**
-     * Features page.
+     * Courses Catalog page (replaces legacy Classes)
      */
-    public function features(): void
+    public function courses(): void
     {
-        // The old product-feature page described the software, not the
-        // classes; parents are sent to the section that explains the classes.
-        $this->redirect('/#how');
+        $search = trim((string) ($_GET['q'] ?? ''));
+        $subjectAreaId = !empty($_GET['subject_area']) ? (int) $_GET['subject_area'] : null;
+
+        $subjectAreas = $this->getActiveSubjectAreas();
+        $courses = $this->getFilteredCourses($search, $subjectAreaId);
+
+        $this->view('public/courses', [
+            'pageTitle'        => 'Our Courses | ELOCENTRA – English Academy (PVT) LTD',
+            'metaDescription'  => 'Explore professional English, Psychology, and Business Accounting courses at ELOCENTRA.',
+            'activePage'       => 'courses',
+            'subjectAreas'     => $subjectAreas,
+            'courses'          => $courses,
+            'currentSearch'    => $search,
+            'currentSubject'   => $subjectAreaId,
+        ], 'layouts/public');
     }
 
     /**
-     * Contact page — GET shows the form.
+     * Single Course Detail page
+     */
+    public function courseDetail(string $id): void
+    {
+        $courseId = (int) $id;
+        $course = $this->getCourseById($courseId);
+
+        if (!$course) {
+            $this->flash('error', 'Course not found or currently unavailable.');
+            $this->redirect('/courses');
+            return;
+        }
+
+        $bankAccounts = $this->getActiveBankAccounts();
+        $directPayConfig = $this->getDirectPayConfig();
+
+        $this->view('public/course-detail', [
+            'pageTitle'        => $course['class_name'] . ' | ELOCENTRA Courses',
+            'metaDescription'  => htmlspecialchars($course['description'] ?? 'Course at ELOCENTRA Academy', ENT_QUOTES, 'UTF-8'),
+            'activePage'       => 'courses',
+            'course'           => $course,
+            'bankAccounts'     => $bankAccounts,
+            'directPayConfig'  => $directPayConfig,
+        ], 'layouts/public');
+    }
+
+    /**
+     * Contact Us page
      */
     public function contact(): void
     {
+        $settings = $this->getSystemSettings();
+
         $this->view('public/contact', [
-            'pageTitle'       => t('Contact'),
-            'metaDescription' => 'Phone numbers and locations of the Science class branches.',
-            'activePage'      => 'contact',
+            'pageTitle'        => 'Contact Us | ELOCENTRA – English Academy (PVT) LTD',
+            'metaDescription'  => 'Get in touch with ELOCENTRA – English Academy (PVT) LTD. Colombo campus details, email, phone, and inquiry form.',
+            'activePage'       => 'contact',
+            'settings'         => $settings,
         ], 'layouts/public');
     }
 
     /**
-     * Contact form — POST processes the submission.
+     * Submit Contact / Inquiry Message
      */
     public function contactSubmit(): void
     {
         verifyCsrfToken();
 
         $data = [
-            'name'    => trim($_POST['name'] ?? ''),
-            'email'   => trim($_POST['email'] ?? ''),
-            'phone'   => trim($_POST['phone'] ?? ''),
-            'subject' => trim($_POST['subject'] ?? ''),
-            'message' => trim($_POST['message'] ?? ''),
+            'full_name' => trim((string) ($_POST['name'] ?? $_POST['full_name'] ?? '')),
+            'email'     => trim((string) ($_POST['email'] ?? '')),
+            'phone'     => trim((string) ($_POST['phone'] ?? '')),
+            'subject'   => trim((string) ($_POST['subject'] ?? 'General Inquiry')),
+            'message'   => trim((string) ($_POST['message'] ?? '')),
         ];
 
-        $errors = $this->validate($data, [
-            'name'    => 'required|max:255',
-            'email'   => 'max:255',
-            'phone'   => 'max:50',
-            'subject' => 'required|max:255',
-            'message' => 'required|max:5000',
-        ]);
-
-        if ($data['email'] !== '' && !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            $errors['email'] = t('That email address is not valid.');
-        }
-        if ($data['email'] === '' && $data['phone'] === '') {
-            $errors['phone'] = t('Give a phone number or an email so the office can reply.');
-        }
-        if (!empty($errors)) {
-            $this->flash('error', implode(' ', $errors));
+        if ($data['full_name'] === '' || $data['email'] === '' || $data['message'] === '') {
+            $this->flash('error', 'Please fill in your name, email address, and message.');
             $this->redirect('/contact');
+            return;
         }
 
-        // Store the contact message (using the database if available)
-        if ($this->db) {
-            $sql = "INSERT INTO contact_messages (full_name, email, phone, subject, message, created_at)
-                    VALUES (:full_name, :email, :phone, :subject, :message, NOW())";
-            try {
-                $stmt = $this->db->prepare($sql);
-                $stmt->execute([
-                    ':full_name' => $data['name'],
-                    ':email'     => $data['email'],
-                    ':phone'     => $data['phone'] !== '' ? $data['phone'] : null,
-                    ':subject'   => $data['subject'],
-                    ':message'   => $data['message'],
-                ]);
-            } catch (\PDOException $e) {
-                // Table may not exist yet — log and continue
-                error_log('Contact form storage failed: ' . $e->getMessage());
-            }
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $this->flash('error', 'Please provide a valid email address.');
+            $this->redirect('/contact');
+            return;
         }
 
-        $this->flash('success', t('Thank you! The branch office will contact you soon.'));
+        try {
+            $stmt = $this->db->prepare("
+                INSERT INTO `contact_messages` (`full_name`, `email`, `phone`, `subject`, `message`, `status`, `created_at`)
+                VALUES (:full_name, :email, :phone, :subject, :message, 'new', NOW())
+            ");
+            $stmt->execute([
+                ':full_name' => $data['full_name'],
+                ':email'     => $data['email'],
+                ':phone'     => $data['phone'] ?: null,
+                ':subject'   => $data['subject'],
+                ':message'   => $data['message'],
+            ]);
+
+            $this->flash('success', 'Thank you for reaching out! Our academic counseling team will contact you shortly.');
+        } catch (\Throwable $e) {
+            error_log('Contact form error: ' . $e->getMessage());
+            $this->flash('error', 'An error occurred while sending your message. Please try again.');
+        }
+
         $this->redirect('/contact');
     }
 
     /**
-     * Published seminars flagged show_on_website, upcoming or recent.
+     * Process Course Enrollment & Payment (DirectPay Card or Bank Transfer Slip)
      */
-    private function publicSeminars(int $limit = 6): array
+    public function courseEnroll(string $id): void
     {
-        $db = \Database::connect();
-        return $db->query(
-            "SELECT s.id, s.title, s.description, s.event_date, s.start_time,
-                    s.end_time, s.venue, s.cover_image_url,
-                    i.name AS institute_name
-               FROM seminars s
-               LEFT JOIN institutes i ON i.id = s.institute_id
-              WHERE s.status = 'published'
-                AND s.show_on_website = 1
-                AND s.event_date >= CURDATE() - INTERVAL 3 DAY
-              ORDER BY s.event_date ASC, s.id DESC
-              LIMIT " . max(1, min(20, $limit))
-        )->fetchAll(\PDO::FETCH_ASSOC);
-    }
+        verifyCsrfToken();
+        $courseId = (int) $id;
+        $course = $this->getCourseById($courseId);
 
-    /**
-     * Public view of a single seminar (poster + details). No login needed.
-     */
-    public function seminar(string $id): void
-    {
-        $db = \Database::connect();
-        $stmt = $db->prepare(
-            "SELECT s.*, i.name AS institute_name
-               FROM seminars s
-               LEFT JOIN institutes i ON i.id = s.institute_id
-              WHERE s.id = :id AND s.status = 'published' AND s.show_on_website = 1"
-        );
-        $stmt->execute([':id' => (int) $id]);
-        $seminar = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-        if (!$seminar) {
-            $this->redirect('/');
+        if (!$course) {
+            $this->flash('error', 'Course not found.');
+            $this->redirect('/courses');
             return;
         }
 
-        $this->view('public/seminar', [
-            'pageTitle'       => $seminar['title'] . ' | ' . t('Seminar'),
-            'metaDescription' => mb_strimwidth(strip_tags((string) ($seminar['description'] ?? '')), 0, 155, '...'),
-            'activePage'      => 'home',
-            'seminar'         => $seminar,
-        ], 'layouts/public');
+        $paymentMethod = $_POST['payment_method'] ?? 'directpay';
+        $amount = (float) ($course['price'] ?? $course['monthly_fee'] ?? 0);
+        
+        // Resolve student: either from session or guest details
+        $studentId = null;
+        if (function_exists('session_get') && session_get('user_id') && session_get('user_type') === 'student') {
+            $studentId = (int) session_get('user_id');
+        } else {
+            // Guest checkout: create or resolve student account
+            $name = trim((string) ($_POST['student_name'] ?? $_POST['full_name'] ?? ''));
+            $email = trim((string) ($_POST['student_email'] ?? $_POST['email'] ?? ''));
+            $whatsapp = trim((string) ($_POST['student_whatsapp'] ?? $_POST['whatsapp'] ?? ''));
+            $address = trim((string) ($_POST['student_address'] ?? $_POST['address'] ?? ''));
+
+            if ($name === '' || $email === '') {
+                $this->flash('error', 'Please provide your name and email address to enroll.');
+                $this->redirect('/courses/' . $courseId);
+                return;
+            }
+
+            // Check if student exists by email
+            $stmt = $this->db->prepare("SELECT id FROM students WHERE email = :email LIMIT 1");
+            $stmt->execute([':email' => $email]);
+            $existing = $stmt->fetchColumn();
+
+            if ($existing) {
+                $studentId = (int) $existing;
+            } else {
+                // Auto create student
+                $studentDisplayId = 'STU' . date('Y') . str_pad((string) rand(100, 9999), 4, '0', STR_PAD_LEFT);
+                $rawUsername = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', strtok($email, '@'))) . rand(10, 99);
+                $defaultHash = password_hash('Demo@12345', PASSWORD_DEFAULT);
+
+                $stmt = $this->db->prepare("
+                    INSERT INTO students (student_id_display, username, full_name, email, phone1, whatsapp, address, password_hash, status, created_at)
+                    VALUES (:did, :uname, :name, :email, :phone, :wa, :addr, :pwd, 'active', NOW())
+                ");
+                $stmt->execute([
+                    ':did'   => $studentDisplayId,
+                    ':uname' => $rawUsername,
+                    ':name'  => $name,
+                    ':email' => $email,
+                    ':phone' => $whatsapp,
+                    ':wa'    => $whatsapp,
+                    ':addr'  => $address,
+                    ':pwd'   => $defaultHash,
+                ]);
+                $studentId = (int) $this->db->lastInsertId();
+            }
+        }
+
+        $orderNumber = 'ORD-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -5));
+
+        if ($paymentMethod === 'directpay') {
+            // DirectPay Card Payment Simulation / Integration
+            $txId = 'DP_' . strtoupper(bin2hex(random_bytes(6)));
+
+            $stmt = $this->db->prepare("
+                INSERT INTO course_orders (order_number, student_id, course_id, amount, currency, payment_method, payment_status, gateway_transaction_id, created_at)
+                VALUES (:ord, :stu, :cid, :amt, 'LKR', 'directpay', 'paid', :tx, NOW())
+            ");
+            $stmt->execute([
+                ':ord' => $orderNumber,
+                ':stu' => $studentId,
+                ':cid' => $courseId,
+                ':amt' => $amount,
+                ':tx'  => $txId,
+            ]);
+
+            // Create/update enrollment
+            $stmt = $this->db->prepare("
+                INSERT INTO enrollments (student_id, class_id, scholarship_type, enrollment_status, enrolled_at)
+                VALUES (:stu, :cid, 'full_payment', 'active', NOW())
+                ON DUPLICATE KEY UPDATE enrollment_status = 'active'
+            ");
+            $stmt->execute([':stu' => $studentId, ':cid' => $courseId]);
+
+            $enrollmentId = (int) $this->db->lastInsertId();
+            if (!$enrollmentId) {
+                $stmt = $this->db->prepare("SELECT id FROM enrollments WHERE student_id = :stu AND class_id = :cid LIMIT 1");
+                $stmt->execute([':stu' => $studentId, ':cid' => $courseId]);
+                $enrollmentId = (int) $stmt->fetchColumn();
+            }
+
+            // Create payment record
+            $stmt = $this->db->prepare("
+                INSERT INTO payments (enrollment_id, student_id, class_id, month_year, amount_due, amount_paid, payment_status, paid_at, notes, created_at)
+                VALUES (:eid, :stu, :cid, CURDATE(), :due, :paid, 'paid', NOW(), :note, NOW())
+            ");
+            $stmt->execute([
+                ':eid'  => $enrollmentId,
+                ':stu'  => $studentId,
+                ':cid'  => $courseId,
+                ':due'  => $amount,
+                ':paid' => $amount,
+                ':note' => 'Paid via DirectPay Card: ' . $txId,
+            ]);
+
+            $this->flash('success', 'Payment of LKR ' . number_format($amount, 2) . ' successful via DirectPay! You are officially enrolled in ' . $course['class_name'] . '.');
+            $this->redirect('/courses/' . $courseId);
+            return;
+        } else {
+            // Bank Transfer
+            $bankRef = trim((string) ($_POST['bank_reference'] ?? ''));
+            $slipPath = null;
+
+            if (isset($_FILES['payment_slip']) && $_FILES['payment_slip']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = BASE_PATH . '/public/uploads/slips';
+                if (!is_dir($uploadDir)) {
+                    @mkdir($uploadDir, 0777, true);
+                }
+                $ext = strtolower(pathinfo($_FILES['payment_slip']['name'], PATHINFO_EXTENSION));
+                $safeName = 'slip_' . date('Ymd_His') . '_' . bin2hex(random_bytes(4)) . '.' . $ext;
+                $targetFile = $uploadDir . '/' . $safeName;
+                if (move_uploaded_file($_FILES['payment_slip']['tmp_name'], $targetFile)) {
+                    $slipPath = '/uploads/slips/' . $safeName;
+                }
+            }
+
+            $stmt = $this->db->prepare("
+                INSERT INTO course_orders (order_number, student_id, course_id, amount, currency, payment_method, payment_status, bank_reference, slip_path, created_at)
+                VALUES (:ord, :stu, :cid, :amt, 'LKR', 'bank_transfer', 'pending', :ref, :slip, NOW())
+            ");
+            $stmt->execute([
+                ':ord'  => $orderNumber,
+                ':stu'  => $studentId,
+                ':cid'  => $courseId,
+                ':amt'  => $amount,
+                ':ref'  => $bankRef ?: null,
+                ':slip' => $slipPath,
+            ]);
+
+            $this->flash('success', 'Your bank transfer slip has been submitted successfully! Order #' . $orderNumber . ' is pending verification. Our administrative team will verify your payment and activate your course access.');
+            $this->redirect('/courses/' . $courseId);
+            return;
+        }
+    }
+
+    // ─── Internal Helper Queries ──────────────────────────────────────
+
+    private function getActiveSubjectAreas(): array
+    {
+        if (!$this->db) return [];
+        try {
+            return $this->db->query("
+                SELECT sa.*, COUNT(c.id) AS course_count
+                FROM `subject_areas` sa
+                LEFT JOIN `classes` c ON c.subject_area_id = sa.id AND c.status = 'active'
+                WHERE sa.status = 'active'
+                GROUP BY sa.id
+                ORDER BY sa.sort_order ASC, sa.id ASC
+            ")->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Throwable $e) {
+            error_log('Error getting subject areas: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    private function getFeaturedCourses(): array
+    {
+        if (!$this->db) return [];
+        try {
+            return $this->db->query("
+                SELECT c.*, sa.name AS subject_area_name, COALESCE(rp.name, u.full_name) AS teacher_name, rp.title AS teacher_title
+                FROM `classes` c
+                LEFT JOIN `subject_areas` sa ON sa.id = c.subject_area_id
+                LEFT JOIN `resource_persons` rp ON rp.id = c.teacher_id OR rp.user_id = c.teacher_id
+                LEFT JOIN `users` u ON u.id = c.teacher_id
+                WHERE c.status = 'active'
+                ORDER BY c.is_featured DESC, c.id ASC
+                LIMIT 8
+            ")->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Throwable $e) {
+            error_log('Error getting featured courses: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    private function getFilteredCourses(string $search = '', ?int $subjectAreaId = null): array
+    {
+        if (!$this->db) return [];
+        try {
+            $sql = "
+                SELECT c.*, sa.name AS subject_area_name, COALESCE(rp.name, u.full_name) AS teacher_name, rp.title AS teacher_title
+                FROM `classes` c
+                LEFT JOIN `subject_areas` sa ON sa.id = c.subject_area_id
+                LEFT JOIN `resource_persons` rp ON rp.id = c.teacher_id OR rp.user_id = c.teacher_id
+                LEFT JOIN `users` u ON u.id = c.teacher_id
+                WHERE c.status = 'active'
+            ";
+            $params = [];
+
+            if ($search !== '') {
+                $sql .= " AND (c.class_name LIKE :search OR c.description LIKE :search OR c.subject LIKE :search)";
+                $params[':search'] = '%' . $search . '%';
+            }
+
+            if ($subjectAreaId !== null && $subjectAreaId > 0) {
+                $sql .= " AND c.subject_area_id = :subjectAreaId";
+                $params[':subjectAreaId'] = $subjectAreaId;
+            }
+
+            $sql .= " ORDER BY c.is_featured DESC, c.id ASC";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($params);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Throwable $e) {
+            error_log('Error getting filtered courses: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    private function getCourseById(int $id): ?array
+    {
+        if (!$this->db) return null;
+        try {
+            $stmt = $this->db->prepare("
+                SELECT c.*, sa.name AS subject_area_name, COALESCE(rp.name, u.full_name) AS teacher_name, 
+                       rp.title AS teacher_title, rp.qualifications AS teacher_qualifications, rp.bio AS teacher_bio, rp.photo AS teacher_photo
+                FROM `classes` c
+                LEFT JOIN `subject_areas` sa ON sa.id = c.subject_area_id
+                LEFT JOIN `resource_persons` rp ON rp.id = c.teacher_id OR rp.user_id = c.teacher_id
+                LEFT JOIN `users` u ON u.id = c.teacher_id
+                WHERE c.id = :id AND c.status = 'active'
+                LIMIT 1
+            ");
+            $stmt->execute([':id' => $id]);
+            $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $res ?: null;
+        } catch (\Throwable $e) {
+            error_log('Error getting course: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    private function getActiveResourcePersons(): array
+    {
+        if (!$this->db) return [];
+        try {
+            return $this->db->query("
+                SELECT * FROM `resource_persons`
+                WHERE `status` = 'active'
+                ORDER BY `sort_order` ASC, `id` ASC
+            ")->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Throwable $e) {
+            error_log('Error getting resource persons: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    private function getActiveBankAccounts(): array
+    {
+        if (!$this->db) return [];
+        try {
+            return $this->db->query("
+                SELECT * FROM `bank_accounts`
+                WHERE `status` = 'active'
+                ORDER BY `sort_order` ASC, `id` ASC
+            ")->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Throwable $e) {
+            error_log('Error getting bank accounts: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    private function getDirectPayConfig(): ?array
+    {
+        if (!$this->db) return null;
+        try {
+            return $this->db->query("SELECT * FROM `directpay_config` LIMIT 1")->fetch(\PDO::FETCH_ASSOC) ?: null;
+        } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
+    private function getSystemSettings(): array
+    {
+        if (!$this->db) return [];
+        try {
+            $rows = $this->db->query("SELECT setting_key, setting_value FROM `system_settings`")->fetchAll(\PDO::FETCH_KEY_PAIR);
+            return $rows ?: [];
+        } catch (\Throwable $e) {
+            return [];
+        }
     }
 }
