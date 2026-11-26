@@ -13,17 +13,27 @@ $hours = 'Monday - Saturday: 8.30 AM - 6.00 PM';
 <!-- ═══════════════════════════════════════════════════════════════════ -->
 <!-- HERO BANNER (NAVY CURVED WAVE AS IN REFERENCE IMAGE)                -->
 <!-- ═══════════════════════════════════════════════════════════════════ -->
-<section class="bg-[#0B132B] text-white pt-16 pb-24 relative overflow-hidden">
+<section class="relative bg-[#060B18] text-white pt-20 pb-28 overflow-hidden select-none">
+    <!-- Aesthetic Morning Study Desk Background - Clear & Luminous in Night Mode -->
+    <div class="hero-banner-bg absolute inset-0 w-full h-full bg-cover bg-center transform scale-100"
+         style="background-image: url('<?= BASE_URL ?>/public/assets/img/slider/contact-banner.jpg');">
+    </div>
+    <div class="hero-banner-overlay absolute inset-0 pointer-events-none"></div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-3">
-        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Contact Us</h1>
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-[#E5A93C] text-xs font-semibold tracking-wider uppercase backdrop-blur-md">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#E5A93C]"></span>
+            Get In Touch
+        </div>
+        <h1 class="hero-banner-title text-3xl sm:text-5xl font-extrabold tracking-tight" style="color: #FFFFFF !important; text-shadow: 0 2px 14px rgba(0,0,0,0.75);">Contact Us</h1>
         <div class="flex items-center justify-center gap-2 text-xs font-semibold text-slate-300">
             <a href="<?= BASE_URL ?>/" class="hover:text-[#E5A93C] transition-colors">Home</a>
-            <span>&gt;</span>
+            <span class="text-slate-500">&gt;</span>
             <span class="text-[#E5A93C]">Contact Us</span>
         </div>
     </div>
     <!-- Curved Wave Shape Divider -->
-    <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none">
+    <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none z-10">
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-10 sm:h-16 text-[var(--page-bg)] fill-current transition-colors">
             <path d="M0,0 C150,90 350,-40 500,40 C650,120 900,20 1200,60 L1200,120 L0,120 Z"></path>
         </svg>
@@ -49,48 +59,48 @@ $hours = 'Monday - Saturday: 8.30 AM - 6.00 PM';
                 </div>
 
                 <div class="space-y-4">
-                    <!-- Email Card -->
-                    <div class="elo-card p-5 flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-amber-500/15 text-[#E5A93C] flex items-center justify-center shrink-0 border border-amber-500/20">
+                    <!-- Email Card (Sapphire Blue) -->
+                    <div class="elo-card p-5 flex items-center gap-4 border border-slate-200 dark:border-slate-800 hover:border-blue-500/50 transition-all">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/20 shadow-sm">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Official Email</div>
-                            <a href="mailto:<?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8') ?>" class="text-sm font-bold text-slate-900 dark:text-white hover:text-[#E5A93C] transition-colors">
+                            <a href="mailto:<?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8') ?>" class="text-sm font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                 <?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8') ?>
                             </a>
                         </div>
                     </div>
 
-                    <!-- Phone 1 / WhatsApp Card -->
-                    <div class="elo-card p-5 flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-amber-500/15 text-[#E5A93C] flex items-center justify-center shrink-0 border border-amber-500/20">
+                    <!-- Phone 1 / WhatsApp Card (Emerald Green) -->
+                    <div class="elo-card p-5 flex items-center gap-4 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 transition-all">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/20 shadow-sm">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Hotline &amp; WhatsApp</div>
                             <div class="text-sm font-bold text-slate-900 dark:text-white">
-                                <a href="tel:<?= preg_replace('/\s+/', '', $phone1) ?>" class="hover:text-[#E5A93C] transition-colors"><?= htmlspecialchars($phone1, ENT_QUOTES, 'UTF-8') ?></a>
+                                <a href="tel:<?= preg_replace('/\s+/', '', $phone1) ?>" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"><?= htmlspecialchars($phone1, ENT_QUOTES, 'UTF-8') ?></a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Phone 2 Card -->
-                    <div class="elo-card p-5 flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-amber-500/15 text-[#E5A93C] flex items-center justify-center shrink-0 border border-amber-500/20">
+                    <!-- Phone 2 Card (Sunburst Gold) -->
+                    <div class="elo-card p-5 flex items-center gap-4 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 transition-all">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/20 shadow-sm">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Alternative Contact</div>
                             <div class="text-sm font-bold text-slate-900 dark:text-white">
-                                <a href="tel:<?= preg_replace('/\s+/', '', $phone2) ?>" class="hover:text-[#E5A93C] transition-colors"><?= htmlspecialchars($phone2, ENT_QUOTES, 'UTF-8') ?></a>
+                                <a href="tel:<?= preg_replace('/\s+/', '', $phone2) ?>" class="hover:text-amber-600 dark:hover:text-amber-400 transition-colors"><?= htmlspecialchars($phone2, ENT_QUOTES, 'UTF-8') ?></a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Office Hours Card -->
-                    <div class="elo-card p-5 flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-amber-500/15 text-[#E5A93C] flex items-center justify-center shrink-0 border border-amber-500/20">
+                    <!-- Office Hours Card (Amethyst Purple) -->
+                    <div class="elo-card p-5 flex items-center gap-4 border border-slate-200 dark:border-slate-800 hover:border-purple-500/50 transition-all">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0 border border-purple-500/20 shadow-sm">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <div>
@@ -100,10 +110,10 @@ $hours = 'Monday - Saturday: 8.30 AM - 6.00 PM';
                     </div>
                 </div>
 
-                <!-- Academic Advisory Banner -->
-                <div class="p-6 rounded-2xl bg-gradient-to-br from-[#0B132B] to-[#111A2E] text-white border border-[#E5A93C]/30 shadow-lg relative overflow-hidden">
-                    <div class="text-xs font-bold text-[#E5A93C] uppercase tracking-wider">ELOCENTRA Academic Guidance</div>
-                    <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                <!-- Academic Advisory Banner (Royal Sapphire Theme) -->
+                <div class="p-6 rounded-2xl bg-gradient-to-br from-[#07132B] via-[#0C2253] to-[#153472] text-white border border-blue-500/30 shadow-lg relative overflow-hidden">
+                    <div class="text-xs font-bold text-amber-400 uppercase tracking-wider">ELOCENTRA Academic Guidance</div>
+                    <p class="text-xs text-slate-200 mt-1 leading-relaxed">
                         Our student advisory team offers dedicated online consultation to help you choose the ideal English and professional development pathway.
                     </p>
                 </div>
@@ -115,7 +125,7 @@ $hours = 'Monday - Saturday: 8.30 AM - 6.00 PM';
                     <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2">Send Us a Message</h3>
                     <p class="text-xs text-slate-600 dark:text-slate-400 mb-8">Fill in the form below and an academic counselor will respond within 24 business hours.</p>
 
-                    <form action="<?= BASE_URL ?>/contact" method="POST" class="space-y-5">
+                    <form action="<?= BASE_URL ?>/contact" method="POST" class="space-y-5" novalidate data-loading-text="Sending Message...">
                         <?= csrfField() ?>
 
                         <!-- Full Name -->

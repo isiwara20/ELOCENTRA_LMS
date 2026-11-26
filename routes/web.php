@@ -167,6 +167,8 @@ $router->post('/contact', ['App\Controllers\PublicController', 'contactSubmit'])
 
 // Courses Catalog & Enrollment routes
 $router->get('/courses', ['App\Controllers\PublicController', 'courses']);
+$router->get('/courses/suggest', ['App\Controllers\PublicController', 'courseSuggestions']);
+$router->get('/api/courses/suggest', ['App\Controllers\PublicController', 'courseSuggestions']);
 $router->get('/courses/{id}', ['App\Controllers\PublicController', 'courseDetail']);
 $router->post('/courses/{id}/enroll', ['App\Controllers\PublicController', 'courseEnroll']);
 

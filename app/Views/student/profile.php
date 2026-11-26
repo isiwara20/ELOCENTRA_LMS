@@ -270,7 +270,7 @@ $statusClass = ['paid' => 'pf-pill--ok', 'waived' => 'pf-pill--ok', 'pending' =>
         <div class="pf-card">
             <h3>&#128274; <?= te('Account') ?></h3>
             <a class="btn btn--ghost btn--sm" href="<?= BASE_URL ?>/change-password"><?= te('Change my password') ?></a>
-            <p class="text-sm text-muted" style="margin:.75rem 0 0;"><?= te('Language') ?>: <strong><?= lang_current() === 'si' ? 'සිංහල' : 'English' ?></strong> &middot; <?= te('switch it at the top of any page') ?></p>
+            <p class="text-sm text-muted" style="margin:.75rem 0 0;"><?= te('Language') ?>: <strong>English</strong></p>
         </div>
     </div>
 </div>

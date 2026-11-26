@@ -63,12 +63,12 @@
     }
 
     [data-theme="dark"] {
-        --auth-bg: #070D1F;
-        --auth-card: #111A2E;
+        --auth-bg: #0B1120;
+        --auth-card: #131D33;
         --auth-border: #1E293B;
         --auth-text: #F8FAFC;
         --auth-sub: #94A3B8;
-        --auth-input-bg: #0B132B;
+        --auth-input-bg: #0E1629;
     }
 
     body {
@@ -98,9 +98,9 @@
         }
     }
 
-    /* Left Banner matching reference image */
+    /* Left Banner matching reference image (Royal Sapphire & Gold) */
     .auth-banner-left {
-        background: linear-gradient(160deg, #070D1F 0%, #0B132B 50%, #0F1A3A 100%);
+        background: linear-gradient(160deg, #07132B 0%, #0C2253 50%, #153472 100%);
         position: relative;
         overflow: hidden;
         display: none;
@@ -117,8 +117,8 @@
 
     /* Gold Buttons */
     .btn-gold {
-        background: linear-gradient(135deg, #E5A93C 0%, #D49028 100%);
-        color: #0B132B !important;
+        background: linear-gradient(135deg, #F59E0B 0%, #EAB308 50%, #D97706 100%);
+        color: #0F172A !important;
         font-weight: 700;
         border-radius: 9999px;
         padding: 0.65rem 1.5rem;
@@ -127,7 +127,7 @@
         justify-content: center;
         gap: 0.5rem;
         transition: all 0.25s ease;
-        box-shadow: 0 4px 14px rgba(229, 169, 60, 0.35);
+        box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
         border: none;
         cursor: pointer;
         text-decoration: none;
@@ -135,14 +135,14 @@
 
     .btn-gold:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(229, 169, 60, 0.45);
-        background: linear-gradient(135deg, #F59E0B 0%, #E5A93C 100%);
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
+        background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 50%, #D97706 100%);
         color: #070D1F !important;
     }
 
     .btn-outline-gold {
-        border: 1.5px solid #E5A93C;
-        color: #E5A93C !important;
+        border: 1.5px solid #F59E0B;
+        color: #B45309 !important;
         font-weight: 600;
         border-radius: 9999px;
         padding: 0.65rem 1.5rem;
@@ -155,9 +155,14 @@
         text-decoration: none;
     }
 
+    [data-theme="dark"] .btn-outline-gold {
+        color: #FBBF24 !important;
+        border-color: #F59E0B;
+    }
+
     .btn-outline-gold:hover {
-        background: rgba(229, 169, 60, 0.15);
-        color: #F59E0B !important;
+        background: rgba(245, 158, 11, 0.15);
+        color: #D97706 !important;
     }
 
     .theme-toggle-btn {
@@ -167,20 +172,35 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: #E5A93C;
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #D97706;
+        background: #F1F5F9;
+        border: 1px solid #CBD5E1;
         cursor: pointer;
         transition: all 0.2s ease;
     }
 
+    [data-theme="dark"] .theme-toggle-btn {
+        color: #FBBF24;
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.12);
+    }
+
     .theme-toggle-btn:hover {
-        background: rgba(229, 169, 60, 0.2);
+        background: rgba(245, 158, 11, 0.2);
         transform: rotate(15deg);
+    }
+    /* Auth Titles Guarantee */
+    .auth-hero-title,
+    .auth-banner-left h1,
+    .auth-banner-left h2,
+    .auth-banner-left h3 {
+        color: #FFFFFF !important;
     }
     </style>
 </head>
 <body>
+    <!-- Top Progress Bar (Loading State) -->
+    <div id="eloPageLoader"></div>
 
     <div class="auth-split-layout">
         
@@ -314,5 +334,8 @@
         updateThemeIcons(currentTheme);
     })();
     </script>
+
+    <!-- ELOCENTRA Unified Validation & Loading System -->
+    <script src="<?= BASE_URL ?>/public/assets/js/elocentra-validation.js?v=<?= @filemtime(BASE_PATH . '/public/assets/js/elocentra-validation.js') ?: 2 ?>"></script>
 </body>
 </html>

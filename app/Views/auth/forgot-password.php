@@ -18,7 +18,7 @@
     </div>
 
     <!-- Main Password Form -->
-    <form id="passwordResetForm" action="<?= BASE_URL ?>/forgot-password" method="POST" class="space-y-4">
+    <form id="passwordResetForm" action="<?= BASE_URL ?>/forgot-password" method="POST" novalidate data-loading-text="Updating Password..." class="space-y-4">
         <?= csrfField() ?>
         <input type="hidden" name="action_type" id="formActionType" value="normal_change">
         <input type="hidden" name="verified_email" id="hiddenVerifiedEmail" value="">

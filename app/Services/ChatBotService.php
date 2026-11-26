@@ -25,19 +25,19 @@ class ChatBotService
         'Where are the branches?',
     ];
 
-    /** Intent => words/phrases that suggest it (English, Sinhala, Singlish). */
+    /** Intent => words/phrases that suggest it (English). */
     private const INTENTS = [
-        'greeting' => ['ayubowan', 'hi', 'hello', 'suba', 'kohomada', 'ඇයුබෝවන්', 'හායි', 'සුභ'],
-        'fees' => ['fee', 'fees', 'price', 'cost', 'salli', 'gaana', 'gana', 'මුදල', 'ගාන', 'ගාස්තු'],
-        'timetable' => ['timetable', 'schedule', 'time table', 'kal sat', 'welawa', 'කාලසටහන', 'වෙලාව'],
-        'join' => ['join', 'enroll', 'enrol', 'register', 'admission', 'join wenn', 'ඇතුළත්', 'ලියාපදිංචි'],
-        'branches' => ['branch', 'location', 'address', 'where', 'kohe', 'branches', 'කොහෙද', 'ස්ථානය'],
-        'contact' => ['contact', 'phone', 'whatsapp', 'number', 'email', 'call', 'අමතන්න', 'දුරකථන'],
-        'forgot_password' => ['forgot', 'reset password', 'password amathaka', "can't login", 'cannot login', 'මුරපදය', 'අමතක'],
-        'online_class' => ['zoom', 'online class', 'meeting link', 'join class', 'live class', 'ඔන්ලයින්'],
-        'teacher' => ['teacher', 'harshani', 'guru', 'ගුරුතුමිය', 'ටීචර්'],
-        'portal' => ['marks', 'attendance', 'progress', 'homework', 'report', 'ලකුණු', 'පැමිණීම'],
-        'thanks' => ['thank', 'thanks', 'bohoma', 'istuti', 'ස්තූතියි', 'බොහොම'],
+        'greeting' => ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'good evening', 'welcome'],
+        'fees' => ['fee', 'fees', 'price', 'cost', 'payment', 'tuition', 'amount'],
+        'timetable' => ['timetable', 'schedule', 'time table', 'calendar', 'time', 'hours'],
+        'join' => ['join', 'enroll', 'enrol', 'register', 'admission', 'apply', 'registration'],
+        'branches' => ['branch', 'location', 'address', 'where', 'branches', 'campus'],
+        'contact' => ['contact', 'phone', 'whatsapp', 'number', 'email', 'call', 'support'],
+        'forgot_password' => ['forgot', 'reset password', "can't login", 'cannot login', 'password help'],
+        'online_class' => ['zoom', 'online class', 'meeting link', 'join class', 'live class', 'portal link'],
+        'teacher' => ['teacher', 'instructor', 'lecturer', 'faculty', 'mentor', 'tutor'],
+        'portal' => ['marks', 'attendance', 'progress', 'homework', 'report', 'grades'],
+        'thanks' => ['thank', 'thanks', 'thank you', 'appreciate'],
     ];
 
     private PDO $db;
@@ -68,7 +68,7 @@ class ChatBotService
         $intent = $this->detectIntent($msg);
 
         return match ($intent) {
-            'greeting'        => $this->reply(t('Ayubowan! I can help with fees, class times, branches, joining a class, or resetting a password. What would you like to know?'), 'greeting'),
+            'greeting'        => $this->reply(t('Hello! Welcome to ELOCENTRA English Academy. I can help with course details, fees, class schedules, enrollment, or resetting a password. What would you like to know?'), 'greeting'),
             'thanks'          => $this->reply(t("You're welcome! Ask me anything else about the classes."), 'thanks'),
             'fees'            => $this->fees(),
             'timetable'       => $this->reply(t('Full class days and times, by branch and grade, are on the timetable page.'), 'timetable', [['label' => t('View timetable'), 'href' => BASE_URL . '/timetable']]),

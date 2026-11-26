@@ -24,36 +24,15 @@ declare(strict_types=1);
  *    is signed in, and survives logging out and back in on that device.
  */
 
-const LANG_SUPPORTED = ['en', 'si'];
+const LANG_SUPPORTED = ['en'];
 const LANG_COOKIE = 'lms_lang';
 
 /**
- * The language for this request: 'en' or 'si'.
- *
- * Once someone has picked a language on this device (the cookie is set),
- * that choice is respected everywhere, same as always. Before that choice
- * exists, the DEFAULT differs by who is looking: the public website and
- * the student/parent portal default to Sinhala (the client's own
- * instruction -- families come first), but the staff/admin area (any
- * logged-in 'user' -- super admin, admin, coordinator, teacher, staff)
- * defaults to English, their own working language. Anyone can still
- * switch either way with the EN/Si toggle; this only decides what shows
- * before they have.
+ * The language for this request: strictly 'en' (English only).
  */
 function lang_current(): string
 {
-    static $current = null;
-
-    if ($current === null) {
-        if (isset($_COOKIE[LANG_COOKIE]) && in_array($_COOKIE[LANG_COOKIE], LANG_SUPPORTED, true)) {
-            $current = $_COOKIE[LANG_COOKIE];
-        } else {
-            $isStaff = function_exists('session_get') && session_get('user_type') === 'user';
-            $current = $isStaff ? 'en' : 'si';
-        }
-    }
-
-    return $current;
+    return 'en';
 }
 
 /**
@@ -61,13 +40,9 @@ function lang_current(): string
  */
 function lang_set(string $code): void
 {
-    if (!in_array($code, LANG_SUPPORTED, true)) {
-        return;
-    }
-
     $path = defined('BASE_URL') && BASE_URL !== '' ? BASE_URL . '/' : '/';
 
-    setcookie(LANG_COOKIE, $code, [
+    setcookie(LANG_COOKIE, 'en', [
         'expires'  => time() + 365 * 24 * 3600,
         'path'     => $path,
         'samesite' => 'Lax',
@@ -80,29 +55,16 @@ function lang_set(string $code): void
  */
 function lang_dictionary(): array
 {
-    static $dictionary = null;
-
-    if ($dictionary === null) {
-        $file = BASE_PATH . '/lang/si.php';
-        $dictionary = is_file($file) ? (array) require $file : [];
-    }
-
-    return $dictionary;
+    return [];
 }
 
 /**
  * Translate a sentence into a named language rather than the one the
- * page is being shown in. Only the website-content editor needs this,
- * to show what a field will say in the other language while the person
- * editing it is working in this one. Anything with no entry, and any
- * language that is not translated, comes back unchanged.
+ * page is being shown in. English only across the system.
  */
 function lang_translate_to(string $text, string $code): string
 {
-    if ($code !== 'si') {
-        return $text;
-    }
-    return lang_dictionary()[$text] ?? $text;
+    return $text;
 }
 
 /**
@@ -199,42 +161,12 @@ function lang_date(string $format, int|string|null $time = null): string
 }
 
 /**
- * Month names, day names and am/pm inside any ready-made English text,
- * such as a class schedule ("Saturday & Sunday 8:00 am"), in the
- * current language.
+ * Month names, day names and am/pm inside any ready-made English text.
+ * Strictly English output across the entire system.
  */
 function lang_names(string $out): string
 {
-    if (lang_current() !== 'si') {
-        return $out;
-    }
-
-    // Longest first, so "Saturday" is replaced before "Sat" could match it.
-    static $names = [
-        'January' => 'ජනවාරි', 'February' => 'පෙබරවාරි', 'March' => 'මාර්තු', 'April' => 'අප්‍රේල්',
-        'May' => 'මැයි', 'June' => 'ජූනි', 'July' => 'ජූලි', 'August' => 'අගෝස්තු',
-        'September' => 'සැප්තැම්බර්', 'October' => 'ඔක්තෝබර්', 'November' => 'නොවැම්බර්', 'December' => 'දෙසැම්බර්',
-        'Wednesday' => 'බදාදා', 'Thursday' => 'බ්‍රහස්පතින්දා', 'Saturday' => 'සෙනසුරාදා',
-        'Tuesday' => 'අඟහරුවාදා', 'Monday' => 'සඳුදා', 'Friday' => 'සිකුරාදා', 'Sunday' => 'ඉරිදා',
-        'Jan' => 'ජන', 'Feb' => 'පෙබ', 'Mar' => 'මාර්', 'Apr' => 'අප්‍රේ', 'Jun' => 'ජූනි', 'Jul' => 'ජූලි',
-        'Aug' => 'අගෝ', 'Sep' => 'සැප්', 'Oct' => 'ඔක්', 'Nov' => 'නොවැ', 'Dec' => 'දෙසැ',
-        'Mon' => 'සඳු', 'Tue' => 'අඟ', 'Wed' => 'බදා', 'Thu' => 'බ්‍රහ', 'Fri' => 'සිකු', 'Sat' => 'සෙන', 'Sun' => 'ඉරි',
-    ];
-
-    // Whole words only: "Mar" must not bite into "Marks".
-    $out = (string) preg_replace_callback(
-        '/\b(' . implode('|', array_map('preg_quote', array_keys($names))) . ')\b/',
-        static fn (array $m): string => $names[$m[1]],
-        $out
-    );
-
-    // am/pm sit straight after a digit ("4:00pm"), where there is no word
-    // boundary for the rule above to find, so they get their own pass.
-    return (string) preg_replace_callback(
-        '/(?<=\d)\s?(am|pm)\b/i',
-        static fn (array $m): string => strtolower($m[1]) === 'am' ? ' පෙ.ව.' : ' ප.ව.',
-        $out
-    );
+    return $out;
 }
 
 /**
@@ -242,5 +174,5 @@ function lang_names(string $out): string
  */
 function lang_switch_url(string $code): string
 {
-    return (defined('BASE_URL') ? BASE_URL : '') . '/lang/' . $code;
+    return (defined('BASE_URL') ? BASE_URL : '') . '/lang/en';
 }

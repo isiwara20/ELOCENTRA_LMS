@@ -72,39 +72,39 @@ $userType = function_exists('session_get') ? session_get('user_type') : null;
                     <?= htmlspecialchars($course['description'] ?? 'A comprehensive course to improve your English language skills, confidence, language proficiency, communication confidence, and real-world communication for academic, professional, and global opportunities.', ENT_QUOTES, 'UTF-8') ?>
                 </p>
 
-                <!-- Key Information Grid (Matching Reference Image) -->
+                <!-- Key Information Grid (Colorful & Friendly Indicators) -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 border-y border-slate-200 dark:border-slate-800">
-                    <!-- Metric 1: Duration -->
-                    <div class="text-center p-3 rounded-xl bg-slate-50 dark:bg-[#0E1629] border border-slate-200 dark:border-slate-800">
-                        <div class="w-8 h-8 mx-auto rounded-lg bg-amber-500/10 text-[#E5A93C] flex items-center justify-center mb-1 border border-amber-500/20">
+                    <!-- Metric 1: Duration (Sapphire Blue) -->
+                    <div class="text-center p-3.5 rounded-xl bg-slate-50 dark:bg-[#131D33] border border-blue-500/20 shadow-sm">
+                        <div class="w-8 h-8 mx-auto rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-1.5 border border-blue-500/20">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <div class="text-xs font-bold text-slate-900 dark:text-white"><?= htmlspecialchars($course['duration_weeks'] ?? '12 Weeks', ENT_QUOTES, 'UTF-8') ?></div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400">Duration</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Duration</div>
                     </div>
-                    <!-- Metric 2: Mode -->
-                    <div class="text-center p-3 rounded-xl bg-slate-50 dark:bg-[#0E1629] border border-slate-200 dark:border-slate-800">
-                        <div class="w-8 h-8 mx-auto rounded-lg bg-amber-500/10 text-[#E5A93C] flex items-center justify-center mb-1 border border-amber-500/20">
+                    <!-- Metric 2: Mode (Emerald Green) -->
+                    <div class="text-center p-3.5 rounded-xl bg-slate-50 dark:bg-[#131D33] border border-emerald-500/20 shadow-sm">
+                        <div class="w-8 h-8 mx-auto rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-1.5 border border-emerald-500/20">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                         </div>
                         <div class="text-xs font-bold text-slate-900 dark:text-white"><?= ucfirst(htmlspecialchars($course['delivery_mode'] ?? 'Online', ENT_QUOTES, 'UTF-8')) ?></div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400">Mode</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Mode</div>
                     </div>
-                    <!-- Metric 3: Level -->
-                    <div class="text-center p-3 rounded-xl bg-slate-50 dark:bg-[#0E1629] border border-slate-200 dark:border-slate-800">
-                        <div class="w-8 h-8 mx-auto rounded-lg bg-amber-500/10 text-[#E5A93C] flex items-center justify-center mb-1 border border-amber-500/20">
+                    <!-- Metric 3: Level (Amethyst Purple) -->
+                    <div class="text-center p-3.5 rounded-xl bg-slate-50 dark:bg-[#131D33] border border-purple-500/20 shadow-sm">
+                        <div class="w-8 h-8 mx-auto rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-1.5 border border-purple-500/20">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
                         </div>
                         <div class="text-xs font-bold text-slate-900 dark:text-white"><?= htmlspecialchars($course['course_level'] ?? 'Intermediate', ENT_QUOTES, 'UTF-8') ?></div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400">Level</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Level</div>
                     </div>
-                    <!-- Metric 4: Certificate -->
-                    <div class="text-center p-3 rounded-xl bg-slate-50 dark:bg-[#0E1629] border border-slate-200 dark:border-slate-800">
-                        <div class="w-8 h-8 mx-auto rounded-lg bg-amber-500/10 text-[#E5A93C] flex items-center justify-center mb-1 border border-amber-500/20">
+                    <!-- Metric 4: Certificate (Sunburst Gold) -->
+                    <div class="text-center p-3.5 rounded-xl bg-slate-50 dark:bg-[#131D33] border border-amber-500/20 shadow-sm">
+                        <div class="w-8 h-8 mx-auto rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-1.5 border border-amber-500/20">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138z"/></svg>
                         </div>
                         <div class="text-xs font-bold text-slate-900 dark:text-white">Certificate</div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400">Upon Completion</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Upon Completion</div>
                     </div>
                 </div>
 
@@ -292,7 +292,7 @@ $userType = function_exists('session_get') ? session_get('user_type') : null;
             </div>
 
             <!-- Enrollment Form -->
-            <form id="coursePurchaseForm" action="<?= BASE_URL ?>/courses/<?= (int) $course['id'] ?>/enroll" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <form id="coursePurchaseForm" action="<?= BASE_URL ?>/courses/<?= (int) $course['id'] ?>/enroll" method="POST" enctype="multipart/form-data" novalidate data-loading-text="Processing Enrollment..." class="space-y-4">
                 <?= csrfField() ?>
                 <input type="hidden" name="course_id" value="<?= (int) $course['id'] ?>">
                 <input type="hidden" name="payment_method" id="selectedPaymentMethod" value="directpay">

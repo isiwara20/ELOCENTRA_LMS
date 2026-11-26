@@ -33,11 +33,15 @@
             extend: {
                 colors: {
                     elocentra: {
-                        navy: '#0B132B',
-                        dark: '#060B18',
-                        gold: '#E5A93C',
-                        amber: '#F59E0B',
-                        goldhover: '#D49028',
+                        blue: '#1A56DB',
+                        royal: '#1E40AF',
+                        deep: '#0F2454',
+                        gold: '#F59E0B',
+                        amber: '#D97706',
+                        emerald: '#10B981',
+                        purple: '#8B5CF6',
+                        cyan: '#06B6D4',
+                        rose: '#F43F5E',
                         slate: '#1E293B',
                         lightbg: '#F8FAFC'
                     }
@@ -56,42 +60,54 @@
 
     <style>
     :root, [data-theme="light"] {
-        --brand-navy: #0B132B;
-        --brand-gold: #E5A93C;
-        --brand-gold-hover: #D49028;
-        --brand-gold-light: rgba(229, 169, 60, 0.15);
-        --hero-bg: #0B132B;
+        --brand-primary: #1A56DB;
+        --brand-royal: #1E40AF;
+        --brand-deep: #0F2454;
+        --brand-gold: #F59E0B;
+        --brand-gold-hover: #D97706;
+        --brand-gold-light: rgba(245, 158, 11, 0.15);
+        --hero-bg: #0F2454;
         --page-bg: #F8FAFC;
         --card-bg: #FFFFFF;
         --card-border: #E2E8F0;
         --text-main: #0F172A;
         --text-sub: #475569;
-        --nav-text: #FFFFFF;
-        --topbar-bg: #070D1F;
-        --topbar-border: rgba(255, 255, 255, 0.08);
-        --header-bg: rgba(11, 19, 43, 0.95);
-        --header-scrolled: rgba(11, 19, 43, 0.88);
-        --footer-bg: #070D1F;
+        --topbar-bg: #0F2454;
+        --topbar-border: rgba(255, 255, 255, 0.12);
+        --header-bg: rgba(255, 255, 255, 0.96);
+        --header-scrolled: rgba(255, 255, 255, 0.98);
+        --header-border: #E2E8F0;
+        --nav-text: #1E293B;
+        --nav-hover: #1A56DB;
+        --nav-active-bg: rgba(26, 86, 219, 0.08);
+        --nav-active-text: #1A56DB;
+        --footer-bg: #0A193B;
         --footer-border: #1E293B;
     }
 
     [data-theme="dark"] {
-        --brand-navy: #0B132B;
-        --brand-gold: #F59E0B;
-        --brand-gold-hover: #E5A93C;
-        --brand-gold-light: rgba(245, 158, 11, 0.2);
-        --hero-bg: #040814;
-        --page-bg: #060B18;
-        --card-bg: #0E1629;
+        --brand-primary: #3B82F6;
+        --brand-royal: #60A5FA;
+        --brand-deep: #1E3A8A;
+        --brand-gold: #FBBF24;
+        --brand-gold-hover: #F59E0B;
+        --brand-gold-light: rgba(251, 191, 36, 0.2);
+        --hero-bg: #070E21;
+        --page-bg: #0B1120;
+        --card-bg: #131D33;
         --card-border: #1E293B;
         --text-main: #F8FAFC;
         --text-sub: #94A3B8;
-        --nav-text: #FFFFFF;
-        --topbar-bg: #03060E;
-        --topbar-border: rgba(229, 169, 60, 0.15);
-        --header-bg: rgba(6, 11, 24, 0.95);
-        --header-scrolled: rgba(6, 11, 24, 0.85);
-        --footer-bg: #040711;
+        --topbar-bg: #070E21;
+        --topbar-border: rgba(59, 130, 246, 0.2);
+        --header-bg: rgba(15, 23, 42, 0.96);
+        --header-scrolled: rgba(15, 23, 42, 0.98);
+        --header-border: rgba(59, 130, 246, 0.25);
+        --nav-text: #E2E8F0;
+        --nav-hover: #60A5FA;
+        --nav-active-bg: rgba(59, 130, 246, 0.16);
+        --nav-active-text: #FBBF24;
+        --footer-bg: #081024;
         --footer-border: #151F33;
     }
 
@@ -112,70 +128,77 @@
     .elo-topbar {
         background-color: var(--topbar-bg);
         border-bottom: 1px solid var(--topbar-border);
-        color: #94A3B8;
+        color: #E2E8F0;
         font-size: 0.775rem;
         transition: all 0.3s ease;
     }
 
-    /* ELOCENTRA Dynamic Header with Transparent on Scroll Effect */
+    /* ELOCENTRA Dynamic Header with Clean Transparency & Contrast */
     .elo-navbar {
         background-color: var(--header-bg);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        border-bottom: 1px solid var(--header-border);
         position: sticky;
         top: 0;
         z-index: 50;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        transition: background-color 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        transition: background-color 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     }
 
-    /* Smooth glassmorphic transparency transition on scroll */
+    /* Smooth glassmorphic shadow transition on scroll */
     .elo-navbar.scrolled {
         background-color: var(--header-scrolled) !important;
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border-bottom-color: rgba(229, 169, 60, 0.28) !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        border-bottom-color: rgba(245, 158, 11, 0.3) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+    [data-theme="dark"] .elo-navbar.scrolled {
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
     }
 
     .nav-link-elo {
-        color: rgba(255, 255, 255, 0.85);
-        font-weight: 500;
+        color: var(--nav-text);
+        font-weight: 600;
         font-size: 0.9375rem;
-        padding: 0.5rem 0.95rem;
+        padding: 0.5rem 1rem;
         border-radius: 9999px;
         transition: all 0.2s ease;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 0.4rem;
+        gap: 0.45rem;
     }
 
     .nav-link-elo:hover {
-        color: #E5A93C;
-        background-color: rgba(255, 255, 255, 0.08);
+        color: var(--nav-hover);
+        background-color: var(--nav-active-bg);
     }
 
     .nav-link-elo.active {
-        color: #E5A93C;
+        color: var(--nav-active-text);
         font-weight: 700;
-        background-color: rgba(229, 169, 60, 0.12);
-        box-shadow: inset 0 0 0 1px rgba(229, 169, 60, 0.3);
+        background-color: var(--nav-active-bg);
+        box-shadow: inset 0 0 0 1.5px rgba(26, 86, 219, 0.3);
+    }
+
+    [data-theme="dark"] .nav-link-elo.active {
+        box-shadow: inset 0 0 0 1.5px rgba(251, 191, 36, 0.35);
     }
 
     /* Buttons */
     .btn-gold {
-        background: linear-gradient(135deg, #E5A93C 0%, #D49028 100%);
-        color: #0B132B !important;
+        background: linear-gradient(135deg, #F59E0B 0%, #EAB308 50%, #D97706 100%);
+        color: #0F172A !important;
         font-weight: 700;
         border-radius: 9999px;
-        padding: 0.55rem 1.35rem;
+        padding: 0.55rem 1.4rem;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
         transition: all 0.25s ease;
-        box-shadow: 0 4px 14px rgba(229, 169, 60, 0.35);
+        box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
         border: none;
         cursor: pointer;
         text-decoration: none;
@@ -183,14 +206,14 @@
 
     .btn-gold:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(229, 169, 60, 0.5);
-        background: linear-gradient(135deg, #F59E0B 0%, #E5A93C 100%);
+        box-shadow: 0 6px 22px rgba(245, 158, 11, 0.5);
+        background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 50%, #D97706 100%);
         color: #070D1F !important;
     }
 
     .btn-outline-gold {
-        border: 1.5px solid #E5A93C;
-        color: #FFFFFF !important;
+        border: 1.5px solid #F59E0B;
+        color: #B45309 !important;
         font-weight: 600;
         border-radius: 9999px;
         padding: 0.5rem 1.25rem;
@@ -203,10 +226,38 @@
         text-decoration: none;
     }
 
+    [data-theme="dark"] .btn-outline-gold {
+        color: #FBBF24 !important;
+        border-color: #F59E0B;
+    }
+
     .btn-outline-gold:hover {
-        background: rgba(229, 169, 60, 0.18);
-        color: #E5A93C !important;
+        background: rgba(245, 158, 11, 0.15);
+        color: #D97706 !important;
         transform: translateY(-2px);
+    }
+
+    .btn-royal {
+        background: linear-gradient(135deg, #1A56DB 0%, #1E40AF 100%);
+        color: #FFFFFF !important;
+        font-weight: 700;
+        border-radius: 9999px;
+        padding: 0.55rem 1.35rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.25s ease;
+        box-shadow: 0 4px 14px rgba(26, 86, 219, 0.3);
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .btn-royal:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(26, 86, 219, 0.45);
+        background: linear-gradient(135deg, #2563EB 0%, #1A56DB 100%);
     }
 
     /* Theme Toggle */
@@ -217,78 +268,141 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: #E5A93C;
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #D97706;
+        background: #F1F5F9;
+        border: 1px solid #E2E8F0;
         cursor: pointer;
         transition: all 0.25s ease;
     }
 
+    [data-theme="dark"] .theme-toggle-btn {
+        color: #FBBF24;
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+
     .theme-toggle-btn:hover {
-        background: rgba(229, 169, 60, 0.22);
+        background: rgba(245, 158, 11, 0.18);
         transform: rotate(20deg);
-        border-color: #E5A93C;
+        border-color: #F59E0B;
     }
 
     /* Academic Cards */
     .elo-card {
         background-color: var(--card-bg);
         border: 1px solid var(--card-border);
-        border-radius: 16px;
+        border-radius: 18px;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
     }
 
     .elo-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.09);
-        border-color: #E5A93C;
+        box-shadow: 0 16px 32px rgba(26, 86, 219, 0.1);
+        border-color: #3B82F6;
     }
 
     [data-theme="dark"] .elo-card:hover {
-        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
-        border-color: #F59E0B;
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
+        border-color: #60A5FA;
+    }
+
+    /* Light and Dark Mode Title & Slogan Visibility Assurance */
+    .hero-banner-title,
+    .elo-hero-title,
+    .elo-slide h1,
+    .elo-slide h1 * {
+        color: #FFFFFF !important;
+    }
+    .hero-banner-title {
+        text-shadow: 0 3px 18px rgba(0, 0, 0, 0.85), 0 1px 3px rgba(0, 0, 0, 0.9);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════ */
+    /* HERO BANNER CLARITY & NIGHT MODE (DARK MODE) ENHANCEMENT        */
+    /* In Night Mode: Images become clearly visible, bright & luminous */
+    /* ═══════════════════════════════════════════════════════════════ */
+    .hero-banner-bg {
+        transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s ease;
+        filter: brightness(0.72) contrast(1.02);
+    }
+    .hero-banner-overlay {
+        transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+        background: linear-gradient(to bottom, rgba(6, 11, 24, 0.70) 0%, rgba(11, 19, 43, 0.50) 50%, rgba(6, 11, 24, 0.75) 100%);
+    }
+
+    /* NIGHT MODE ACTIVE: Gently Balanced Banner Clarity (Toned Down for Comfortable Night Viewing) */
+    [data-theme="dark"] .hero-banner-bg {
+        filter: brightness(0.82) contrast(1.04) saturate(1.06) !important;
+    }
+    [data-theme="dark"] .hero-banner-overlay {
+        background: linear-gradient(to bottom, rgba(6, 11, 24, 0.58) 0%, rgba(11, 19, 43, 0.38) 50%, rgba(6, 11, 24, 0.65) 100%) !important;
+    }
+
+    /* Homepage Hero Slider Clarity in Night Mode */
+    .elo-slide-bg {
+        transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        filter: brightness(0.85) contrast(1.02);
+    }
+    .elo-slide-overlay {
+        transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        background: linear-gradient(to right, rgba(6, 11, 24, 0.85) 0%, rgba(6, 11, 24, 0.55) 45%, transparent 75%);
+    }
+    [data-theme="dark"] .elo-slide-bg {
+        filter: brightness(0.92) contrast(1.05) saturate(1.08) !important;
+    }
+    [data-theme="dark"] .elo-slide-overlay {
+        background: linear-gradient(to right, rgba(6, 11, 24, 0.80) 0%, rgba(6, 11, 24, 0.45) 42%, transparent 72%) !important;
     }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
+    <!-- Top Progress Bar (Loading State) -->
+    <div id="eloPageLoader"></div>
 
-    <!-- Top Academy Information Bar -->
-    <aside class="elo-topbar py-2 px-4 sm:px-6 lg:px-8 relative z-50">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+    <!-- Top Academy Information & Slogan Bar -->
+    <aside class="elo-topbar py-2 px-4 sm:px-6 lg:px-8 relative z-50 border-b border-white/[0.08]">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2.5">
             <!-- Left: Contact Details (Strictly No Physical Address) -->
-            <div class="flex items-center flex-wrap gap-4 text-xs">
-                <a href="mailto:eloengaca@gmail.com" class="flex items-center gap-1.5 hover:text-[#E5A93C] transition-colors">
+            <div class="flex items-center flex-wrap justify-center md:justify-start gap-4 text-xs font-medium">
+                <a href="mailto:eloengaca@gmail.com" class="flex items-center gap-1.5 hover:text-[#E5A93C] transition-colors text-slate-300">
                     <svg class="w-3.5 h-3.5 text-[#E5A93C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     <span>eloengaca@gmail.com</span>
                 </a>
-                <span class="hidden sm:inline text-slate-700">|</span>
-                <a href="tel:0777354892" class="flex items-center gap-1.5 hover:text-[#E5A93C] transition-colors">
+                <span class="hidden sm:inline text-slate-600">|</span>
+                <a href="tel:0777354892" class="flex items-center gap-1.5 hover:text-[#E5A93C] transition-colors text-slate-300">
                     <svg class="w-3.5 h-3.5 text-[#E5A93C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                     <span>077 7354892</span>
                 </a>
-                <span class="text-slate-700">/</span>
-                <a href="tel:0772278069" class="hover:text-[#E5A93C] transition-colors">077 2278069</a>
+                <span class="text-slate-600">/</span>
+                <a href="tel:0772278069" class="hover:text-[#E5A93C] transition-colors text-slate-300">077 2278069</a>
             </div>
 
-            <!-- Right: Relocated Official Slogan Badge -->
-            <div class="flex items-center gap-2">
-                <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-400/10 border border-amber-400/25 text-[#E5A93C] font-semibold text-[11px] tracking-wide">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                    Learn English. Speak Confidently. Succeed Globally.
-                </span>
+            <!-- Right: Beautifully Balanced Official Slogan Badge -->
+            <div class="flex items-center justify-center">
+                <div class="inline-flex items-center gap-2 py-1 px-3.5 rounded-full bg-gradient-to-r from-amber-500/10 via-amber-400/15 to-amber-500/10 border border-[#E5A93C]/35 text-xs shadow-sm hover:border-[#E5A93C]/60 transition-colors">
+                    <svg class="w-3.5 h-3.5 text-[#E5A93C] shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 2a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 2zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 15zm8-5a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0118 10zM5 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 015 10zM14.95 4.95a.75.75 0 010 1.06l-1.06 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-8.9 8.9a.75.75 0 010 1.06l-1.06 1.06a.75.75 0 01-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm8.9 0a.75.75 0 01-1.06 0l-1.06-1.06a.75.75 0 011.06-1.06l1.06 1.06a.75.75 0 010 1.06zm-8.9-8.9a.75.75 0 01-1.06 0L3.93 4.95a.75.75 0 011.06-1.06l1.06 1.06a.75.75 0 010 1.06z"/>
+                    </svg>
+                    <span class="tracking-wide">
+                        <span class="text-slate-300 font-medium">Learn English.</span>
+                        <span class="text-white font-medium mx-1">Speak Confidently.</span>
+                        <span class="text-[#E5A93C] font-bold">Succeed Globally.</span>
+                    </span>
+                </div>
             </div>
         </div>
     </aside>
 
-    <!-- Main Header / Navbar (Transparent on Scroll) -->
+    <!-- Main Header / Navbar (Clean Glassmorphic with Vibrant Theme Contrast) -->
     <header class="elo-navbar" id="elocentraNav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20 gap-4">
-                <!-- Brand / Logo -->
-                <a href="<?= BASE_URL ?>/" class="flex items-center gap-3 shrink-0 group">
-                    <img src="<?= BASE_URL ?>/public/assets/img/brand/elocentra-logo-transparent.png" 
+                <!-- Brand / Logo (New Official ELOCENTRA Logo) -->
+                <a href="<?= BASE_URL ?>/" class="flex items-center gap-3 shrink-0 group py-1">
+                    <img src="<?= BASE_URL ?>/public/assets/img/brand/elocentra-logo.png" 
                          alt="ELOCENTRA – English Academy (PVT) LTD" 
-                         class="h-12 sm:h-14 w-auto object-contain transition-transform group-hover:scale-105 filter drop-shadow">
+                         class="h-12 sm:h-16 w-auto object-contain transition-transform group-hover:scale-105 filter drop-shadow">
                 </a>
 
                 <!-- Desktop Navigation Links -->
@@ -311,28 +425,31 @@
                     </a>
                 </nav>
 
-                <!-- Modern Header Course Search Bar -->
-                <form action="<?= BASE_URL ?>/courses" method="GET" class="relative hidden md:block w-48 xl:w-60">
-                    <input type="text" name="search" placeholder="Search courses..." 
+                <!-- Modern Header Course Search Bar with Auto-Suggestions -->
+                <form action="<?= BASE_URL ?>/courses" method="GET" class="relative hidden md:block w-48 xl:w-64" id="headerSearchForm" autocomplete="off">
+                    <input type="text" name="search" id="headerSearchInput" placeholder="Search courses..." 
                            value="<?= htmlspecialchars($_GET['search'] ?? '', ENT_QUOTES, 'UTF-8') ?>" 
-                           class="w-full pl-9 pr-4 py-2 text-xs rounded-full bg-white/10 text-white placeholder-slate-300 border border-white/20 focus:outline-none focus:border-[#E5A93C] focus:bg-white/15 focus:ring-2 focus:ring-[#E5A93C]/30 transition-all">
-                    <svg class="w-4 h-4 text-slate-300 absolute left-3 top-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                           autocomplete="off"
+                           class="w-full pl-9 pr-4 py-2 text-xs rounded-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-[#1A56DB] dark:focus:border-[#F59E0B] focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-[#1A56DB]/20 transition-all">
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <!-- Live Suggestions Dropdown Container -->
+                    <div id="headerSearchSuggestions" class="hidden absolute left-0 right-0 top-full mt-2 z-50 bg-white dark:bg-[#0F172A] rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden divide-y divide-slate-100 dark:divide-slate-800/60 min-w-[300px]"></div>
                 </form>
 
                 <!-- Action Buttons & Theme Switcher -->
-                <div class="hidden sm:flex items-center space-x-2.5">
+                <div class="hidden lg:flex items-center space-x-3">
                     <?php if (function_exists('session_get') && session_get('user_id')): ?>
                         <?php 
                             $userType = session_get('user_type');
                             $dashUrl = ($userType === 'student') ? BASE_URL . '/my/home' : BASE_URL . '/dashboard';
                         ?>
-                        <a href="<?= $dashUrl ?>" class="btn-outline-gold text-xs">
+                        <a href="<?= $dashUrl ?>" class="btn-royal text-xs">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                             <span>Dashboard</span>
                         </a>
                         <a href="<?= BASE_URL ?>/logout" class="nav-link-elo text-xs">Logout</a>
                     <?php else: ?>
-                        <a href="<?= BASE_URL ?>/login" class="nav-link-elo text-sm font-semibold">Login</a>
+                        <a href="<?= BASE_URL ?>/login" class="text-sm font-bold text-slate-700 dark:text-white hover:text-[#1A56DB] dark:hover:text-[#F59E0B] py-2 px-3.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">Login</a>
                         <a href="<?= BASE_URL ?>/register" class="btn-gold text-sm font-bold">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
                             <span>Register</span>
@@ -346,24 +463,27 @@
                     </button>
                 </div>
 
-                <!-- Mobile Menu & Theme Buttons -->
-                <div class="flex items-center sm:hidden gap-2">
+                <!-- Mobile & Tablet Menu & Theme Buttons -->
+                <div class="flex items-center lg:hidden gap-2">
                     <button type="button" class="theme-toggle-btn" id="mobileThemeSwitchBtn" aria-label="Toggle Theme">
                         <svg class="w-4 h-4 theme-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                         <svg class="w-4 h-4 theme-sun hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                     </button>
-                    <button type="button" class="text-white p-2 rounded-xl hover:bg-white/10" id="mobileMenuBtn" aria-label="Toggle mobile menu">
+                    <button type="button" class="p-2 rounded-xl text-slate-800 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors" id="mobileMenuBtn" aria-label="Toggle mobile menu">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                     </button>
                 </div>
             </div>
 
             <!-- Mobile Navigation Drawer -->
-            <div class="lg:hidden hidden pb-6 pt-3 border-t border-white/10" id="mobileNavMenu">
-                <form action="<?= BASE_URL ?>/courses" method="GET" class="relative mb-3">
-                    <input type="text" name="search" placeholder="Search courses..." 
-                           class="w-full pl-9 pr-4 py-2 text-xs rounded-full bg-white/10 text-white placeholder-slate-300 border border-white/20 focus:outline-none focus:border-[#E5A93C]">
-                    <svg class="w-4 h-4 text-slate-300 absolute left-3 top-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <div class="lg:hidden hidden pb-6 pt-4 border-t border-slate-200 dark:border-slate-800 mt-2 bg-white dark:bg-[#0F172A] rounded-2xl p-4 shadow-xl" id="mobileNavMenu">
+                <form action="<?= BASE_URL ?>/courses" method="GET" class="relative mb-3" id="mobileSearchForm" autocomplete="off">
+                    <input type="text" name="search" id="mobileSearchInput" placeholder="Search courses..." 
+                           autocomplete="off"
+                           class="w-full pl-9 pr-4 py-2.5 text-xs rounded-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-[#1A56DB] dark:focus:border-[#F59E0B]">
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <!-- Mobile Suggestions Dropdown Container -->
+                    <div id="mobileSearchSuggestions" class="hidden absolute left-0 right-0 top-full mt-2 z-50 bg-white dark:bg-[#0F172A] rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden divide-y divide-slate-100 dark:divide-slate-800/60"></div>
                 </form>
 
                 <div class="flex flex-col space-y-1.5">
@@ -373,7 +493,7 @@
                     <a href="<?= BASE_URL ?>/contact" class="nav-link-elo <?= ($activePage ?? '') === 'contact' ? 'active' : '' ?>">Contact Us</a>
                     <div class="pt-3 flex flex-col gap-2">
                         <?php if (function_exists('session_get') && session_get('user_id')): ?>
-                            <a href="<?= $dashUrl ?? BASE_URL . '/dashboard' ?>" class="btn-gold w-full text-center">Dashboard</a>
+                            <a href="<?= $dashUrl ?? BASE_URL . '/dashboard' ?>" class="btn-royal w-full text-center">Dashboard</a>
                             <a href="<?= BASE_URL ?>/logout" class="btn-outline-gold w-full text-center">Logout</a>
                         <?php else: ?>
                             <a href="<?= BASE_URL ?>/login" class="btn-outline-gold w-full text-center">Login</a>
@@ -394,7 +514,7 @@
             </div>
         <?php endif; ?>
 
-        <?= $content ?>
+        <?= $content ?? '' ?>
     </main>
 
     <!-- Information Bar Located Above the Footer -->
@@ -609,5 +729,13 @@
         handleScroll();
     })();
     </script>
+
+    <script>
+    window.ELOCENTRA_BASE_URL = '<?= BASE_URL ?>';
+    </script>
+    <!-- ELOCENTRA Unified Validation & Loading System -->
+    <script src="<?= BASE_URL ?>/public/assets/js/elocentra-validation.js?v=<?= @filemtime(BASE_PATH . '/public/assets/js/elocentra-validation.js') ?: 2 ?>"></script>
+    <!-- ELOCENTRA Course Auto-Suggestions Engine -->
+    <script src="<?= BASE_URL ?>/public/assets/js/course-autosuggest.js?v=<?= @filemtime(BASE_PATH . '/public/assets/js/course-autosuggest.js') ?: 1 ?>"></script>
 </body>
 </html>

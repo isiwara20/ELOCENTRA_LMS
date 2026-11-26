@@ -8,51 +8,58 @@
 :root,
 [data-theme="light"] {
   /* Backgrounds */
-  --bg:              #F4F7FC;
+  --bg:              #F8FAFC;
   --surface:         #FFFFFF;
   --surface-raised:  #FFFFFF;
-  --surface-sunken:  #EAF0FA;
+  --surface-sunken:  #F1F5F9;
 
   /* Text */
   --text:            #0F172A;
   --text-secondary:  #475569;
-  --text-muted:      #8494AC;
+  --text-muted:      #94A3B8;
   --text-inverse:    #FFFFFF;
 
-  /* Brand â€” blue primary, yellow accent, white surfaces */
-  --primary:         #1D4ED8;
-  --primary-hover:   #1A3FAF;
-  --primary-light:   rgba(29,78,216,0.08);
-  --primary-deep:    #15307E;
+  /* Brand — Royal Sapphire Blue & Sunburst Gold (matches new logo) */
+  --primary:         #1A56DB;
+  --primary-hover:   #1E40AF;
+  --primary-light:   rgba(26,86,219,0.08);
+  --primary-deep:    #0F2454;
   --secondary:       #2563EB;
   --secondary-light: rgba(37,99,235,0.08);
 
-  /* Yellow is the accent, never body text: #F5B301 on white fails
-     contrast, so --accent-text carries the readable amber. */
-  --accent:          #F5B301;
-  --accent-hover:    #D99A00;
-  --accent-light:    rgba(245,179,1,0.14);
-  --accent-text:     #8A5B00;
+  /* Gold Accent */
+  --accent:          #F59E0B;
+  --accent-hover:    #D97706;
+  --accent-light:    rgba(245,158,11,0.14);
+  --accent-text:     #B45309;
 
-  /* Semantic â€” kept distinct from the brand so status still reads
-     as status rather than decoration. */
-  --success:         #15803D;
-  --success-light:   rgba(21,128,61,0.10);
-  --warning:         #8A5B00;
-  --warning-light:   rgba(245,179,1,0.16);
-  --danger:          #B42318;
-  --danger-light:    rgba(180,35,24,0.10);
-  --info:            #1D4ED8;
-  --info-light:      rgba(29,78,216,0.10);
+  /* Colorful Accents for Rich, Friendly Academic LMS */
+  --color-blue:      #1A56DB;
+  --color-gold:      #F59E0B;
+  --color-emerald:   #10B981;
+  --color-purple:    #8B5CF6;
+  --color-cyan:      #06B6D4;
+  --color-rose:      #F43F5E;
+
+  /* Semantic */
+  --success:         #059669;
+  --success-light:   rgba(16,185,129,0.12);
+  --warning:         #D97706;
+  --warning-light:   rgba(245,158,11,0.16);
+  --danger:          #DC2626;
+  --danger-light:    rgba(220,38,38,0.10);
+  --info:            #0284C7;
+  --info-light:      rgba(2,132,199,0.10);
 
   /* Border & Dividers */
-  --border:          #D8E2F2;
-  --border-strong:   #B4C5E0;
-  --divider:         #E6EDF8;
+  --border:          #E2E8F0;
+  --border-strong:   #CBD5E1;
+  --divider:         #F1F5F9;
 
   /* Glass */
-  --glass-bg:        rgba(255,255,255,0.78);
-  --glass-border:    rgba(255,255,255,0.45);
+  --glass-bg:        rgba(255,255,255,0.88);
+  --glass-border:    rgba(255,255,255,0.65);
+  --glass-blur:      16px;
   --glass-blur:      16px;
 
   /* Shadows */
@@ -152,45 +159,51 @@ html[data-sidebar="collapsed"] .sidebar-collapse-btn svg { transform: rotate(180
 }
 
 [data-theme="dark"] {
-  --bg:              #0B1220;
-  --surface:         #141E31;
-  --surface-raised:  #1C2940;
-  --surface-sunken:  #070D18;
+  --bg:              #0B1120;
+  --surface:         #131D33;
+  --surface-raised:  #1B2744;
+  --surface-sunken:  #080E1C;
 
-  --text:            #EEF3FB;
-  --text-secondary:  #A8B8D4;
-  --text-muted:      #70819E;
-  --text-inverse:    #0B1220;
+  --text:            #F8FAFC;
+  --text-secondary:  #94A3B8;
+  --text-muted:      #64748B;
+  --text-inverse:    #0B1120;
 
-  /* On dark the blue has to lift off the background, so the lighter
-     tints lead and the deep navy is only a surface. */
-  --primary:         #7AA8FF;
-  --primary-hover:   #9CC0FF;
-  --primary-light:   rgba(122,168,255,0.14);
-  --primary-deep:    #1C2940;
-  --secondary:       #93B8FF;
-  --secondary-light: rgba(147,184,255,0.14);
+  /* Radiant Sapphire Blue & Sunburst Gold on Dark */
+  --primary:         #3B82F6;
+  --primary-hover:   #60A5FA;
+  --primary-light:   rgba(59,130,246,0.16);
+  --primary-deep:    #1E3A8A;
+  --secondary:       #60A5FA;
+  --secondary-light: rgba(96,165,250,0.14);
 
-  --accent:          #FBC63A;
-  --accent-hover:    #FDD469;
-  --accent-light:    rgba(251,198,58,0.16);
-  --accent-text:     #FBC63A;
+  --accent:          #FBBF24;
+  --accent-hover:    #F59E0B;
+  --accent-light:    rgba(251,191,36,0.18);
+  --accent-text:     #FBBF24;
 
-  --success:         #4ADE80;
-  --success-light:   rgba(74,222,128,0.14);
-  --warning:         #FBC63A;
-  --warning-light:   rgba(251,198,58,0.16);
-  --danger:          #F87171;
-  --danger-light:    rgba(248,113,113,0.14);
-  --info:            #7AA8FF;
-  --info-light:      rgba(122,168,255,0.14);
+  --color-blue:      #60A5FA;
+  --color-gold:      #FBBF24;
+  --color-emerald:   #34D399;
+  --color-purple:    #A78BFA;
+  --color-cyan:      #22D3EE;
+  --color-rose:      #FB7185;
 
-  --border:          #2A3A54;
-  --border-strong:   #3D5273;
-  --divider:         #1F2C42;
+  --success:         #10B981;
+  --success-light:   rgba(16,185,129,0.16);
+  --warning:         #F59E0B;
+  --warning-light:   rgba(245,158,11,0.18);
+  --danger:          #EF4444;
+  --danger-light:    rgba(239,68,68,0.16);
+  --info:            #38BDF8;
+  --info-light:      rgba(56,189,248,0.16);
 
-  --glass-bg:        rgba(20,30,49,0.88);
-  --glass-border:    rgba(42,58,84,0.50);
+  --border:          #1E293B;
+  --border-strong:   #334155;
+  --divider:         #1E293B;
+
+  --glass-bg:        rgba(19,29,51,0.88);
+  --glass-border:    rgba(51,65,85,0.60);
   --glass-blur:      16px;
 
   --shadow-sm:       0 1px 2px rgba(0,0,0,0.25);
@@ -2097,3 +2110,116 @@ html[lang="si"] body { line-height: 1.6; }
 svg {
   flex-shrink: 0;
 }
+
+/* ============================================================
+   ELOCENTRA HERO & BANNER VISIBILITY GUARANTEE (LIGHT & DARK)
+   ============================================================ */
+.elo-hero-title,
+.hero-banner-title,
+.hero-banner-title *,
+.elo-slide h1,
+.elo-slide h1 *,
+.auth-hero-title,
+.auth-hero-title * {
+  color: #FFFFFF !important;
+}
+
+.hero-banner-title {
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
+}
+
+/* ============================================================
+   ELOCENTRA LOADING ANIMATIONS & FEEDBACK
+   ============================================================ */
+#eloPageLoader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #E5A93C, #F59E0B, #FCD34D, #E5A93C);
+  background-size: 200% 100%;
+  z-index: 99999;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  pointer-events: none;
+  animation: eloShimmer 1.8s infinite linear;
+}
+
+@keyframes eloShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.elo-btn-loading {
+  position: relative !important;
+  pointer-events: none !important;
+  opacity: 0.88 !important;
+  cursor: not-allowed !important;
+}
+
+/* ============================================================
+   ELOCENTRA FORM VALIDATION STYLES
+   ============================================================ */
+.is-invalid-input,
+input.is-invalid,
+textarea.is-invalid,
+select.is-invalid {
+  border-color: #EF4444 !important;
+  background-color: rgba(239, 68, 68, 0.04) !important;
+  box-shadow: 0 0 0 1px #EF4444 !important;
+}
+
+.elo-field-error {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #EF4444;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.35rem;
+  animation: eloFadeSlideIn 0.2s ease-out;
+}
+
+@keyframes eloFadeSlideIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   ELOCENTRA BANNER NIGHT MODE (DARK MODE) CLARITY ENHANCEMENT
+   ============================================================ */
+.hero-banner-bg {
+  transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s ease;
+  filter: brightness(0.72) contrast(1.02);
+}
+.hero-banner-overlay {
+  transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+  background: linear-gradient(to bottom, rgba(6, 11, 24, 0.70) 0%, rgba(11, 19, 43, 0.50) 50%, rgba(6, 11, 24, 0.75) 100%);
+}
+
+/* In Night Mode: Gently Balanced Banner Clarity (Toned Down for Comfortable Night Viewing) */
+[data-theme="dark"] .hero-banner-bg {
+  filter: brightness(0.82) contrast(1.04) saturate(1.06) !important;
+}
+[data-theme="dark"] .hero-banner-overlay {
+  background: linear-gradient(to bottom, rgba(6, 11, 24, 0.58) 0%, rgba(11, 19, 43, 0.38) 50%, rgba(6, 11, 24, 0.65) 100%) !important;
+}
+
+.elo-slide-bg {
+  transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: brightness(0.85) contrast(1.02);
+}
+.elo-slide-overlay {
+  transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(to right, rgba(6, 11, 24, 0.85) 0%, rgba(6, 11, 24, 0.55) 45%, transparent 75%);
+}
+[data-theme="dark"] .elo-slide-bg {
+  filter: brightness(0.92) contrast(1.05) saturate(1.08) !important;
+}
+[data-theme="dark"] .elo-slide-overlay {
+  background: linear-gradient(to right, rgba(6, 11, 24, 0.80) 0%, rgba(6, 11, 24, 0.45) 42%, transparent 72%) !important;
+}
+
+

@@ -69,6 +69,85 @@ class PublicController extends BaseController
     }
 
     /**
+     * Live search auto-suggestions API (JSON)
+     */
+    public function courseSuggestions(): void
+    {
+        $q = trim((string) ($_GET['q'] ?? $_GET['search'] ?? ''));
+        if (mb_strlen($q) < 1) {
+            $this->json(['success' => true, 'query' => $q, 'total' => 0, 'results' => []]);
+        }
+
+        if (!$this->db) {
+            $this->json(['success' => false, 'query' => $q, 'total' => 0, 'results' => []]);
+        }
+
+        try {
+            $stmt = $this->db->prepare("
+                SELECT c.id, c.class_name, c.subject, c.class_code, c.course_level, 
+                       c.monthly_fee, c.cover_image,
+                       sa.name AS subject_area_name,
+                       COALESCE(rp.name, u.full_name) AS teacher_name
+                FROM `classes` c
+                LEFT JOIN `subject_areas` sa ON sa.id = c.subject_area_id
+                LEFT JOIN `resource_persons` rp ON rp.id = c.teacher_id OR rp.user_id = c.teacher_id
+                LEFT JOIN `users` u ON u.id = c.teacher_id
+                WHERE c.status = 'active'
+                  AND (c.class_name LIKE :s1 OR c.subject LIKE :s2 OR c.class_code LIKE :s3 OR sa.name LIKE :s4)
+                ORDER BY c.is_featured DESC, c.id ASC
+                LIMIT 8
+            ");
+            $param = '%' . $q . '%';
+            $stmt->execute([
+                ':s1' => $param,
+                ':s2' => $param,
+                ':s3' => $param,
+                ':s4' => $param,
+            ]);
+            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            $results = [];
+            foreach ($rows as $r) {
+                $feeText = (isset($r['monthly_fee']) && (float) $r['monthly_fee'] > 0)
+                    ? 'LKR ' . number_format((float) $r['monthly_fee'], 0)
+                    : 'Free';
+
+                $img = !empty($r['cover_image'])
+                    ? BASE_URL . '/' . ltrim($r['cover_image'], '/')
+                    : BASE_URL . '/public/assets/img/courses/detail-preview.jpg';
+
+                $results[] = [
+                    'id'          => (int) $r['id'],
+                    'title'       => $r['class_name'] ?? 'Untitled Course',
+                    'subject'     => $r['subject'] ?? '',
+                    'category'    => $r['subject_area_name'] ?? 'General Course',
+                    'code'        => $r['class_code'] ?? '',
+                    'level'       => $r['course_level'] ?? 'All Levels',
+                    'fee'         => $feeText,
+                    'image'       => $img,
+                    'teacher'     => $r['teacher_name'] ?? 'ELOCENTRA Faculty',
+                    'url'         => BASE_URL . '/courses/' . $r['id'],
+                ];
+            }
+
+            $this->json([
+                'success' => true,
+                'query'   => $q,
+                'total'   => count($results),
+                'results' => $results,
+            ]);
+        } catch (\Throwable $e) {
+            $this->json([
+                'success' => false,
+                'query'   => $q,
+                'total'   => 0,
+                'results' => [],
+                'error'   => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
      * Single Course Detail page
      */
     public function courseDetail(string $id): void

@@ -56,39 +56,39 @@ $displayName = htmlspecialchars($user['full_name'] ?? $user['name'] ?? 'User', E
 <!-- ROW 1: PRIMARY FINANCIAL & ATTENDANCE KPIS -->
 <!-- ========================================== -->
 <div class="kpi-grid mb-3">
-    <!-- 1. Active Students -->
+    <!-- 1. Active Students: Sapphire Blue -->
     <?php if ($canSee('active_students')): ?>
-    <div class="kpi-card animate-slide-up delay-1" style="border-left: 4px solid var(--primary);">
+    <div class="kpi-card animate-slide-up delay-1" style="border-left: 4px solid var(--color-blue, #1A56DB);">
         <span class="kpi-card__label"><?= te('Active Students') ?></span>
         <span class="kpi-card__value"><?= number_format((int) ($widgets['active_students'] ?? 0)) ?></span>
         <span class="text-xs text-muted"><?= te('Currently Enrolled') ?></span>
     </div>
     <?php endif; ?>
 
-    <!-- 2. Today's Attendance -->
+    <!-- 2. Today's Attendance: Amethyst Purple -->
     <?php if ($canSee('today_attendance')): ?>
-    <div class="kpi-card animate-slide-up delay-2" style="border-left: 4px solid #2563EB;">
+    <div class="kpi-card animate-slide-up delay-2" style="border-left: 4px solid var(--color-purple, #8B5CF6);">
         <span class="kpi-card__label"><?= te("Today's Attendance") ?></span>
-        <span class="kpi-card__value" style="color:#1D4ED8;"><?= number_format((int) ($widgets['today_attendance'] ?? 0)) ?></span>
+        <span class="kpi-card__value" style="color:var(--color-purple, #8B5CF6);"><?= number_format((int) ($widgets['today_attendance'] ?? 0)) ?></span>
         <span class="text-xs text-muted"><?= lang_date('l, d M Y') ?></span>
     </div>
     <?php endif; ?>
 
-    <!-- 3. Active Classes -->
+    <!-- 3. Active Courses / Classes: Emerald Green -->
     <?php if ($canSee('active_classes')): ?>
-    <div class="kpi-card animate-slide-up delay-3" style="border-left: 4px solid #2563EB;">
-        <span class="kpi-card__label"><?= te('Active Classes') ?></span>
-        <span class="kpi-card__value"><?= number_format((int) ($widgets['active_classes'] ?? 0)) ?></span>
+    <div class="kpi-card animate-slide-up delay-3" style="border-left: 4px solid var(--color-emerald, #10B981);">
+        <span class="kpi-card__label"><?= te('Active Courses') ?></span>
+        <span class="kpi-card__value" style="color:var(--color-emerald, #10B981);"><?= number_format((int) ($widgets['active_classes'] ?? 0)) ?></span>
         <span class="text-xs text-muted"><?= !empty($widgets['is_global']) ? te('Across all branches') : te('In your branch') ?></span>
     </div>
     <?php endif; ?>
 
-    <!-- 8. Active Teachers -->
+    <!-- 8. Active Resource Persons / Teachers: Sunburst Gold -->
     <?php if ($canSee('active_teachers')): ?>
-    <div class="kpi-card animate-slide-up delay-4" style="border-left: 4px solid #2563eb;">
-        <span class="kpi-card__label"><?= te('Active Teachers') ?></span>
-        <span class="kpi-card__value"><?= number_format((int) ($widgets['active_teachers'] ?? 0)) ?></span>
-        <span class="text-xs text-muted"><?= te('Instructional Staff') ?></span>
+    <div class="kpi-card animate-slide-up delay-4" style="border-left: 4px solid var(--accent, #F59E0B);">
+        <span class="kpi-card__label"><?= te('Resource Persons') ?></span>
+        <span class="kpi-card__value" style="color:var(--accent, #F59E0B);"><?= number_format((int) ($widgets['active_teachers'] ?? 0)) ?></span>
+        <span class="text-xs text-muted"><?= te('Instructional Faculty') ?></span>
     </div>
     <?php endif; ?>
 </div>
@@ -96,7 +96,7 @@ $displayName = htmlspecialchars($user['full_name'] ?? $user['name'] ?? 'User', E
 <div class="kpi-grid mb-3">
     <!-- 4. Today's Revenue -->
     <?php if ($canSee('today_revenue')): ?>
-    <div class="kpi-card animate-slide-up" style="border-left: 4px solid #1D4ED8;">
+    <div class="kpi-card animate-slide-up" style="border-left: 4px solid var(--color-emerald, #10B981);">
         <span class="kpi-card__label"><?= te("Today's Revenue") ?></span>
         <span class="kpi-card__value">Rs. <?= number_format((float) ($widgets['today_revenue'] ?? 0), 2) ?></span>
         <span class="text-xs text-muted"><?= te('Collected today') ?></span>
@@ -105,7 +105,7 @@ $displayName = htmlspecialchars($user['full_name'] ?? $user['name'] ?? 'User', E
 
     <!-- 5. Monthly Revenue -->
     <?php if ($canSee('monthly_revenue')): ?>
-    <div class="kpi-card animate-slide-up" style="border-left: 4px solid #1D4ED8;">
+    <div class="kpi-card animate-slide-up" style="border-left: 4px solid var(--color-blue, #1A56DB);">
         <span class="kpi-card__label"><?= te('Monthly Revenue') ?></span>
         <span class="kpi-card__value">Rs. <?= number_format((float) ($widgets['monthly_revenue'] ?? 0), 2) ?></span>
         <span class="text-xs text-muted"><?= lang_date('F Y') ?></span>
@@ -123,7 +123,7 @@ $displayName = htmlspecialchars($user['full_name'] ?? $user['name'] ?? 'User', E
 
     <!-- 13 & 14. New Students (Today & This Month) -->
     <?php if ($canSee('today_new_students') || $canSee('this_month_new_students')): ?>
-    <div class="kpi-card animate-slide-up" style="border-left: 4px solid #F5B301;">
+    <div class="kpi-card animate-slide-up" style="border-left: 4px solid var(--accent, #F59E0B);">
         <span class="kpi-card__label"><?= te('New Admissions') ?></span>
         <div class="d-flex items-center gap-2">
             <?php if ($canSee('today_new_students')): ?>

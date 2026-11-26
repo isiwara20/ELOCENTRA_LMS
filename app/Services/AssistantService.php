@@ -52,65 +52,52 @@ class AssistantService
         'fees' => [
             'fee', 'fees', 'payment', 'payments', 'paid', 'pay', 'unpaid', 'owe', 'due amount',
             'gewala', 'gewwa', 'gewuwa', 'gewanna', 'gewapu', 'salli', 'mudal', 'ganna',
-            'ගාස්තු', 'ගෙව්වා', 'ගෙවලා', 'ගෙවන්න', 'සල්ලි', 'මුදල්',
         ],
         'quizzes' => [
             'quiz', 'quizzes', 'mcq', 'online test', 'attempt',
             'prashna', 'quiz eka', 'quiz ek',
-            'ප්‍රශ්න', 'ක්විස්',
         ],
         'exams' => [
             'exam', 'exams', 'test', 'tests', 'paper', 'term test', 'unit test',
             'wibhagaya', 'vibhagaya', 'pariksha', 'test eka', 'test ek',
-            'විභාග', 'පරීක්ෂණ', 'ප්‍රශ්න පත්‍ර',
         ],
         'marks' => [
             'mark', 'marks', 'result', 'results', 'score', 'scores', 'grade i got', 'got for',
             'lakunu', 'lakuna', 'results mona',
-            'ලකුණු', 'ප්‍රතිඵල',
         ],
         'progress' => [
             'progress', 'level', 'how am i doing', 'improve', 'improving', 'doing well', 'rank',
             'kohomada mama', 'mama kohomada', 'diyunuwa', 'level eka',
-            'දියුණුව', 'මට්ටම',
         ],
         'materials' => [
             'note', 'notes', 'recording', 'recordings', 'video', 'videos', 'material', 'materials',
             'reading', 'pdf', 'zoom', 'lesson', 'tute', 'tutes',
             'sataham', 'saṭahan', 'recording eka', 'notes tika',
-            'සටහන්', 'පටිගත', 'වීඩියෝ', 'නිබන්ධන',
         ],
         'next_class' => [
             'next class', 'next lesson', 'when is class', 'when is my class', 'class kawada', 'class eka kawada',
             'ilanga panthiya', 'ilanga class', 'panthiya kawada', 'panthi kawada', 'next panthiya',
-            'ඊළඟ පන්තිය', 'පන්තිය කවදා', 'ඊළඟ',
         ],
         'schedule' => [
             'timetable', 'schedule', 'today', 'tomorrow', 'this week', 'calendar', 'classes this',
             'ada', 'heta', 'me sathiye', 'sathiye', 'panthi', 'panthiya',
-            'අද', 'හෙට', 'සතියේ', 'කාලසටහන', 'පන්ති',
         ],
         'teacher' => [
             'teacher', 'miss', 'madam', 'sir', 'contact', 'harshani', 'call',
             'guru', 'guruthuma', 'teacher ta',
-            'ගුරු', 'ටීචර්',
         ],
         'subject_question' => [
             'what is', 'explain', 'define', 'why does', 'how does', 'meaning of', 'formula',
             'mokakda', 'kiyanne mokakda', 'paehadili', 'explain karanna',
-            'යනු කුමක්ද', 'පැහැදිලි',
         ],
         'thanks' => [
             'thanks', 'thank you', 'thank', 'thx', 'ty', 'sthuthi', 'isthuthi', 'stuti',
-            'ස්තූතියි',
         ],
         'greeting' => [
             'hi', 'hello', 'hey', 'good morning', 'good evening', 'ayubowan', 'kohomada',
-            'ආයුබෝවන්', 'හායි',
         ],
         'help' => [
             'help', 'what can you do', 'commands', 'options', 'udaw', 'udav',
-            'උදව්',
         ],
     ];
 
@@ -353,11 +340,11 @@ class AssistantService
         $text = $this->normalise($question);
         $today = $this->now->setTime(0, 0);
 
-        if ($this->contains($text, 'tomorrow') || $this->contains($text, 'heta') || $this->contains($text, 'හෙට')) {
+        if ($this->contains($text, 'tomorrow') || $this->contains($text, 'heta')) {
             $from = $today->modify('+1 day');
             $to = $from;
             $label = t('Tomorrow ({date})', ['date' => lang_date('l j M', $from->getTimestamp())]);
-        } elseif ($this->contains($text, 'today') || $this->contains($text, 'ada') || $this->contains($text, 'අද')) {
+        } elseif ($this->contains($text, 'today') || $this->contains($text, 'ada')) {
             $from = $today;
             $to = $today;
             $label = t('Today');

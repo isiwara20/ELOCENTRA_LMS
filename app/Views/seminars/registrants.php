@@ -47,7 +47,11 @@ $typeLabel = static fn (string $t) => match ($t) { 'student' => te('Student'), '
                         <input type="hidden" name="registration_id" value="<?= (int) $r['id'] ?>">
                         <input type="hidden" name="attended" value="<?= $r['attended'] ? '0' : '1' ?>">
                         <button type="submit" class="btn btn--sm <?= $r['attended'] ? 'btn--primary' : 'btn--ghost' ?>">
-                            <?= $r['attended'] ? '✓ ' . te('Attended') : te('Mark attended') ?>
+                            <?php if ($r['attended']): ?>
+                                <svg class="inline-block w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><?= te('Attended') ?>
+                            <?php else: ?>
+                                <?= te('Mark attended') ?>
+                            <?php endif; ?>
                         </button>
                     </form>
                 </td>

@@ -59,9 +59,9 @@ $cards = [
     [
         'href'  => BASE_URL . '/settings/translations',
         'icon'  => '&#127760;',
-        'title' => t('Wording & languages'),
-        'text'  => t('Sinhala and English wording across the site, including anything you have written yourself.'),
-        'tags'  => ['EN', 'සිංහල'],
+        'title' => t('Wording & Content'),
+        'text'  => t('Wording and content across the site, including custom branding and labels.'),
+        'tags'  => ['EN'],
         'cta'   => t('Open'),
     ],
 ];

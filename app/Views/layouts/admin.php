@@ -242,6 +242,8 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
     </style>
 </head>
 <body>
+    <!-- Top Progress Bar (Loading State) -->
+    <div id="eloPageLoader"></div>
 
     <!-- Navbar -->
     <nav class="navbar navbar--solid navbar-admin">
@@ -312,8 +314,14 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar__header" style="display:flex; align-items:center; justify-content:space-between; padding:1.1rem 1rem;">
-            <a href="<?= BASE_URL ?>/dashboard" class="sidebar__brand-logo" aria-label="<?= htmlspecialchars($__brand, ENT_QUOTES, 'UTF-8') ?>" style="width:38px;height:38px;flex:0 0 38px;border-radius:10px;background:#06102b;display:grid;place-items:center;cursor:pointer;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.2);overflow:hidden;padding:2px;border:1px solid rgba(229,169,60,0.4);" title="<?= htmlspecialchars($__brand, ENT_QUOTES, 'UTF-8') ?>">
-                <img src="<?= BASE_URL ?>/public/assets/img/brand/elocentra-icon.png" alt="ELOCENTRA" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+            <a href="<?= BASE_URL ?>/dashboard" class="sidebar__brand-link" style="display:flex; align-items:center; gap:0.65rem; text-decoration:none; overflow:hidden;" title="<?= htmlspecialchars($__brand, ENT_QUOTES, 'UTF-8') ?>">
+                <div class="sidebar__brand-logo" style="width:38px;height:38px;flex:0 0 38px;border-radius:10px;background:#0A193B;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.25);overflow:hidden;padding:2px;border:1.5px solid #F59E0B;">
+                    <img src="<?= BASE_URL ?>/public/assets/img/brand/elocentra-icon.png" alt="ELOCENTRA" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+                </div>
+                <div class="sidebar__brand-text">
+                    <span style="font-weight:800; font-size:0.95rem; letter-spacing:0.02em; color:var(--text); display:block; line-height:1.2;">ELOCENTRA</span>
+                    <span style="font-size:0.65rem; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.05em; display:block;">English Academy</span>
+                </div>
             </a>
 
             <button type="button" class="sidebar-collapse-btn" id="sidebarCollapse"
@@ -939,5 +947,8 @@ $featureOn = static fn (string $key): bool => $featureVisibility[$key] ?? true;
         <?php require BASE_PATH . '/app/Views/partials/assistant.php'; ?>
         <?php endif; ?>
     <?php endif; ?>
+
+    <!-- ELOCENTRA Unified Validation & Loading System -->
+    <script src="<?= BASE_URL ?>/public/assets/js/elocentra-validation.js?v=<?= @filemtime(BASE_PATH . '/public/assets/js/elocentra-validation.js') ?: 2 ?>"></script>
 </body>
 </html>
