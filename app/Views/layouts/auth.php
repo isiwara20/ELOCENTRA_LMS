@@ -71,17 +71,26 @@
         --auth-input-bg: #0E1629;
     }
 
+    html {
+        background-color: #050A17 !important;
+        overflow-x: hidden;
+        -webkit-text-size-adjust: 100%;
+    }
+
     body {
         background-color: var(--auth-bg);
         color: var(--auth-text);
         font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         min-height: 100vh;
+        min-height: 100dvh;
+        overflow-x: hidden;
         margin: 0;
         transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .auth-split-layout {
         min-height: 100vh;
+        min-height: 100dvh;
         display: grid;
         grid-template-columns: 1fr;
     }
@@ -98,9 +107,9 @@
         }
     }
 
-    /* Left Banner matching reference image (Royal Sapphire & Gold) */
+    /* Left Banner with Dynamic Background Artwork & Glassmorphism */
     .auth-banner-left {
-        background: linear-gradient(160deg, #07132B 0%, #0C2253 50%, #153472 100%);
+        background-color: #070D1F;
         position: relative;
         overflow: hidden;
         display: none;
@@ -111,8 +120,32 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 3.5rem 3rem;
+            padding: 2.5rem 2.25rem;
         }
+    }
+
+    .auth-banner-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-repeat: no-repeat;
+        transition: transform 12s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .auth-banner-left:hover .auth-banner-bg {
+        transform: scale(1.03);
+    }
+
+    .auth-banner-veil {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, 
+            rgba(6, 11, 24, 0.45) 0%, 
+            rgba(6, 11, 24, 0.05) 25%, 
+            rgba(6, 11, 24, 0.15) 60%, 
+            rgba(6, 11, 24, 0.90) 100%
+        );
+        pointer-events: none;
     }
 
     /* Gold Buttons */
@@ -205,54 +238,157 @@
     <div class="auth-split-layout">
         
         <!-- ═══════════════════════════════════════════════════════════════ -->
-        <!-- LEFT COLUMN: DECORATIVE BANNER MATCHING REFERENCE IMAGE       -->
+        <!-- LEFT COLUMN: DYNAMIC HIGH-RES ARTWORK & UNCOMMON FEATURE CARD  -->
         <!-- ═══════════════════════════════════════════════════════════════ -->
+        <?php
+        // Detect current authentication page type
+        $activeAuthPage = $authPage ?? null;
+        if (!$activeAuthPage) {
+            $uri = $_SERVER['REQUEST_URI'] ?? '';
+            if (str_contains($uri, 'register')) {
+                $activeAuthPage = 'register';
+            } elseif (str_contains($uri, 'forgot') || str_contains($uri, 'reset') || str_contains($uri, 'password')) {
+                $activeAuthPage = 'forgot';
+            } else {
+                $activeAuthPage = 'login';
+            }
+        }
+
+        if ($activeAuthPage === 'register') {
+            // 2. REGISTRATION PAGE
+            $bannerImgUrl = BASE_URL . '/public/assets/img/brand/auth-register-banner.jpg';
+            $bannerPosition = 'center top';
+            $topBadgeText = 'Admissions Open 2026/27';
+            $topBadgeColor = 'text-sky-300 border-sky-400/30';
+            $pulseColor = 'bg-sky-400';
+            $pillText = 'New Student Enrollment';
+            $pillStyle = 'bg-sky-500/20 text-sky-300 border border-sky-400/30';
+            $headline = 'Start Your Journey with <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-300">World-Class English</span>';
+            $subtext = 'Create your student profile in 2 minutes for full academic access and accredited diplomas.';
+            $cardWrapperClass = 'relative z-10 mt-4 sm:mt-6 ml-auto max-w-[340px] xl:max-w-[360px]'; // Top-Right (Positioned as marked)
+            $featureChips = [
+                [
+                    'icon' => '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>',
+                    'iconBg' => 'bg-gradient-to-br from-blue-500 to-indigo-600',
+                    'title' => '2-Min Enrollment',
+                ],
+                [
+                    'icon' => '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>',
+                    'iconBg' => 'bg-gradient-to-br from-amber-500 to-yellow-600',
+                    'title' => 'Verified Diplomas',
+                ],
+            ];
+            $footerSecurityText = 'Official Academic Enrollment';
+            $footerSecurityIcon = '<svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>';
+        } elseif ($activeAuthPage === 'forgot') {
+            // 3. FORGOT PASSWORD / PASSWORD RECOVERY PAGE
+            $bannerImgUrl = BASE_URL . '/public/assets/img/brand/auth-forgot-banner.jpg';
+            $bannerPosition = 'center center';
+            $topBadgeText = 'Security Recovery Gateway';
+            $topBadgeColor = 'text-amber-300 border-amber-400/30';
+            $pulseColor = 'bg-amber-400';
+            $pillText = 'Account Security & Recovery';
+            $pillStyle = 'bg-amber-500/20 text-amber-300 border border-amber-400/30';
+            $headline = 'Fast & Secure <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#F59E0B] via-[#FBBF24] to-[#FCD34D]">Account Recovery</span>';
+            $subtext = 'Reset your password in under a minute with encrypted one-time OTP verification.';
+            $cardWrapperClass = 'relative z-10 mt-5 sm:mt-7 ml-auto max-w-[340px] xl:max-w-[360px]'; // Top-Right (Positioned as marked)
+            $featureChips = [
+                [
+                    'icon' => '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>',
+                    'iconBg' => 'bg-gradient-to-br from-amber-500 to-orange-600',
+                    'title' => 'Instant OTP Code',
+                ],
+                [
+                    'icon' => '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>',
+                    'iconBg' => 'bg-gradient-to-br from-emerald-500 to-teal-600',
+                    'title' => '256-Bit Protection',
+                ],
+            ];
+            $footerSecurityText = '256-Bit Encrypted Recovery';
+            $footerSecurityIcon = '<svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>';
+        } else {
+            // 1. LOGIN PAGE (DEFAULT)
+            $bannerImgUrl = BASE_URL . '/public/assets/img/brand/auth-login-banner.jpg';
+            $bannerPosition = 'center center';
+            $topBadgeText = 'Portal Access &middot; Online';
+            $topBadgeColor = 'text-amber-300 border-amber-400/30';
+            $pulseColor = 'bg-emerald-400';
+            $pillText = 'Student & Staff Portal';
+            $pillStyle = 'bg-amber-500/20 text-[#E5A93C] border border-amber-400/30';
+            $headline = 'Welcome Back to Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#FBBF24] via-[#F59E0B] to-[#FCD34D]">Learning Hub</span>';
+            $subtext = 'Log in to access your virtual classes, lesson materials, assignments, and exam results.';
+            $cardWrapperClass = 'relative z-10 mt-auto self-start max-w-[330px] xl:max-w-[350px] mb-1'; // Bottom-Left (Positioned as marked)
+            $featureChips = [
+                [
+                    'icon' => '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>',
+                    'iconBg' => 'bg-gradient-to-br from-amber-500 to-orange-600',
+                    'title' => 'Virtual Classrooms',
+                ],
+                [
+                    'icon' => '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>',
+                    'iconBg' => 'bg-gradient-to-br from-emerald-500 to-teal-600',
+                    'title' => 'Expert Mentorship',
+                ],
+            ];
+            $footerSecurityText = '256-Bit SSL Secured Portal';
+            $footerSecurityIcon = '<svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>';
+        }
+        ?>
+
         <div class="auth-banner-left text-white">
-            <!-- Background Glow & Grid -->
-            <div class="absolute -top-32 -left-32 w-80 h-80 bg-[#E5A93C]/15 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
+            <!-- Background Image with Soft Ken-Burns Hover & Dynamic Cache Busting -->
+            <div class="auth-banner-bg" 
+                 style="background-image: url('<?= $bannerImgUrl ?>?v=<?= @filemtime(BASE_PATH . '/' . ltrim(parse_url($bannerImgUrl, PHP_URL_PATH), '/')) ?: 20261127 ?>'); background-position: <?= $bannerPosition ?>;">
+            </div>
 
-            <!-- Top Header & Brand -->
-            <div class="relative z-10">
-                <a href="<?= BASE_URL ?>/" class="inline-block">
-                    <img src="<?= BASE_URL ?>/public/assets/img/brand/elocentra-logo-transparent.png" alt="ELOCENTRA" class="h-14 xl:h-16 w-auto object-contain filter drop-shadow">
+            <!-- Subtle Luminous Vignette (Completely Unobstructed Artwork) -->
+            <div class="auth-banner-veil"></div>
+
+            <!-- Top Header & Brand (Single Official Logo with Portal Status Pill) -->
+            <div class="relative z-10 flex items-center justify-between w-full">
+                <a href="<?= BASE_URL ?>/" class="inline-block group" title="Return to ELOCENTRA Academy">
+                    <img src="<?= BASE_URL ?>/public/assets/img/brand/elocentra-logo-transparent.png" 
+                         alt="ELOCENTRA" 
+                         class="h-10 xl:h-11 w-auto object-contain filter drop-shadow hover:scale-105 transition-transform duration-300">
                 </a>
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 border text-xs font-semibold backdrop-blur-md <?= $topBadgeColor ?>">
+                    <span class="w-2 h-2 rounded-full <?= $pulseColor ?> animate-pulse"></span>
+                    <span><?= $topBadgeText ?></span>
+                </div>
             </div>
 
-            <!-- Middle Slogan & Core Messaging (Matching Reference Image) -->
-            <div class="relative z-10 my-auto py-8 space-y-5">
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#E5A93C] text-xs font-semibold tracking-wider uppercase backdrop-blur-md">
-                    <span class="w-2 h-2 rounded-full bg-[#E5A93C] animate-pulse"></span>
-                    ELOCENTRA ACADEMY
-                </div>
-                <h2 class="text-3xl xl:text-4xl font-extrabold tracking-tight leading-tight text-white font-heading">
-                    Learn English.<br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#F59E0B] via-[#E5A93C] to-[#FCD34D]">Speak Confidently.</span><br>
-                    Succeed Globally.
-                </h2>
-                <p class="text-slate-300 text-sm leading-relaxed max-w-sm">
-                    Access your student portal, active course modules, live lectures, assignments, and verified certificates.
-                </p>
-
-                <!-- 3D Official Emblem Matching Reference Mockup -->
-                <div class="pt-4 flex items-center gap-4">
-                    <img src="<?= BASE_URL ?>/public/assets/img/brand/elocentra-logo-official.png" alt="ELOCENTRA Emblem" class="w-24 h-24 object-contain rounded-2xl shadow-2xl border border-amber-500/30 bg-black/40 p-1">
-                    <div class="text-xs text-slate-300">
-                        <div class="font-bold text-[#E5A93C] uppercase tracking-wide">ELOCENTRA</div>
-                        <div class="text-[11px] text-slate-400">English Academy (PVT) LTD</div>
-                        <div class="text-[10px] text-amber-300/80 mt-1">Official Academic Learning Portal</div>
+            <!-- Sleek, Smaller & Unobstructing Feature Card (Positioned precisely as marked in reference images) -->
+            <div class="<?= $cardWrapperClass ?>">
+                <div class="rounded-2xl p-3.5 sm:p-4 bg-[#060B18]/70 backdrop-blur-md border border-white/15 shadow-xl space-y-2">
+                    <!-- Page Category Tag -->
+                    <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wider uppercase backdrop-blur-md <?= $pillStyle ?>">
+                        <span class="w-1.5 h-1.5 rounded-full <?= $pulseColor ?> animate-pulse"></span>
+                        <?= $pillText ?>
                     </div>
-                </div>
-            </div>
 
-            <!-- Bottom Glowing Graphic & Copyright -->
-            <div class="relative z-10 pt-6 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
-                <div>
-                    <span class="text-[#E5A93C] font-semibold">ELOCENTRA</span> &middot; English Academy (PVT) LTD
-                </div>
-                <div>
-                    &copy; <?= date('Y') ?> All Rights Reserved
+                    <!-- Headline with Radiant Gradient Highlights -->
+                    <h2 class="text-sm sm:text-base font-bold tracking-tight leading-snug text-white font-heading">
+                        <?= $headline ?>
+                    </h2>
+
+                    <!-- Short & Sweet Narrative Context -->
+                    <p class="text-[11px] text-slate-200/90 leading-relaxed font-normal">
+                        <?= $subtext ?>
+                    </p>
+
+                    <!-- Sleek Micro Feature Chips -->
+                    <div class="grid grid-cols-2 gap-1.5 pt-0.5">
+                        <?php foreach ($featureChips as $chip): ?>
+                            <div class="flex items-center gap-1.5 p-1.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 transition-colors">
+                                <div class="w-5 h-5 rounded-md flex items-center justify-center shrink-0 <?= $chip['iconBg'] ?> text-white text-[9px] shadow-sm">
+                                    <?= $chip['icon'] ?>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-[10px] font-bold text-white truncate"><?= $chip['title'] ?></div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -260,10 +396,10 @@
         <!-- ═══════════════════════════════════════════════════════════════ -->
         <!-- RIGHT COLUMN: FORM WORKFLOW & THEME SWITCH                     -->
         <!-- ═══════════════════════════════════════════════════════════════ -->
-        <div class="flex flex-col justify-between p-6 sm:p-12 relative overflow-y-auto">
+        <div class="flex flex-col justify-center p-4 sm:p-8 relative overflow-y-auto min-h-full">
             
             <!-- Top Controls: Back link + Theme Toggle (Matching Reference) -->
-            <div class="flex items-center justify-between w-full max-w-md mx-auto mb-6">
+            <div class="flex items-center justify-between w-full max-w-md mx-auto mb-4 sm:mb-6">
                 <a href="<?= BASE_URL ?>/" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#E5A93C] transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
                     Back to Academy
@@ -277,25 +413,49 @@
             </div>
 
             <!-- Main Form Card Container -->
-            <div class="w-full max-w-md mx-auto my-auto py-4">
+            <div class="w-full max-w-md mx-auto py-1">
                 
-                <!-- Mobile Logo (shown only on mobile screens) -->
-                <div class="text-center mb-8 lg:hidden">
-                    <img src="<?= BASE_URL ?>/public/assets/img/brand/elocentra-logo-transparent.png" alt="ELOCENTRA" class="h-12 w-auto mx-auto mb-2 filter drop-shadow">
-                    <p class="text-[11px] text-[#E5A93C] font-bold uppercase tracking-wider">Learn English. Speak Confidently. Succeed Globally.</p>
+                <!-- Mobile Visual Header Card (Modern & Uncommon UI) -->
+                <div class="lg:hidden mb-4">
+                    <!-- Brand Top Bar on Mobile -->
+                    <div class="flex items-center justify-between mb-3">
+                        <a href="<?= BASE_URL ?>/" class="inline-block" title="ELOCENTRA Academy">
+                            <img src="<?= BASE_URL ?>/public/assets/img/brand/elocentra-logo-transparent.png" 
+                                 alt="ELOCENTRA" 
+                                 class="h-9 w-auto object-contain filter drop-shadow">
+                        </a>
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/40 border text-[10px] font-semibold backdrop-blur-md <?= $topBadgeColor ?>">
+                            <span class="w-1.5 h-1.5 rounded-full <?= $pulseColor ?> animate-pulse"></span>
+                            <span><?= $topBadgeText ?></span>
+                        </div>
+                    </div>
+
+                    <!-- Sleek Visual Landscape Hero Card with Dynamic Banner Image -->
+                    <div class="relative h-36 sm:h-44 rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-[#070D1F]">
+                        <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105" 
+                             style="background-image: url('<?= $bannerImgUrl ?>?v=<?= @filemtime(BASE_PATH . '/' . ltrim(parse_url($bannerImgUrl, PHP_URL_PATH), '/')) ?: 20261127 ?>'); background-position: <?= $bannerPosition ?>;">
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#070D1F] via-[#070D1F]/45 to-transparent"></div>
+                        <div class="absolute bottom-2.5 left-3.5 right-3.5 z-10">
+                            <span class="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider mb-1 backdrop-blur-md <?= $pillStyle ?>">
+                                <?= $pillText ?>
+                            </span>
+                            <h2 class="text-sm font-extrabold text-white leading-tight font-heading drop-shadow">
+                                <?= strip_tags($headline) ?>
+                            </h2>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Flash Messages -->
-                <?php include __DIR__ . '/../components/flash-messages.php'; ?>
+                <!-- Unified Modern Elevated Form Card -->
+                <div class="bg-white dark:bg-[#131D33] rounded-2xl sm:rounded-3xl p-5 sm:p-7 border border-slate-200/90 dark:border-slate-800/90 shadow-xl shadow-slate-900/5 dark:shadow-black/40 backdrop-blur-sm">
+                    <!-- Flash Messages -->
+                    <?php include __DIR__ . '/../components/flash-messages.php'; ?>
 
-                <!-- Form Content injected here -->
-                <?= $content ?>
+                    <!-- Form Content injected here -->
+                    <?= $content ?>
+                </div>
 
-            </div>
-
-            <!-- Footer Note -->
-            <div class="w-full max-w-md mx-auto text-center mt-6 text-xs text-slate-400">
-                ELOCENTRA – English Academy (PVT) LTD &middot; Secure Academic Portal
             </div>
 
         </div>

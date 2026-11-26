@@ -111,6 +111,12 @@
         --footer-border: #151F33;
     }
 
+    html {
+        background-color: #050A17 !important;
+        overflow-x: hidden;
+        -webkit-text-size-adjust: 100%;
+    }
+
     body {
         background-color: var(--page-bg);
         color: var(--text-main);
@@ -118,6 +124,14 @@
         transition: background-color 0.3s ease, color 0.3s ease;
         margin: 0;
         padding: 0;
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow-x: hidden;
+    }
+
+    footer {
+        background-color: #050A17 !important;
+        margin-bottom: 0 !important;
     }
 
     h1, h2, h3, h4, h5, h6, .font-heading {
@@ -145,7 +159,7 @@
         transition: background-color 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     }
 
-    /* Smooth glassmorphic shadow transition on scroll */
+    /* Smooth glassmorphic shadow transition on scroll (Desktop) */
     .elo-navbar.scrolled {
         background-color: var(--header-scrolled) !important;
         backdrop-filter: blur(20px) saturate(180%);
@@ -155,6 +169,24 @@
     }
     [data-theme="dark"] .elo-navbar.scrolled {
         box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Mobile Header: Transparent on Scroll */
+    @media (max-width: 1023px) {
+        .elo-navbar.scrolled {
+            background-color: rgba(255, 255, 255, 0.28) !important;
+            backdrop-filter: blur(12px) saturate(160%) !important;
+            -webkit-backdrop-filter: blur(12px) saturate(160%) !important;
+            border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+        }
+        [data-theme="dark"] .elo-navbar.scrolled {
+            background-color: rgba(6, 11, 24, 0.32) !important;
+            backdrop-filter: blur(12px) saturate(160%) !important;
+            -webkit-backdrop-filter: blur(12px) saturate(160%) !important;
+            border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+        }
     }
 
     .nav-link-elo {

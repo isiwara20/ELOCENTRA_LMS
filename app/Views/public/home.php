@@ -18,12 +18,12 @@ $supportingGoals = json_decode($settings['academy_supporting_goals'] ?? '[]', tr
     'Build Elocentra into a respected international education brand.'
 ];
 
-// Fallback banner slides if table is empty
+// Fallback banner slides if table is empty (Short, sweet & well-presented)
 $sliderBanners = !empty($banners) ? $banners : [
     [
         'id' => 1,
         'title' => 'Learn English. Speak Confidently. Succeed Globally.',
-        'subtitle' => 'A modern learning platform to build your language, communication, and professional skills for an international future.',
+        'subtitle' => 'Language fluency and communication confidence for an international future.',
         'image_url' => '/public/assets/img/slider/banner1.jpg',
         'position' => 'center center',
         'button_text' => 'Explore Courses',
@@ -31,8 +31,8 @@ $sliderBanners = !empty($banners) ? $banners : [
     ],
     [
         'id' => 2,
-        'title' => 'Empower Your Global Career With Expert Mentors',
-        'subtitle' => 'Master business presentations, speech craft, professional writing, and interview excellence guided by seasoned academics.',
+        'title' => 'Empower Your Career With Expert Mentors',
+        'subtitle' => 'Master presentations, speech craft, and interview excellence guided by academics.',
         'image_url' => '/public/assets/img/slider/banner2.jpg',
         'position' => 'center center',
         'button_text' => 'Join Now',
@@ -40,8 +40,8 @@ $sliderBanners = !empty($banners) ? $banners : [
     ],
     [
         'id' => 3,
-        'title' => 'World-Class Online Learning With Modern Methods',
-        'subtitle' => 'Interactive virtual classrooms, practical language simulations, and comprehensive curriculum from foundational to advanced levels.',
+        'title' => 'Interactive World-Class Online Learning',
+        'subtitle' => 'Virtual classrooms, structured language pathways, and verified certificates.',
         'image_url' => '/public/assets/img/slider/banner3.jpg',
         'position' => 'center center',
         'button_text' => 'View Academic Disciplines',
@@ -49,8 +49,8 @@ $sliderBanners = !empty($banners) ? $banners : [
     ],
     [
         'id' => 4,
-        'title' => 'Multidisciplinary Programs for Well-Rounded Leaders',
-        'subtitle' => 'Expand your competence with foundational Psychology, Business Accounting, and corporate leadership communication.',
+        'title' => 'Multidisciplinary Pathways for Future Leaders',
+        'subtitle' => 'Expand competence in Business English, Psychology fundamentals, and leadership communication.',
         'image_url' => '/public/assets/img/slider/banner4.jpg',
         'position' => 'center center',
         'button_text' => 'Register as a Student',
@@ -65,8 +65,8 @@ $resourcePersons = !empty($resourcePersons) ? $resourcePersons : [];
 <!-- 1. HOMEPAGE BANNER ROTATING IMAGE SLIDER                            -->
 <!-- ═══════════════════════════════════════════════════════════════════ -->
 <section class="relative bg-[#060B18] text-white overflow-hidden select-none" id="eloHeroSliderSection">
-    <!-- Slider Slides Container -->
-    <div class="relative w-full h-[620px] sm:h-[660px] lg:h-[720px] overflow-hidden" id="eloHeroSlider">
+    <!-- Slider Slides Container (Mobile optimized height; desktop lg:h-[720px] strictly preserved) -->
+    <div class="relative w-full h-[420px] sm:h-[540px] lg:h-[720px] overflow-hidden" id="eloHeroSlider">
         <?php foreach ($sliderBanners as $idx => $slide): ?>
             <div class="elo-slide absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out <?= $idx === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none' ?>"
                  data-slide-index="<?= $idx ?>">
@@ -78,83 +78,80 @@ $resourcePersons = !empty($resourcePersons) ? $resourcePersons : [];
                 <!-- Clean Directional Vignette: Soft dark wash on left text area, crystal clear & luminous in Night Mode -->
                 <div class="elo-slide-overlay absolute inset-0 pointer-events-none"></div>
                 <!-- Soft top & bottom fade for seamless navbar and indicator integration -->
-                <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#060B18]/50 to-transparent pointer-events-none"></div>
-                <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#060B18]/65 to-transparent pointer-events-none"></div>
+                <div class="absolute inset-x-0 top-0 h-16 sm:h-20 bg-gradient-to-b from-[#060B18]/50 to-transparent pointer-events-none"></div>
+                <div class="absolute inset-x-0 bottom-0 h-20 sm:h-24 bg-gradient-to-t from-[#060B18]/65 to-transparent pointer-events-none"></div>
 
                 <!-- Slide Content -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center relative z-20">
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
                         
-                        <!-- Slide Left: Heading & Call to Actions (Protected with Elegant Subtle Backdrop) -->
-                        <div class="lg:col-span-8 space-y-6 text-center lg:text-left pt-8 lg:pt-0">
-                            <div class="inline-block p-4 sm:p-6 rounded-3xl bg-[#060B18]/30 backdrop-blur-[3px] border border-white/10 shadow-2xl space-y-5 max-w-2xl">
-                                <!-- Academy Badge -->
-                                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/25 text-[#E5A93C] text-xs font-semibold tracking-wider uppercase backdrop-blur-md shadow-sm">
-                                    <span class="w-2 h-2 rounded-full bg-[#E5A93C] animate-pulse"></span>
-                                    ELOCENTRA – English Academy (PVT) LTD
-                                </div>
+                        <!-- Slide Left: Short, Sweet, Unobstructed Content (Properly Sized, No Overlap on Background Image) -->
+                        <div class="lg:col-span-7 xl:col-span-8 space-y-2.5 sm:space-y-3.5 text-center lg:text-left pt-2 sm:pt-0 max-w-xl">
+                            <!-- Compact Academy Badge -->
+                            <div class="inline-flex items-center gap-1.5 px-3 py-0.5 sm:py-1 rounded-full bg-black/40 border border-white/20 text-[#E5A93C] text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase backdrop-blur-md shadow-sm">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#E5A93C] animate-pulse"></span>
+                                ELOCENTRA ACADEMY
+                            </div>
 
-                                <!-- Main Slogan / Slide Title with High-Contrast Light & Dark Visibility Guarantee -->
-                                <h1 class="elo-hero-title text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12]" style="color: #FFFFFF !important;">
-                                    <?php if ($idx === 0): ?>
-                                        <span class="block text-white" style="color: #FFFFFF !important; text-shadow: 0 3px 16px rgba(0,0,0,0.9);">Learn English.</span>
-                                        <span class="block text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-200" style="text-shadow: 0 3px 16px rgba(0,0,0,0.7);">Speak Confidently.</span>
-                                        <span class="block text-transparent bg-clip-text bg-gradient-to-r from-[#FBBF24] via-[#F59E0B] to-[#FCD34D]" style="text-shadow: 0 3px 16px rgba(0,0,0,0.7);">Succeed Globally.</span>
-                                    <?php else: ?>
-                                        <span class="block text-white" style="color: #FFFFFF !important; text-shadow: 0 3px 16px rgba(0,0,0,0.9);"><?= htmlspecialchars($slide['title'], ENT_QUOTES, 'UTF-8') ?></span>
-                                    <?php endif; ?>
-                                </h1>
+                            <!-- Properly Sized, Crisp Headline -->
+                            <h1 class="elo-hero-title text-xl sm:text-3xl lg:text-4xl xl:text-[2.65rem] font-extrabold tracking-tight leading-[1.2]" style="color: #FFFFFF !important; text-shadow: 0 2px 14px rgba(0,0,0,0.85);">
+                                <?php if ($idx === 0): ?>
+                                    Learn English. Speak Confidently.<br>
+                                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#FBBF24] via-[#F59E0B] to-[#FCD34D]">Succeed Globally.</span>
+                                <?php else: ?>
+                                    <?= htmlspecialchars($slide['title'], ENT_QUOTES, 'UTF-8') ?>
+                                <?php endif; ?>
+                            </h1>
 
-                                <!-- Subtitle -->
-                                <p class="text-slate-100 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal" style="text-shadow: 0 2px 10px rgba(0,0,0,0.85);">
-                                    <?= htmlspecialchars($slide['subtitle'] ?? '', ENT_QUOTES, 'UTF-8') ?>
-                                </p>
+                            <!-- Short & Sweet Subtitle -->
+                            <p class="text-slate-200 text-xs sm:text-sm lg:text-base max-w-lg mx-auto lg:mx-0 leading-relaxed font-normal line-clamp-2 sm:line-clamp-none" style="text-shadow: 0 2px 10px rgba(0,0,0,0.85);">
+                                <?= htmlspecialchars($slide['subtitle'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+                            </p>
 
-                                <!-- CTA Buttons -->
-                                <div class="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4">
-                                    <a href="<?= BASE_URL . htmlspecialchars($slide['button_link'] ?? '/courses', ENT_QUOTES, 'UTF-8') ?>" class="btn-gold text-sm sm:text-base py-3.5 px-7 shadow-lg">
-                                        <span><?= htmlspecialchars($slide['button_text'] ?? 'Explore Courses', ENT_QUOTES, 'UTF-8') ?></span>
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                                    </a>
-                                    <a href="<?= BASE_URL ?>/register" class="btn-outline-gold text-sm sm:text-base py-3.5 px-7 backdrop-blur-md">
-                                        <span>Join Academy</span>
-                                    </a>
-                                </div>
+                            <!-- Compact CTA Buttons -->
+                            <div class="pt-1 flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3">
+                                <a href="<?= BASE_URL . htmlspecialchars($slide['button_link'] ?? '/courses', ENT_QUOTES, 'UTF-8') ?>" class="btn-gold text-xs sm:text-sm py-2 sm:py-2.5 px-4 sm:px-5 shadow-lg">
+                                    <span><?= htmlspecialchars($slide['button_text'] ?? 'Explore Courses', ENT_QUOTES, 'UTF-8') ?></span>
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                </a>
+                                <a href="<?= BASE_URL ?>/register" class="btn-outline-gold text-xs sm:text-sm py-2 sm:py-2.5 px-4 sm:px-5 backdrop-blur-md">
+                                    <span>Join Academy</span>
+                                </a>
                             </div>
                         </div>
 
-                        <!-- Slide Right: Highlights Feature Badges (Clear Frosted Glass - Unobstructed Photo View) -->
-                        <div class="hidden lg:col-span-4 lg:flex flex-col gap-3.5 items-end">
+                        <!-- Slide Right: Highlights Feature Badges (Refined, Sleeker, Slightly Smaller Micro-Pills) -->
+                        <div class="hidden lg:col-span-5 xl:col-span-4 lg:flex flex-col gap-2.5 items-end">
                             <!-- Feature 1: Cyan / Sky -->
-                            <div class="bg-[#060B18]/50 backdrop-blur-md border border-sky-400/40 py-3 px-5 rounded-2xl shadow-xl flex items-center gap-3.5 w-72 hover:bg-[#060B18]/75 hover:border-sky-400/70 transition-all">
-                                <div class="w-10 h-10 rounded-xl bg-sky-500/25 text-sky-300 flex items-center justify-center shrink-0 border border-sky-400/50">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5"/></svg>
+                            <div class="bg-[#060B18]/45 backdrop-blur-md border border-sky-400/30 hover:border-sky-400/60 py-2 px-3.5 rounded-xl shadow-lg flex items-center gap-2.5 w-56 xl:w-60 hover:bg-[#060B18]/70 transition-all duration-300">
+                                <div class="w-8 h-8 rounded-lg bg-sky-500/20 text-sky-300 flex items-center justify-center shrink-0 border border-sky-400/40 shadow-sm">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5"/></svg>
                                 </div>
-                                <div>
-                                    <div class="text-xs font-bold text-white uppercase tracking-wide">Flexible Learning</div>
-                                    <div class="text-[11px] text-sky-200">Self-Paced &amp; Interactive</div>
+                                <div class="min-w-0">
+                                    <div class="text-[11px] font-bold text-white uppercase tracking-wider truncate">Flexible Learning</div>
+                                    <div class="text-[10px] text-sky-200/90 truncate">Self-Paced &amp; Interactive</div>
                                 </div>
                             </div>
 
                             <!-- Feature 2: Gold / Amber -->
-                            <div class="bg-[#060B18]/50 backdrop-blur-md border border-amber-400/40 py-3 px-5 rounded-2xl shadow-xl flex items-center gap-3.5 w-72 hover:bg-[#060B18]/75 hover:border-amber-400/70 transition-all">
-                                <div class="w-10 h-10 rounded-xl bg-amber-500/25 text-amber-300 flex items-center justify-center shrink-0 border border-amber-400/50">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                            <div class="bg-[#060B18]/45 backdrop-blur-md border border-amber-400/30 hover:border-amber-400/60 py-2 px-3.5 rounded-xl shadow-lg flex items-center gap-2.5 w-56 xl:w-60 hover:bg-[#060B18]/70 transition-all duration-300">
+                                <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center shrink-0 border border-amber-400/40 shadow-sm">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                                 </div>
-                                <div>
-                                    <div class="text-xs font-bold text-white uppercase tracking-wide">Expert Faculty</div>
-                                    <div class="text-[11px] text-amber-200">Senior University Lecturers</div>
+                                <div class="min-w-0">
+                                    <div class="text-[11px] font-bold text-white uppercase tracking-wider truncate">Expert Faculty</div>
+                                    <div class="text-[10px] text-amber-200/90 truncate">Senior University Lecturers</div>
                                 </div>
                             </div>
 
                             <!-- Feature 3: Emerald -->
-                            <div class="bg-[#060B18]/50 backdrop-blur-md border border-emerald-400/40 py-3 px-5 rounded-2xl shadow-xl flex items-center gap-3.5 w-72 hover:bg-[#060B18]/75 hover:border-emerald-400/70 transition-all">
-                                <div class="w-10 h-10 rounded-xl bg-emerald-500/25 text-emerald-300 flex items-center justify-center shrink-0 border border-emerald-400/50">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <div class="bg-[#060B18]/45 backdrop-blur-md border border-emerald-400/30 hover:border-emerald-400/60 py-2 px-3.5 rounded-xl shadow-lg flex items-center gap-2.5 w-56 xl:w-60 hover:bg-[#060B18]/70 transition-all duration-300">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center shrink-0 border border-emerald-400/40 shadow-sm">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 </div>
-                                <div>
-                                    <div class="text-xs font-bold text-white uppercase tracking-wide">Global Curricula</div>
-                                    <div class="text-[11px] text-emerald-200">Language &amp; Professionalism</div>
+                                <div class="min-w-0">
+                                    <div class="text-[11px] font-bold text-white uppercase tracking-wider truncate">Global Curricula</div>
+                                    <div class="text-[10px] text-emerald-200/90 truncate">Language &amp; Professionalism</div>
                                 </div>
                             </div>
                         </div>

@@ -2222,4 +2222,64 @@ select.is-invalid {
   background: linear-gradient(to right, rgba(6, 11, 24, 0.80) 0%, rgba(6, 11, 24, 0.45) 42%, transparent 72%) !important;
 }
 
+/* ============================================================
+   MOBILE RESPONSIVENESS & BOTTOM FOOTER WHITE SPACE ELIMINATION
+   ============================================================ */
+html {
+  background-color: #050A17 !important;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+footer {
+  margin-bottom: 0 !important;
+  background-color: #050A17 !important;
+}
+
+/* Mobile Header: Transparent on Scroll (Retaining Readability & Glass Blur) */
+@media (max-width: 1023px) {
+  .elo-navbar.scrolled {
+    background-color: rgba(255, 255, 255, 0.28) !important;
+    backdrop-filter: blur(12px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(160%) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  [data-theme="dark"] .elo-navbar.scrolled {
+    background-color: rgba(6, 11, 24, 0.32) !important;
+    backdrop-filter: blur(12px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(160%) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  }
+}
+
+/* Mobile Banner Image Focal Protection (Desktop lg:h-[720px] Remains Fully Preserved) */
+@media (max-width: 640px) {
+  .elo-slide[data-slide-index="0"] .elo-slide-bg {
+    background-position: 22% 35% !important;
+  }
+  .elo-slide[data-slide-index="1"] .elo-slide-bg {
+    background-position: 25% 35% !important;
+  }
+  .elo-slide[data-slide-index="2"] .elo-slide-bg {
+    background-position: center 25% !important;
+  }
+  .elo-slide[data-slide-index="3"] .elo-slide-bg {
+    background-position: center center !important;
+  }
+
+  .elo-slide-overlay {
+    background: linear-gradient(180deg, rgba(6, 11, 24, 0.70) 0%, rgba(6, 11, 24, 0.35) 40%, rgba(6, 11, 24, 0.85) 100%) !important;
+  }
+}
+
+
 

@@ -34,6 +34,7 @@ class AuthController extends BaseController
 
         $this->view('auth/login', [
             'pageTitle' => t('Login'),
+            'authPage'  => 'login',
         ], 'layouts/auth');
     }
 
@@ -352,6 +353,7 @@ class AuthController extends BaseController
 
         $this->view('auth/register', [
             'pageTitle' => 'Student Registration',
+            'authPage'  => 'register',
         ], 'layouts/auth');
     }
 
@@ -455,6 +457,7 @@ class AuthController extends BaseController
     {
         $this->view('auth/forgot-password', [
             'pageTitle' => 'Password Recovery',
+            'authPage'  => 'forgot',
         ], 'layouts/auth');
     }
 

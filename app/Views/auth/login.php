@@ -33,7 +33,7 @@
                 <input type="text" id="login_user_id" name="user_id" required autofocus
                        value="<?= htmlspecialchars($old['user_id'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                        placeholder="Enter your username, email, or ID"
-                       class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0E1629] text-slate-900 dark:text-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 transition-all text-sm">
+                       class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0E1629] text-slate-900 dark:text-white focus:outline-none focus:border-[#E5A93C] focus:ring-2 focus:ring-[#E5A93C]/20 transition-all text-sm">
             </div>
         </div>
 
@@ -48,7 +48,7 @@
                 </div>
                 <input type="password" id="login_password" name="password" required
                        placeholder="Enter your password"
-                       class="w-full pl-11 pr-11 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0E1629] text-slate-900 dark:text-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 transition-all text-sm">
+                       class="w-full pl-11 pr-11 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0E1629] text-slate-900 dark:text-white focus:outline-none focus:border-[#E5A93C] focus:ring-2 focus:ring-[#E5A93C]/20 transition-all text-sm">
                 <button type="button" id="togglePasswordBtn" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                     <svg id="pwEyeOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                     <svg id="pwEyeClosed" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/></svg>
@@ -59,7 +59,7 @@
         <!-- Remember Me & Forgot Password Row (Matching Reference Image) -->
         <div class="flex items-center justify-between text-xs">
             <label class="flex items-center gap-2 cursor-pointer text-slate-600 dark:text-slate-400">
-                <input type="checkbox" name="remember" class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 border-slate-300 dark:border-slate-700">
+                <input type="checkbox" name="remember" class="w-4 h-4 rounded text-[#E5A93C] focus:ring-[#E5A93C] border-slate-300 dark:border-slate-700">
                 <span>Remember Me</span>
             </label>
             <a href="<?= BASE_URL ?>/forgot-password" class="font-semibold text-blue-600 dark:text-blue-400 hover:text-amber-500 transition-colors">

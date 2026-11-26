@@ -183,7 +183,10 @@ class AccountController extends BaseController
     /** GET /forgot-password */
     public function showForgot(): void
     {
-        $this->view('auth/forgot-password', ['pageTitle' => t('Forgotten password')], 'layouts/auth');
+        $this->view('auth/forgot-password', [
+            'pageTitle' => t('Forgotten password'),
+            'authPage'  => 'forgot',
+        ], 'layouts/auth');
     }
 
     /**
